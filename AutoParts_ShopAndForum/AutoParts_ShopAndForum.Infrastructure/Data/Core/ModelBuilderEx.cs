@@ -87,6 +87,11 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
                 .WithMany(s => s.Products)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .Entity<Product>()
+                .Property(p => p.Price)
+                .HasPrecision(14, 2);
+
             //builder
             //    .Entity<Product>()
             //    .HasMany(p => p.ProductOrders)
@@ -96,11 +101,11 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
             return builder;
         }
 
-        internal static ModelBuilder ConfigureOrdersProduct(this ModelBuilder builder)
+        internal static ModelBuilder ConfigureOrdersProducts(this ModelBuilder builder)
         {
             builder
                 .Entity<OrderProduct>()
-                .HasIndex(i => new {i.Product, i.Order})
+                .HasIndex(i => new { i.ProductId, i.OrderId })
                 .IsUnique();
 
             builder
@@ -114,6 +119,11 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
                 .HasOne(op => op.Order)
                 .WithMany(o => o.OrderProducts)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<OrderProduct>()
+                .Property(op => op.SinglePrice)
+                .HasPrecision(14, 2);
 
             return builder;
         }
@@ -131,6 +141,11 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
                 .HasOne(o => o.Town)
                 .WithMany(t => t.Orders)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Order>()
+                .Property(o => o.OverallSum)
+                .HasPrecision(14, 2);
 
             //builder
             //    .Entity<Order>()

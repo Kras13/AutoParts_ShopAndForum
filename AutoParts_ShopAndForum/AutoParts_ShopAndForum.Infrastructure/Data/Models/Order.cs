@@ -26,8 +26,9 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         [MaxLength(OrderConstants.StreetMaxLength)]
         public string Street { get; set; }
 
+        [Required]
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public virtual User User { get; set; }
 

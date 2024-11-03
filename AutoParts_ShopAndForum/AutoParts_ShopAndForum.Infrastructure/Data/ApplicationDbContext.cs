@@ -17,7 +17,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(
-                    "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;");
+                    "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;TrustServerCertificate=True;");
             }
 
             base.OnConfiguring(optionsBuilder);
@@ -31,7 +31,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
                 .ConfigureProductsSubcategories()
                 .ConfigureProductCategories()
                 .ConfigureProducts()
-                .ConfigureOrdersProduct()
+                .ConfigureOrdersProducts()
                 .ConfigureOrders();
 
             base.OnModelCreating(builder);
