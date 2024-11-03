@@ -8,7 +8,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
     {
         public Order()
         {
-            Products = new HashSet<OrderProduct>();
+            OrderProducts = new HashSet<OrderProduct>();
         }
 
         public int Id { get; set; }
@@ -36,6 +36,6 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
 
         public virtual Town Town { get; set; }
 
-        public virtual ICollection<OrderProduct> Products { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

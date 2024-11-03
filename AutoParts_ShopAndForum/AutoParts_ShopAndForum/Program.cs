@@ -1,4 +1,5 @@
 using AutoParts_ShopAndForum.Data;
+using AutoParts_ShopAndForum.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

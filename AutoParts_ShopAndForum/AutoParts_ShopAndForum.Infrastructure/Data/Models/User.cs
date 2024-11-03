@@ -10,6 +10,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public User()
         {
             Orders = new HashSet<Order>();
+            CreatedProducts = new HashSet<Product>();
         }
 
         [Required]
@@ -26,5 +27,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public virtual Town Town { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<Product> CreatedProducts { get; set; }
     }
 }

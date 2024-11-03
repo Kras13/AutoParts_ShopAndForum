@@ -17,10 +17,10 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         [MaxLength(ProductSubcategoryConstants.NameMaxLength)]
         public string Name { get; set; }
 
-        [ForeignKey(nameof(ProductCategory))]
+        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory Category { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

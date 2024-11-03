@@ -1,4 +1,5 @@
-﻿using AutoParts_ShopAndForum.Infrastructure.Data.Models;
+﻿using AutoParts_ShopAndForum.Infrastructure.Data.Core;
+using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,36 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(
+                    "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;");
+            }
 
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder
+                .ConfigureUsers()
+                .ConfigureTowns()
+                .ConfigureProductsSubcategories()
+                .ConfigureProductCategories()
+                .ConfigureProducts()
+                .ConfigureOrdersProduct()
+                .ConfigureOrders();
+
+            base.OnModelCreating(builder);
+        }
+
+        public DbSet<Town> Towns { get; set; }
+        public DbSet<ProductSubcategory> ProductsSubcategories { get; set; }
+        public DbSet<ProductCategory> ProductsCategories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderProduct> OrdersProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
