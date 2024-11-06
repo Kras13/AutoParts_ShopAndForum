@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoParts_ShopAndForum", "AutoParts_ShopAndForum\AutoParts_ShopAndForum.csproj", "{38DBCF0A-A972-461B-8C1E-4A59C66BA02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Infrastructure", "AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj", "{265C5571-7274-496E-BFAD-4AAAEE3625CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoParts_ShopAndForum.Infrastructure", "AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj", "{265C5571-7274-496E-BFAD-4AAAEE3625CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Core", "AutoParts_ShopAndForum.Core\AutoParts_ShopAndForum.Core.csproj", "{7D06551F-5729-4EA0-894F-10CB629C3677}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{265C5571-7274-496E-BFAD-4AAAEE3625CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265C5571-7274-496E-BFAD-4AAAEE3625CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{265C5571-7274-496E-BFAD-4AAAEE3625CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D06551F-5729-4EA0-894F-10CB629C3677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D06551F-5729-4EA0-894F-10CB629C3677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D06551F-5729-4EA0-894F-10CB629C3677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D06551F-5729-4EA0-894F-10CB629C3677}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

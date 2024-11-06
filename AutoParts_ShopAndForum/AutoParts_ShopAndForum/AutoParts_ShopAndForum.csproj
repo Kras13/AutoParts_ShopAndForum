@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoParts_ShopAndForum.Core\AutoParts_ShopAndForum.Core.csproj" />
     <ProjectReference Include="..\AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj" />
   </ItemGroup>
 

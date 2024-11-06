@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ProductCategoryModel[]
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{
+    var rowsCount = (int)Math.Ceiling((double)Model.Length / 3);
+    var pointer = 0;
+}
+
+<div class="container">
+    @for (int i = 0; i < rowsCount; i++)
+    {
+        <div class="row mb-4">
+            @for (int j = pointer; j < Model.Length; j++)
+            {
+                <div class="col-sm-4">
+                    <div class="box box-1">
+                        <img src="@(Model[pointer].ImageUrl)" class="cat_img_icon" />
+                    </div>
+
+                    <div class="box box-2">
+                        <a asp-controller="Products" asp-action="All" asp-route-categoryId="@Model[pointer].Id" class="btn btn-warning">@(Model[pointer].Name)</a>
+                    </div>
+                </div>                
+
+                if (++pointer % 3 == 0)
+                    break;
+            }
+        </div>
+    }
 </div>
