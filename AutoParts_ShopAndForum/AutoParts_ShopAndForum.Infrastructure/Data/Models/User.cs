@@ -13,16 +13,14 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
             CreatedProducts = new HashSet<Product>();
         }
 
-        [Required]
         [MaxLength(UserConstants.FirstNameMaxLength)]
         public string FirstName { get; set; }
 
-        [Required]
         [MaxLength(UserConstants.LastNameMaxLength)]
         public string LastName { get; set; }
 
         [ForeignKey(nameof(Town))]
-        public int TownId { get; set; }
+        public int? TownId { get; set; }
 
         public virtual Town Town { get; set; }
 
