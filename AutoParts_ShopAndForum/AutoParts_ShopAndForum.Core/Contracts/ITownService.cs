@@ -1,4 +1,4 @@
-﻿using AutoParts_ShopAndForum.Core.Models;
+﻿using AutoParts_ShopAndForum.Core.Models.Town;
 
 namespace AutoParts_ShopAndForum.Core.Contracts
 {

@@ -1,4 +1,4 @@
-﻿namespace AutoParts_ShopAndForum.Core.Models
+﻿namespace AutoParts_ShopAndForum.Core.Models.Town
 {
     public class TownModel
     {

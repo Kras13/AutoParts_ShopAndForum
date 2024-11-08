@@ -1,5 +1,5 @@
 using AutoParts_ShopAndForum.Core.Contracts;
-using AutoParts_ShopAndForum.Core.Models;
+using AutoParts_ShopAndForum.Core.Models.ProductCategory;
 using AutoParts_ShopAndForum.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

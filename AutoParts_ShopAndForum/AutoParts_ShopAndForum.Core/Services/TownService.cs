@@ -1,5 +1,5 @@
 ﻿using AutoParts_ShopAndForum.Core.Contracts;
-using AutoParts_ShopAndForum.Core.Models;
+using AutoParts_ShopAndForum.Core.Models.Town;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 
 namespace AutoParts_ShopAndForum.Core.Services

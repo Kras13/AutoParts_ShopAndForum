@@ -11,7 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoParts_ShopAndForum.Core.Contracts;
-using AutoParts_ShopAndForum.Core.Models;
+using AutoParts_ShopAndForum.Core.Models.Town;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
