@@ -44,6 +44,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         public static IServiceCollection ConfigureBusinessServices(this IServiceCollection services)
         {
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<ITownService, TownService>();
 
             return services;
         }
