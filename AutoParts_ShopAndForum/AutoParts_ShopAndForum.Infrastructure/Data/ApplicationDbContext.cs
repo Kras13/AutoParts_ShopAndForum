@@ -19,7 +19,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
                 var dockerConnection = "Server=localhost;Database=AutoParts_ShopAndForum;User Id=sa;Password=DB_pass123456;TrustServerCertificate=True;";
                 var defaultConnection = "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;TrustServerCertificate=True;";
 
-                optionsBuilder.UseSqlServer(dockerConnection);
+                optionsBuilder.UseSqlServer(defaultConnection);
             }
 
             base.OnConfiguring(optionsBuilder);

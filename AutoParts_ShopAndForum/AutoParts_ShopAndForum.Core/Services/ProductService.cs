@@ -1,6 +1,7 @@
 ﻿using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Product;
 using AutoParts_ShopAndForum.Infrastructure.Data;
+using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoParts_ShopAndForum.Core.Services
@@ -17,11 +18,11 @@ namespace AutoParts_ShopAndForum.Core.Services
         public const int AllProducts = -1;
 
         ProductQueryModel IProductService.GetQueried(
-            int currentPage, 
-            int productsPerPage, 
-            string searchCriteria, 
-            ProductSorting sorting, 
-            int? categoryId, 
+            int currentPage,
+            int productsPerPage,
+            string searchCriteria,
+            ProductSorting sorting,
+            int? categoryId,
             int[] selectedSubcategories)
         {
             var entities = _context.Products
@@ -102,6 +103,39 @@ namespace AutoParts_ShopAndForum.Core.Services
             }
 
             return result;
+        }
+
+        public int Add(
+            string name, decimal price,
+            string imageUrl, string description,
+            int subcategoryId, string creatorId)
+        {
+            var subcategory = _context.ProductsSubcategories
+                .FirstOrDefault(e => e.Id == subcategoryId);
+
+            if (subcategory == null)
+                throw new ArgumentException("Subactegory not found");
+
+            var user = _context.Users
+                .FirstOrDefault(e => e.Id == creatorId);
+
+            if (user == null)
+                throw new ArgumentException("User not found");
+
+            var entity = new Product()
+            {
+                Name = name,
+                Price = price,
+                ImageUrl = imageUrl,
+                Description = description,
+                SubcategoryId = subcategoryId,
+                CreatorId = creatorId
+            };
+
+            _context.Add(entity);
+            _context.SaveChanges();
+
+            return entity.Id;
         }
     }
 }

@@ -1,0 +1,45 @@
+﻿@using AutoParts_ShopAndForum.Areas.Seller.Models
+
+@model ProductAddInputModel
+
+<form method="post">
+    <div asp-validation-summary="All" class="alert-danger"></div>
+    <div class="form-group mt-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" id="Name" class="form-control" placeholder="Bardahl, Motul, MAN...">
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" id="Price" class="form-control" placeholder="99.99" type="number" min="0.00" max="10000.00" step="0.01">
+        <span asp-validation-for="Price" class="small text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" id="DescriptionInput" class="form-control" placeholder="Long life oil...and so on" rows="3"></textarea>
+        <span asp-validation-for="Description" class="small text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" id="ImageUrl" class="form-control" placeholder="URL to the image of the product">
+        <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+    </div>
+    <div class="form-group mt-3">
+        <label asp-for="SelectedSubcategoryId"></label>
+        <select asp-for="SelectedSubcategoryId" class="form-control">
+            @foreach (var subCategory in Model.Subcategories)
+            {
+                string selectedText = String.Empty;
+
+                if (subCategory.Id == Model.SelectedSubcategoryId)
+                {
+                    selectedText = "selected";
+                }
+
+                <option value="@subCategory.Id" selectedText>@subCategory.Name</option>
+            }
+        </select>
+    </div>
+
+    <input class="btn btn-primary mt-3" type="submit" value="Save" />
+</form>

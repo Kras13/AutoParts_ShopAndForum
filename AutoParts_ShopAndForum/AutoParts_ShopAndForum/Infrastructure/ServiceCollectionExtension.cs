@@ -12,7 +12,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         public static IServiceCollection AddApplicationDbContext(
             this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DockerConnection") ??
+            var connectionString = config.GetConnectionString("DefaultConnection") ??
                 throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             services
@@ -33,7 +33,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
                         options.Password.RequireLowercase = false;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequireUppercase = false;
-                        options.SignIn.RequireConfirmedEmail = false; 
+                        options.SignIn.RequireConfirmedEmail = false;
                     })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -45,6 +45,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         {
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<ITownService, TownService>();
+            services.AddTransient<IProductService, ProductService>();
 
             return services;
         }

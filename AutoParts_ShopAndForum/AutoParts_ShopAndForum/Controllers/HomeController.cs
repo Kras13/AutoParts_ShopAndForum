@@ -17,52 +17,7 @@ namespace AutoParts_ShopAndForum.Controllers
 
         public IActionResult Index()
         {
-            //var categories = _categoryService.GetAll();
-
-            var categories = new ProductCategoryModel[]
-            {
-                new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },new ProductCategoryModel()
-                {
-                    Id = 1,
-                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg",
-                    Name = "Demo" + Guid.NewGuid().ToString().Substring(0, 10),
-                },
-            };
+            var categories = _categoryService.GetAll();
 
             return View(categories);
         }

@@ -22,10 +22,10 @@
                         <img src="@(Model[pointer].ImageUrl)" class="cat_img_icon" />
                     </div>
 
-                    <div class="box box-2">
+                    <div class="box box-2" style="align-content:center">
                         <a asp-controller="Products" asp-action="All" asp-route-categoryId="@Model[pointer].Id" class="btn btn-warning">@(Model[pointer].Name)</a>
                     </div>
-                </div>                
+                </div>
 
                 if (++pointer % 3 == 0)
                     break;
