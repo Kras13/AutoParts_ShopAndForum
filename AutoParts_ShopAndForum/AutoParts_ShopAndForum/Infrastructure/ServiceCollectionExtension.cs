@@ -12,7 +12,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         public static IServiceCollection AddApplicationDbContext(
             this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection") ??
+            var connectionString = config.GetConnectionString("DockerConnection") ??
                 throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             services
@@ -46,6 +46,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<ITownService, TownService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductSubcategoryService, ProductSubcategoryService>();
 
             return services;
         }

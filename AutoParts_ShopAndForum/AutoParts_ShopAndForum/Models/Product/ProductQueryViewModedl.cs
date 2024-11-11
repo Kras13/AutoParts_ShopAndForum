@@ -30,7 +30,7 @@ namespace AutoParts_ShopAndForum.Models.Product
 
         public int CurrentPage { get; set; } = 1;
         public PageViewModel[] Pages { get; set; }
-        public int ProductsPerPage { get; set; }
+        public int ProductsPerPage { get; set; } = 2;
         public int TotalProducts { get; set; }
         public string SearchCriteria { get; set; }
         public ProductSorting Sorting { get; set; }

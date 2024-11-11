@@ -34,6 +34,9 @@ namespace AutoParts_ShopAndForum.Controllers
                     .ToArray();
             }
 
+            model.Products = queryModel.Products;
+            model.TotalProducts = queryModel.TotalProductsWithoutPagination;
+
             return View(model);
         }
     }

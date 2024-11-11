@@ -18,7 +18,6 @@
 <form method="get" id="myForm">
     <div class="container">
         <div class="bg-white rounded d-flex align-items-center justify-content-between" id="header">
-            <button class="btn btn-hide text-uppercase" type="button" data-toggle="collapse" data-target="#filterbar" aria-expanded="false" aria-controls="filterbar" id="filter-btn" onclick="changeBtnTxt()"> <span class="fas fa-angle-left" id="filter-angle"></span> <span id="btn-txt">Hide filters</span> </button>
             <nav class="navbar navbar-expand-lg navbar-light pl-lg-0 pl-auto">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynav" aria-controls="mynav" aria-expanded="false" aria-label="Toggle navigation" onclick="chnageIcon()" id="icon"> <span class="navbar-toggler-icon"></span> </button>
                 <div class="collapse navbar-collapse" id="mynav">
@@ -90,23 +89,22 @@
                 </nav>
             </div>
         </div>
+
+
         <div id="content" class="my-5">
-            <div id="filterbar" class="collapse">
+            <div id="filterbar" class="collapse show">
                 <div class="box border-bottom">
                     <div class="form-group text-center">
                         <input class="btn btn-primary" type="submit" value="Apply" />
-                        <a class="btn btn-danger" asp-controller="Products" asp-action="All"
+                        <a class="btn btn-danger" asp-controller="Product" asp-action="All"
                            asp-route-categoryid="@Model.CategoryId">Reset</a>
                     </div>
                 </div>
                 <div class="box border-bottom">
                     <div class="box-label text-uppercase d-flex align-items-center">
                         Subcategories
-                        <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box" aria-expanded="false" aria-controls="inner-box" id="out">
-                            <img src="/img/plus.png">
-                        </button>
                     </div>
-                    <div id="inner-box" class="collapse mt-2 mr-1">
+                    <div id="inner-box" class="collapse show mt-2 mr-1">
                         @for (int i = 0; i < Model.Subcategories.Length; i++)
                         {
                             <div class="my-1">

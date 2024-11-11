@@ -22,15 +22,7 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Controllers
             var model = new ProductAddInputModel()
             {
                 Subcategories = _categoryService.GetAllSubcategories()
-            };
-
-            _productService.Add(
-                 model.Name,
-                 model.Price,
-                 model.ImageUrl,
-                 model.Description,
-                 model.SelectedSubcategoryId,
-                 this.User.GetId());
+            };            
 
             return View(model);
         }
@@ -45,9 +37,15 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Controllers
                 return View(model);
             }
 
-            // todo is user authorized
+            _productService.Add(
+                 model.Name,
+                 model.Price,
+                 model.ImageUrl,
+                 model.Description,
+                 model.SelectedSubcategoryId,
+                 this.User.GetId());
 
-            return View(model);
+            return RedirectToAction("All", "Products", new { area = "" });
         }
     }
 }
