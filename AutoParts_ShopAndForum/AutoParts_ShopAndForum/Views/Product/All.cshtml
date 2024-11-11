@@ -90,7 +90,6 @@
             </div>
         </div>
 
-
         <div id="content" class="my-5">
             <div id="filterbar" class="collapse show">
                 <div class="box border-bottom">
@@ -125,7 +124,7 @@
                         <div class="col-lg-4 col-md-6 pt-md-4 pt-3">
                             <div class="card d-flex flex-column align-items-center">
                                 <div class="product-name text-center">@product.Name</div>
-                                <a asp-controller="Products" asp-action="Details"
+                                <a asp-controller="Product" asp-action="Details"
                                    asp-route-id="@product.Id"
                                    asp-route-name="@product.Name"
                                    asp-route-description="@product.Description"

@@ -39,5 +39,15 @@ namespace AutoParts_ShopAndForum.Controllers
 
             return View(model);
         }
+
+        public IActionResult Details(ProductDetailsViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.LastUrl))
+            {
+                model.LastUrl = Request.Headers["Referer"];
+            }
+
+            return View(model);
+        }
     }
 }
