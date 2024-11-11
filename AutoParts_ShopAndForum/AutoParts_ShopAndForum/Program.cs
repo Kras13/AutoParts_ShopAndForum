@@ -1,5 +1,6 @@
 using AutoParts_ShopAndForum.Infrastructure;
-
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 namespace AutoParts_ShopAndForum
 {
     public class Program
@@ -8,12 +9,24 @@ namespace AutoParts_ShopAndForum
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var cultureInfo = new CultureInfo("en-US");
+            cultureInfo.NumberFormat.NumberGroupSeparator = ".";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+
             builder.Services
                 .AddApplicationDbContext(builder.Configuration)
                 .ConfigureContextIdentity()
                 .ConfigureBusinessServices();
 
-            builder.Services.AddControllersWithViews();
+            
+
+            builder.Services.AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                });
+
+            builder.Services.AddSession();
 
             var app = builder.Build();
 
@@ -33,6 +46,7 @@ namespace AutoParts_ShopAndForum
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

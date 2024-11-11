@@ -137,5 +137,49 @@ namespace AutoParts_ShopAndForum.Core.Services
 
             return entity.Id;
         }
+
+        public ProductModel GetById(int id)
+        {
+            var model = _context.Products.FirstOrDefault(p => p.Id == id);
+
+            if (model != null)
+            {
+                return new ProductModel()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Price = model.Price,
+                    SubcategoryId = model.SubcategoryId,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    Creatorid = model.CreatorId
+                };
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public ProductModel Update(ProductModel product)
+        {
+            var model = _context.Products
+                .FirstOrDefault(e => e.Id == product.Id);
+
+            if (model == null)
+            {
+                throw new ArgumentException("ProductService.Update -> product with the selected id can not be found");
+            }
+
+            model.Name = product.Name;
+            model.Price = product.Price;
+            model.ImageUrl = product.ImageUrl;
+            model.Description = product.Description;
+            model.SubcategoryId = product.SubcategoryId;
+
+            _context.SaveChanges();
+
+            return product;
+        }
     }
 }
