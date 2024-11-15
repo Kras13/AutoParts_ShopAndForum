@@ -22,6 +22,43 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1048576)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -93,6 +130,69 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("OrdersProducts");
+                });
+
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PostCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("PostCategoryId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.PostCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostsCategories");
                 });
 
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Product", b =>
@@ -415,6 +515,31 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Comment", b =>
+                {
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.Comment", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Order", b =>
                 {
                     b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.Town", "Town")
@@ -451,6 +576,25 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Post", b =>
+                {
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.User", "Creator")
+                        .WithMany("Posts")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.PostCategory", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("PostCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Product", b =>
@@ -549,6 +693,16 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Navigation("OrderProducts");
                 });
 
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.PostCategory", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Product", b =>
                 {
                     b.Navigation("ProductOrders");
@@ -576,6 +730,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Navigation("CreatedProducts");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

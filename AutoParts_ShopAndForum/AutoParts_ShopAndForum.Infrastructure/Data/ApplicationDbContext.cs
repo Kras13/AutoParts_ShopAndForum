@@ -19,7 +19,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
                 var dockerConnection = "Server=localhost;Database=AutoParts_ShopAndForum;User Id=sa;Password=DB_pass123456;TrustServerCertificate=True;";
                 var defaultConnection = "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;TrustServerCertificate=True;";
 
-                optionsBuilder.UseSqlServer(defaultConnection);
+                optionsBuilder.UseSqlServer(dockerConnection);
             }
 
             base.OnConfiguring(optionsBuilder);
@@ -34,7 +34,10 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
                 .ConfigureProductCategories()
                 .ConfigureProducts()
                 .ConfigureOrdersProducts()
-                .ConfigureOrders();
+                .ConfigureOrders()
+                .ConfigurePostsCategories()
+                .ConfigurePosts()
+                .ConfigureComments();
 
             base.OnModelCreating(builder);
         }
@@ -45,5 +48,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<PostCategory> PostsCategories { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

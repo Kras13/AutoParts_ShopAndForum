@@ -11,6 +11,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         {
             Orders = new HashSet<Order>();
             CreatedProducts = new HashSet<Product>();
+            Posts = new HashSet<Post>();
         }
 
         [MaxLength(UserConstants.FirstNameMaxLength)]
@@ -27,5 +28,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<Product> CreatedProducts { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

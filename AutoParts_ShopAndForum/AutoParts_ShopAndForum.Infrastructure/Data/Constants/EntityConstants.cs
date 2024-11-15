@@ -31,4 +31,21 @@
         internal const int NameMaxLength = 128;
         internal const int DescriptionMaxLength = 1024 * 1024;
     }
+
+    internal class PostCategoryConstants
+    {
+        internal const int NameMaxLength = 128;
+        internal const int DescriptionMaxLength = 1024 * 1024;
+    }
+
+    internal class PostContants
+    {
+        internal const int TitleMaxLength = 64;
+        internal const int ContentMaxLength = 512;
+    }
+
+    internal class CommentConstants
+    {
+        internal const int ContentMaxLength = 1024 * 1024;
+    }
 }

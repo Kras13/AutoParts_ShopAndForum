@@ -155,5 +155,37 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
 
             return builder;
         }
+
+        internal static ModelBuilder ConfigurePostsCategories(this ModelBuilder builder)
+        {
+            return builder;
+        }
+
+        internal static ModelBuilder ConfigurePosts(this ModelBuilder builder)
+        {
+            builder
+                .Entity<Post>()
+                .HasOne(p => p.Creator)
+                .WithMany(c => c.Posts)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Post>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Posts)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            return builder;
+        }
+
+        internal static ModelBuilder ConfigureComments(this ModelBuilder builder)
+        {
+            builder.Entity<Comment>()
+                .HasOne(p => p.Post)
+                .WithMany(p => p.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            return builder;
+        }
     }
 }
