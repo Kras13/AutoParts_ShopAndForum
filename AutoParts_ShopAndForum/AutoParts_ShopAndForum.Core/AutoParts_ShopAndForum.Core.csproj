@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="8.1.870" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj" />
   </ItemGroup>
 

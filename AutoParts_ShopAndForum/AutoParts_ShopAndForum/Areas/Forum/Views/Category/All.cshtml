@@ -1,0 +1,58 @@
+﻿@using AutoParts_ShopAndForum.Core.Models.Forum
+
+@model ForumCategoryModel[]
+
+@{
+    ViewData["Title"] = "Forum categories";
+}
+
+<div class="text-center">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+
+    @if (Model.Length > 0)
+    {
+        <div class="m-3">
+            <a asp-controller="Post" asp-action="Create" class="btn btn-primary btn-blue">Create new post</a>
+        </div>
+    }
+
+</div>
+
+
+<div class="container" style="margin-top:30px">
+    <div class="row mb-4">
+        @foreach (var category in Model)
+        {
+            <div class="col-sm-4">
+                <div class="box box-1">
+                    <img src="@category.ImageUrl" alt="@category.Name" style="width: 120px; height:90px; object-fit:cover;">
+                </div>
+
+                <div class="box box-2">
+                    <a asp-controller="Post" asp-action="List" asp-route-categoryId="@(category.Id)">
+                        @category.Name (@category.PostsCount)
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .box-2 a {
+        display: block;
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f8f9fa; 
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .box-2 a:hover {
+        background-color: #007bff;
+        color: white;
+        text-decoration: underline;
+    }
+</style>
