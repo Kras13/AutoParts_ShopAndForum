@@ -37,6 +37,8 @@ namespace AutoParts_ShopAndForum.Areas.Forum.Controllers
         {
             var post = _postService.GetById(id);
 
+            ViewBag.IsCommentInputEmpty = TempData["IsCommentInputEmpty"];
+
             return View(post);
         }
 

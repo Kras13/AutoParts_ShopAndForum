@@ -5,6 +5,7 @@
 <style>
     .card {
         height: fit-content;
+        margin-bottom: 15px;
     }
 
     #AddCommentForm {
@@ -15,6 +16,15 @@
         margin-bottom: 25px;
     }
 </style>
+
+@if (ViewBag.IsCommentInputEmpty != null && (bool)ViewBag.IsCommentInputEmpty)
+{
+    <div class="alert-danger validation-summary-errors" data-valmsg-summary="true">
+        <ul>
+            <li>Comment can be empty</li>
+        </ul>
+    </div>
+}
 
 @{
     this.ViewData["Title"] = Model.Title;
@@ -30,17 +40,26 @@
         @foreach (var comment in comments)
         {
             <div class="card">
-                @if (this.User.Identity.IsAuthenticated)
-                {
-                    <div class="px-4 pt-3">
-                        <button type="button" class="btn btn-info" onclick="showCommentAddForm(@comment.Id)">
-                            Answer
-                        </button>
-                    </div>
-                }
                 <div class="card-header">
-                    @comment.CreatorUsername, @Html.Raw("&nbsp") @comment.CreatedOn
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6" style="padding-left:0px;">
+                                @if (this.User.Identity.IsAuthenticated)
+                                {
+                                    <button type="button" class="btn btn-info" onclick="showCommentAddForm(@comment.Id)">
+                                        Answer
+                                    </button>
+                                }
+                            </div>
+                            <div class="col-6" style="padding-left:0px;padding-right:0px;">
+                                <div class="float-end">
+                                    @comment.CreatorUsername - @Html.Raw("&nbsp") @comment.CreatedOn
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="card-body">
                     @Html.Raw(comment.SanitaziedContent)
                 </div>
@@ -56,7 +75,7 @@
 
 @if (this.User.Identity.IsAuthenticated)
 {
-    <div class="px-4 pt-3">
+    <div class="pt-3">
         <button id="CommentButton" type="button" class="btn btn-info" onclick="showCommentAddForm()">
             Add comment
         </button>
@@ -72,7 +91,7 @@
                 </div>
                 <div class="col-6" style="padding-left:0px;padding-right:0px;">
                     <div class="float-end">
-                        @Model.CreatorUsername
+                        @Model.CreatorUsername - @Html.Raw("&nbsp") @Model.CreatedOn
                     </div>
                 </div>
             </div>
@@ -92,7 +111,7 @@
     <input type="hidden" name="ParentId" value="0" />
 
     <div>
-        <textarea name="Content" id="Content" class="form-control"></textarea>
+        <textarea name="Content" id="Content" class="form-control" onkeyup="onContentChange()"></textarea>
     </div>
 
     <div>
@@ -116,6 +135,16 @@
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#AddCommentForm").offset().top
             }, 1000);
+        }
+
+        function onContentChange() {
+            console.log("here");
+
+            $content = $("#Content").val();
+
+            if (!$content.trim()) {
+                console.log("bad");
+            }
         }
     </script>
 }

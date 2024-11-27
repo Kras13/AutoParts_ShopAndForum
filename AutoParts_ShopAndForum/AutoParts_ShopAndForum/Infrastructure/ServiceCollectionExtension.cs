@@ -50,6 +50,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IForumCategoryService, ForumCategoryService>();
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<ICommentService, CommentService>();
 
             return services;
         }
