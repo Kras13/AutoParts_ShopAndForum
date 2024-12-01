@@ -1,104 +1,24 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-/** {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif
-}*/
-
-body {
-    background-color: #f4f4f4
-}
-
-/*.container {
-    margin: 40px auto
-}
-*/
-
-/*#header {
-    width: 100%;
-    height: 60px;
-    box-shadow: 5px 5px 15px #e8e8e8
-}*/
-/*
-.col-lg-4, .col-md-6 {
-    padding-right: 0
-}*/
-
-button.btn.btn-hide {
-    height: inherit;
-    background-color: #ff935d;
-    color: #fff;
-    font-size: 0.82rem;
-    padding-left: 40px;
-    padding-right: 40px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px
-}
-
-.btn:focus {
-    box-shadow: none
-}
-
-.box-label .btn {
-    background-color: #fff;
-    padding: 0;
-    font-size: 0.8rem
-}
-
-.btn-red {
-    background-color: #e00000ce
-}
-
-.btn-orange {
-    background-color: #ffa500
-}
-
-.btn-pink {
-    background-color: #e0009dce
-}
-
-.btn-green {
-    background-color: #00811c
-}
-
-.btn-blue {
-    background-color: #026bc2
-}
-
-.btn-brown {
-    background-color: #994a00
-}
-
 /*.navbar {
     display: inline-flex
 }
 */
+.pagination {
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
 .pagination .page-item .page-link {
     color: #333;
     border: none;
     width: 40px;
-    text-align: center
+    text-align: center;
 }
 
 .pagination .page-item.active .page-link {
     background-color: #fff;
     border: 1px solid #333
-}
-
-select {
-    outline: none;
-    padding: 6px 12px;
-    margin: 0px 4px;
-    color: #999;
-    font-size: 0.85rem;
-    width: 140px
-}
-
-#select2 {
-    border: 1px solid #777;
-    color: #999
 }
 
 #pro {

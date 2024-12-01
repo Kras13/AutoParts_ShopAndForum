@@ -17,156 +17,138 @@
 
 <form method="get" id="myForm">
     <div class="container">
-        <div class="bg-white rounded d-flex align-items-center justify-content-between" id="header">
-            <nav class="navbar navbar-expand-lg navbar-light pl-lg-0 pl-auto">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynav" aria-controls="mynav" aria-expanded="false" aria-label="Toggle navigation" onclick="chnageIcon()" id="icon"> <span class="navbar-toggler-icon"></span> </button>
-                <div class="collapse navbar-collapse" id="mynav">
-                    <ul class="navbar-nav d-lg-flex align-items-lg-center">
-                        <li class="nav-item active">
-                            <select asp-for="Sorting" class="form-control" onchange="this.form.submit()">
-                                <option value="" hidden selected>Sort by</option>
+        <div class="row border border-primary align-items-center p-2" style="margin-top:45px">
+            <div class="col-sm-4">
+                <select asp-for="Sorting" class="form-control" onchange="this.form.submit()">
+                    <option value="" hidden selected>Sort by</option>
 
-                                @foreach (var product in Model.Sortings)
-                                {
-                                    <option value="@(product.Sorting)">@product.DisplayText</option>
-                                }
-                            </select>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="ml-auto mt-3 mr-2">
-                <nav aria-label="Search">
-                    <ul class="pagination">
-                        <li class="nav-item active">
-                            <input asp-for="SearchCriteria" class="form-control" placeholder="Bardahl, Man, Motul.....">
-                        </li>
-                    </ul>
-                </nav>
+                    @foreach (var product in Model.Sortings)
+                    {
+                        <option value="@(product.Sorting)">@product.DisplayText</option>
+                    }
+                </select>
             </div>
-            <div class="ml-auto mt-3 mr-2">
-                <nav aria-label="Search">
-                    <ul class="pagination">
-                        <li>
-                            <select asp-for="ProductsPerPage" class="form-control" onchange="this.form.submit()" onclick=" InvalidatePaging()">
-                                @foreach (var page in Model.Pages)
-                                {
-                                    <option value="@(page.PageIndex)">@(page.DisplayText)</option>
-                                }
-                            </select>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="ml-auto mt-3 mr-2">
-                <nav aria-label="Page navigation example">
-                    <input type="hidden" asp-for="@Model.CurrentPage" id="CurrentPageComp" />
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <button class="btn btn-primary float-left" @(Model.CurrentPage == 1 ? "disabled" : string.Empty)
-                                    name="Pagination"
-                                    value="Previous"
-                                    onclick="ChangePage(@Model.CurrentPage > 0 ? @Model.CurrentPage - 1 : 1)" id="btnPrevious">
-                                Previous
-                            </button>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
-                        <li class="page-item">
-                            @{
-                                string enableButton = String.Empty;
 
-                                if (Model.TotalProducts == Model.Products.Length || Model.CurrentPage == lastPage)
-                                {
-                                    enableButton = "disabled";
-                                }
+            <div class="col-sm-4">
+                <input asp-for="SearchCriteria" class="form-control" placeholder="Bardahl, Man, Motul.....">
+            </div>
+
+            <div class="col-sm-1">
+                <select asp-for="ProductsPerPage" class="form-control" onchange="this.form.submit()" onclick=" InvalidatePaging()">
+                    @foreach (var page in Model.Pages)
+                    {
+                        <option value="@(page.PageIndex)">@(page.DisplayText)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-3">
+                <input type="hidden" asp-for="@Model.CurrentPage" id="CurrentPageComp" />
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="btn btn-primary float-left" @(Model.CurrentPage == 1 ? "disabled" : string.Empty)
+                                name="Pagination"
+                                value="Previous"
+                                onclick="ChangePage(@Model.CurrentPage > 0 ? @Model.CurrentPage - 1 : 1)" id="btnPrevious">
+                            Previous
+                        </button>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
+                    <li class="page-item">
+                        @{
+                            string enableButton = String.Empty;
+
+                            if (Model.TotalProducts == Model.Products.Length || Model.CurrentPage == lastPage)
+                            {
+                                enableButton = "disabled";
                             }
-                            <button class="btn btn-primary float-left" @(enableButton)
-                                    name="Pagination" value="Next" onclick="ChangePage(@Model.CurrentPage + 1)" id="btnNext">
-                                Next
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
+                        }
+                        <button class="btn btn-primary float-left" @(enableButton)
+                                name="Pagination" value="Next" onclick="ChangePage(@Model.CurrentPage + 1)" id="btnNext">
+                            Next
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
+    </div>
 
-        <div id="content" class="my-5">
-            <div id="filterbar" class="collapse show">
-                <div class="box border-bottom">
-                    <div class="form-group text-center">
-                        <input class="btn btn-primary" type="submit" value="Apply" />
-                        <a class="btn btn-danger" asp-controller="Product" asp-action="All"
-                           asp-route-categoryid="@Model.CategoryId">Reset</a>
-                    </div>
-                </div>
-                <div class="box border-bottom">
-                    <div class="box-label text-uppercase d-flex align-items-center">
-                        Subcategories
-                    </div>
-                    <div id="inner-box" class="collapse show mt-2 mr-1">
-                        @for (int i = 0; i < Model.Subcategories.Length; i++)
-                        {
-                            <div class="my-1">
-                                <input type="hidden" asp-for="@Model.Subcategories[i].Id" />
-                                <input type="hidden" asp-for="@Model.Subcategories[i].Name" />
-                                <label asp-for="@Model.Subcategories[i].Selected">@(Model.Subcategories[i].Name)</label>
-                                <input asp-for="@Model.Subcategories[i].Selected" onclick="InvalidatePaging()" />
-                            </div>
-                        }
-                        <input type="hidden" asp-for="@Model.CategoryId" value="@Model.CategoryId">
-                    </div>
+    <div id="content" class="my-5">
+        <div id="filterbar" style="margin-top:20px">
+            <div class="box border-bottom">
+                <div class="form-group text-center">
+                    <input class="btn btn-primary" type="submit" value="Apply" />
+                    <a class="btn btn-danger" asp-controller="Product" asp-action="All"
+                       asp-route-categoryid="@Model.CategoryId">Reset</a>
                 </div>
             </div>
-            <div id="products">
-                <div class="row mx-0">
-                    @foreach (var product in Model.Products)
+            <div class="box border-bottom">
+                <div class="box-label text-uppercase d-flex align-items-center">
+                    Subcategories
+                </div>
+                <div id="inner-box" class="collapse show mt-2 mr-1">
+                    @for (int i = 0; i < Model.Subcategories.Length; i++)
                     {
-                        <div class="col-lg-4 col-md-6 pt-md-4 pt-3">
-                            <div class="card d-flex flex-column align-items-center">
-                                <div class="product-name text-center">@product.Name</div>
-                                <a asp-controller="Product" asp-action="Details"
-                                   asp-route-id="@product.Id"
-                                   asp-route-name="@product.Name"
-                                   asp-route-description="@product.Description"
-                                   asp-route-price="@product.Price"
-                                   asp-route-imageurl="@product.ImageUrl"
-                                   asp-route-lasturl="@Model.CurrentUrl">
-                                    <div class="card-img">
-                                        <img src="@product.ImageUrl" alt="">
-                                    </div>
-                                </a>
-                                <div class="card-body pt-5">
-                                    <div class="d-flex align-items-center justify-content-center price">
-                                        <div class="font-weight-bold">@product.Price leva</div>
-                                    </div>
-                                    <a class="btn btn-danger float-right"
-                                       asp-controller="Cart"
-                                       asp-action="Add"
-                                       asp-route-id="@product.Id"
-                                       asp-route-name="@product.Name"
-                                       asp-route-price="@product.Price"
-                                       asp-route-quantity="1"
-                                       asp-route-description="@product.Description"
-                                       asp-route-imageurl="@product.ImageUrl"
-                                       asp-route-lasturl="@Model.CurrentUrl">Buy</a>
-
-                                    @if (User.IsAdmin())
-                                    {
-                                        <a class="btn btn-info float-right"
-                                           asp-area="Seller"
-                                           asp-controller="Product"
-                                           asp-action="Edit"
-                                           asp-route-productId="@product.Id">Edit</a>
-                                    }
-                                </div>
-                            </div>
+                        <div class="my-1">
+                            <input type="hidden" asp-for="@Model.Subcategories[i].Id" />
+                            <input type="hidden" asp-for="@Model.Subcategories[i].Name" />
+                            <label asp-for="@Model.Subcategories[i].Selected">@(Model.Subcategories[i].Name)</label>
+                            <input asp-for="@Model.Subcategories[i].Selected" onclick="InvalidatePaging()" />
                         </div>
                     }
+                    <input type="hidden" asp-for="@Model.CategoryId" value="@Model.CategoryId">
                 </div>
             </div>
         </div>
-        <input type="submit" hidden />
+        <div id="products">
+            <div class="row mx-0">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-lg-4 col-md-6 pt-md-4 pt-3">
+                        <div class="card d-flex flex-column align-items-center">
+                            <div class="product-name text-center">@product.Name</div>
+                            <a asp-controller="Product" asp-action="Details"
+                               asp-route-id="@product.Id"
+                               asp-route-name="@product.Name"
+                               asp-route-description="@product.Description"
+                               asp-route-price="@product.Price"
+                               asp-route-imageurl="@product.ImageUrl"
+                               asp-route-lasturl="@Model.CurrentUrl">
+                                <div class="card-img">
+                                    <img src="@product.ImageUrl" alt="">
+                                </div>
+                            </a>
+                            <div class="card-body pt-5">
+                                <div class="d-flex align-items-center justify-content-center price">
+                                    <div class="font-weight-bold">@product.Price leva</div>
+                                </div>
+                                <a class="btn btn-danger float-right"
+                                   asp-controller="Cart"
+                                   asp-action="Add"
+                                   asp-route-id="@product.Id"
+                                   asp-route-name="@product.Name"
+                                   asp-route-price="@product.Price"
+                                   asp-route-quantity="1"
+                                   asp-route-description="@product.Description"
+                                   asp-route-imageurl="@product.ImageUrl"
+                                   asp-route-lasturl="@Model.CurrentUrl">Buy</a>
+
+                                @if (User.IsAdmin())
+                                {
+                                    <a class="btn btn-info float-right"
+                                       asp-area="Seller"
+                                       asp-controller="Product"
+                                       asp-action="Edit"
+                                       asp-route-productId="@product.Id">Edit</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
+    <input type="submit" hidden />
 </form>
 
 @section Scripts
