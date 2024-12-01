@@ -3,6 +3,8 @@
 @model CartListViewModel
 
 @{
+    ViewData["Title"] = "Shopping basket";
+
     decimal total = 0;
 }
 
@@ -14,7 +16,7 @@
     }
 }
 
-<h1>Shopping basket</h1>
+<h1>@ViewData["Title"]</h1>
 
 @if (Model != null && Model.Products != null)
 {
