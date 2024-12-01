@@ -18,3 +18,8 @@ The application uses Microsoft SQL Server for storing the data. The connection s
 		2. Select **AutoParts_ShopAndForum.Infrastructure** as the Target/Default Project
 		3. Run the following command: **update-database**
 	```
+	
+## Stackblitz link:
+```
+https://stackblitz.com/~/github.com/Kras13/AutoParts_ShopAndForum
+```
