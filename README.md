@@ -6,7 +6,7 @@ The main function of the platform is to provide an application that can be used 
 
 The web application is built with ASP.NET using the MVC pattern. The selected database for storing the data is Microsoft SQL Server. ASP.NET Core Identity framework is used for the whole authentication process - handling individual users' accounts as well as the external ones from gmail. Code First approach is used for generating the database. Entity Framework Core is the used ORM. For the fronted are used Razor-based views.
 
-##Installation and Setup
+## Installation and Setup
 
 To start the project locally:
 1. Clone the repository and open the solution ``AutoParts_ShopAndForum.sln``
