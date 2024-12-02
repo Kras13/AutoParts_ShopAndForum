@@ -12,30 +12,19 @@
     </h1>
 </div>
 
-@{
-    var rowsCount = (int)Math.Ceiling((double)Model.Length / 3);
-    var pointer = 0;
-}
-
 <div class="container">
-    @for (int i = 0; i < rowsCount; i++)
-    {
-        <div class="row mb-4">
-            @for (int j = pointer; j < Model.Length; j++)
-            {
-                <div class="col-sm-4">
-                    <div class="box box-1">
-                        <img src="@(Model[pointer].ImageUrl)" class="cat_img_icon" />
-                    </div>
-
-                    <div class="box box-2" style="align-content:center">
-                        <a asp-controller="Product" asp-action="All" asp-route-categoryId="@Model[pointer].Id" class="btn btn-warning">@(Model[pointer].Name)</a>
-                    </div>
+    <div class="row mb-4">
+        @foreach (var category in Model)
+        {
+            <div class="col-sm-4 mb-5">
+                <div class="box box-1">
+                    <img src="@(category.ImageUrl)" style="width: 180px; height:120px; object-fit:cover" />
                 </div>
 
-                if (++pointer % 3 == 0)
-                    break;
-            }
-        </div>
-    }
+                <div class="box box-2" style="align-content:center">
+                    <a asp-controller="Product" asp-action="All" asp-route-categoryId="@category.Id" class="btn btn-warning">@(category.Name)</a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
