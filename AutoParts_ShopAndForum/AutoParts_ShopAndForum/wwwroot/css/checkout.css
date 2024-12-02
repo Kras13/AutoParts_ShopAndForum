@@ -21,14 +21,6 @@
     border: 1px solid #333
 }
 
-#pro {
-    border: none;
-    color: #333;
-    font-weight: 700;
-    padding-left: 0px;
-    width: initial
-}
-
 #filterbar {
     width: 30%;
     background-color: #fff;
@@ -65,63 +57,6 @@
 
 label {
     cursor: pointer
-}
-
-.tick {
-    display: block;
-    position: relative;
-    padding-left: 23px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin: 0
-}
-
-    .tick input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0
-    }
-
-.check {
-    position: absolute;
-    top: 1px;
-    left: 0;
-    height: 18px;
-    width: 18px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 3px
-}
-
-.tick:hover input ~ .check {
-    background-color: #f3f3f3
-}
-
-.tick input:checked ~ .check {
-    background-color: #ffffff
-}
-
-.check:after {
-    content: "";
-    position: absolute;
-    display: none
-}
-
-.tick input:checked ~ .check:after {
-    display: block;
-    transform: rotate(45deg) scale(1)
-}
-
-.tick .check:after {
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid rgb(0, 0, 0);
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg) scale(2)
 }
 
 .box {
@@ -163,30 +98,6 @@ label {
 
 #size input[type="checkbox"] {
     visibility: hidden
-}
-
-    #size input[type='checkbox']:checked {
-        background-color: #16c79a;
-        border: none
-    }
-
-#size .btn.btn-success {
-    background-color: #ddd;
-    color: #333;
-    border: none;
-    width: 40px;
-    font-size: 0.8rem;
-    border-radius: 0
-}
-
-    #size .btn.btn-success:hover {
-        background-color: #aff1e1;
-        color: #444
-    }
-
-#size .btn-success:not(:disabled):not(.disabled).active, #size .btn-success:not(:disabled):not(.disabled):active {
-    background-color: #16c79a;
-    color: #fff
 }
 
 #size label {
@@ -259,140 +170,6 @@ label {
 .card-body .btn.btn-light:not(:disabled):not(.disabled).active::after, .card-body .btn.btn-light:not(:disabled):not(.disabled):active::after {
     background-color: #000
 }
-
-#avail-size input[type="checkbox"] {
-    visibility: hidden
-}
-
-    #avail-size input[type='checkbox']:checked {
-        background-color: #16c79a;
-        border: none
-    }
-
-#avail-size .btn.btn-success {
-    background-color: #ddd;
-    color: #333;
-    border: none;
-    width: 20px;
-    font-size: 0.7rem;
-    border-radius: 0;
-    padding: 0
-}
-
-    #avail-size .btn.btn-success:hover {
-        background-color: #aff1e1;
-        color: #444
-    }
-
-#avail-size .btn-success:not(:disabled):not(.disabled).active, #avail-size .btn-success:not(:disabled):not(.disabled):active {
-    background-color: #16c79a;
-    color: #fff
-}
-
-#avail-size label {
-    margin: 10px;
-    margin-left: 0px
-}
-
-#shirt {
-    height: 170px
-}
-
-.middle {
-    position: relative;
-    width: 100%;
-    margin-top: 25px
-}
-
-.slider {
-    position: relative;
-    z-index: 1;
-    height: 5px;
-    margin: 0 15px
-}
-
-    .slider > .track {
-        position: absolute;
-        z-index: 1;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        border-radius: 5px;
-        background-color: #ddd
-    }
-
-    .slider > .range {
-        position: absolute;
-        z-index: 2;
-        left: 25%;
-        right: 25%;
-        top: 0;
-        bottom: 0;
-        border-radius: 5px;
-        background-color: #36a31b
-    }
-
-    .slider > .thumb {
-        position: absolute;
-        top: 2px;
-        z-index: 3;
-        width: 20px;
-        height: 20px;
-        background-color: #36a31b;
-        border-radius: 50%;
-        box-shadow: 0 0 0 0 rgba(63, 204, 75, 0.705);
-        transition: box-shadow .3s ease-in-out
-    }
-
-        .slider > .thumb::after {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            left: 28%;
-            top: 30%;
-            border-radius: 50%;
-            content: '';
-            background-color: #fff
-        }
-
-        .slider > .thumb.left {
-            left: 25%;
-            transform: translate(-15px, -10px)
-        }
-
-        .slider > .thumb.right {
-            right: 25%;
-            transform: translate(15px, -10px)
-        }
-
-        .slider > .thumb.hover {
-            box-shadow: 0 0 0 10px rgba(125, 230, 134, 0.507)
-        }
-
-        .slider > .thumb.active {
-            box-shadow: 0 0 0 10px rgba(63, 204, 75, 0.623)
-        }
-
-input[type=range] {
-    position: absolute;
-    pointer-events: none;
-    -webkit-appearance: none;
-    z-index: 2;
-    height: 10px;
-    width: 100%;
-    opacity: 0
-}
-
-    input[type=range]::-webkit-slider-thumb {
-        pointer-events: all;
-        width: 30px;
-        height: 30px;
-        border-radius: 0;
-        border: 0 none;
-        background-color: red;
-        -webkit-appearance: none
-    }
 
 .del {
     text-decoration: line-through;

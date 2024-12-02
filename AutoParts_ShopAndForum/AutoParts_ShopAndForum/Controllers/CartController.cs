@@ -44,6 +44,9 @@ namespace AutoParts_ShopAndForum.Controllers
         {
             var products = HttpContext.Session.GetObject<ICollection<ProductCartModel>>(CartConstant.Cart);
 
+            if (products == null)
+                products = new List<ProductCartModel>();
+
             var model = new CartListViewModel()
             {
                 Products = products,

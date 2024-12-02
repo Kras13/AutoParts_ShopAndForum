@@ -3,8 +3,14 @@
 @model ProductCategoryModel[]
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Home Page";
 }
+
+<div class="text-center">
+    <h1>
+        @ViewData["Title"]
+    </h1>
+</div>
 
 @{
     var rowsCount = (int)Math.Ceiling((double)Model.Length / 3);

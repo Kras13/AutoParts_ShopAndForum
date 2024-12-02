@@ -2,49 +2,57 @@
 
 @model PostListViewModel[]
 
+@{
+    ViewData["Title"] = "List of Posts";
+}
+
+<div class="text-center">
+    <h1>
+        @ViewData["Title"]
+    </h1>
+</div>
+
+
 <div class="container-fluid mt-100">
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
-                <div class="card-header pr-0 pl-0">
-                    <div class="row no-gutters align-items-center w-100">
-                        <div class="col font-weight-bold pl-3">Title</div>
-                        <div class="d-none d-md-block col-6 text-muted">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-3">
-                                    Author
-                                </div>
-                                <div class="col-3">
-                                    Created on
-                                </div>
-                                <div class="col-6">
-                                    Comments
-                                </div>
-                            </div>
+                <div class="card-header">
+                    <div class="row no-gutters w-100">
+                        <div class="col-3">
+                            Title
+                        </div>
+                        <div class="col-3">
+                            Author
+                        </div>
+                        <div class="col-3">
+                            Created on
+                        </div>
+                        <div class="col-3">
+                            Comments
                         </div>
                     </div>
                 </div>
+                <div class="card-body py-3">
+                    @foreach (var post in Model)
+                    {
+                        <div class="row w-93 mb-3">
 
-                @foreach (var post in Model)
-                {
-                    <div class="card-body py-3">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col"><a asp-controller="Post" asp-action="ById" asp-route-id="@post.Id" class="text-big font-weight-semibold" data-abc="true">@post.Title</a></div>
-                            <div class="d-none d-md-block col-6">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-3">@post.Author</div>
-                                    <div class="col-3">@post.DateCreate</div>
-                                    <div class="media col-6 align-items-center">
-                                        <div class="media-body flex-truncate ml-2">
-                                            <a class="d-block text-truncate" data-abc="true">@post.CommentsCount</a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-3">
+                                <a asp-controller="Post" asp-action="ById" asp-route-id="@post.Id" class="text-big font-weight-semibold" data-abc="true">@post.Title</a>
+                            </div>
+                            <div class="col-3">
+                                @post.Author
+                            </div>
+                            <div class="col-3">
+                                @post.DateCreate
+                            </div>
+                            <div class="col-3">
+                                @post.CommentsCount
                             </div>
                         </div>
-                    </div>
-                    <hr class="m-0">
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
@@ -68,7 +76,6 @@
 
     .card-header {
         display: flex;
-        align-items: center;
         border-bottom-width: 1px;
         padding-top: 0;
         padding-bottom: 0;

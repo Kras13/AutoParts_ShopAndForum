@@ -27,5 +27,19 @@ namespace AutoParts_ShopAndForum.Core.Services
                     PostsCount = x.Posts.Count()
                 }).ToArray();
         }
+
+        public ForumCategoryModel GetById(int id)
+        {
+            return _context.PostsCategories
+                .Include(p => p.Posts)
+                .Select(x => new ForumCategoryModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    PostsCount = x.Posts.Count()
+                }).FirstOrDefault(x => x.Id == id);
+        }
     }
 }

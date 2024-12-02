@@ -7,11 +7,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-3">@this.ViewData["Title"]</h1>
+    <h1>
+        @this.ViewData["Title"]
+    </h1>
 
     @if (Model.Length > 0)
     {
-        <div class="m-3">
+        <div style="margin:36px;">
             <a asp-controller="Post" asp-action="Create" class="btn btn-primary btn-blue">Create new post</a>
         </div>
     }
@@ -45,12 +47,12 @@
         text-decoration: none;
         padding: 10px;
         border-radius: 5px;
-        background-color: #f8f9fa; 
+        background-color: #f8f9fa;
         transition: background-color 0.3s, color 0.3s;
     }
 
-    .box-2 a:hover {
-        background-color: #007bff;
-        color: white;
-    }
+        .box-2 a:hover {
+            background-color: #007bff;
+            color: white;
+        }
 </style>
