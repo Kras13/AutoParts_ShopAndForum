@@ -84,17 +84,17 @@ namespace AutoParts_ShopAndForum.Core.Services
             {
                 TotalProductsWithoutPagination = entities.Count(),
                 Products = entities
-                .Skip((currentPage - 1) * productsPerPage)
-                .Select(e => new ProductModel()
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    CategoryId = categoryId.HasValue ? categoryId.Value : -1,
-                    SubcategoryId = e.SubcategoryId,
-                    Description = e.Description,
-                    ImageUrl = e.ImageUrl,
-                    Price = e.Price
-                }).ToArray()
+                    .Skip((currentPage - 1) * productsPerPage)
+                    .Select(e => new ProductModel()
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        CategoryId = categoryId.HasValue ? categoryId.Value : -1,
+                        SubcategoryId = e.SubcategoryId,
+                        Description = e.Description,
+                        ImageUrl = e.ImageUrl,
+                        Price = e.Price
+                    }).ToArray()
             };
 
             if (productsPerPage > 0)

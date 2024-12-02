@@ -7,6 +7,14 @@
     <p class="alert alert-success" id="successMessage">@Model.Name is successfully added to the Cart! </p>
 }
 
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h1 class="text-center">
+    @ViewData["Title"]
+</h1>
+
 <form action="/Cart/Add" method="get">
     <div class="container mt-5 mb-5">
         <div class="row d-flex justify-content-center">
@@ -25,7 +33,7 @@
                                         <i class="fa fa-long-arrow-left"></i> <span class="ml-1">
                                             <a href="@Model.LastUrl" class="btn-outline-info">Back</a>
                                         </span>
-                                    </div> <i class="fa fa-shopping-cart text-muted"></i>
+                                    </div>
                                 </div>
                                 <div class="mt-4 mb-3">
                                     <h5 class="text-uppercase">@Model.Name</h5>

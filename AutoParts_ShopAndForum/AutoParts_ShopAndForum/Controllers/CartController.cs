@@ -68,8 +68,10 @@ namespace AutoParts_ShopAndForum.Controllers
         public void RemoveProduct(int id)
         {
             var cartCollection = HttpContext.Session.GetObject<ICollection<ProductCartModel>>(CartConstant.Cart);
-
             var selectedModel = cartCollection.FirstOrDefault(m => m.Id == id);
+
+            if (selectedModel == null)
+                throw new ArgumentException("Model with such id does not exist in the cart");
 
             cartCollection.Remove(selectedModel);
 
