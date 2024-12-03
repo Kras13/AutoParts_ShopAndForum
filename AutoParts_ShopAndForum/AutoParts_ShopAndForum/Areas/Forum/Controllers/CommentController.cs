@@ -21,7 +21,7 @@ namespace AutoParts_ShopAndForum.Areas.Forum.Controllers
         [HttpPost]
         public IActionResult Create(CommentInputModel model)
         {
-            if (string.IsNullOrEmpty(model.Content)) 
+            if (string.IsNullOrEmpty(model.Content))
             {
                 TempData["IsCommentInputEmpty"] = true;
 

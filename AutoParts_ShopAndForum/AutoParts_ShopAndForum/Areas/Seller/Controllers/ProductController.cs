@@ -77,6 +77,9 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Controllers
                 return View(model.ProductId);
             }
 
+            if (!User.IsAdmin())
+                throw new UnauthorizedAccessException("Only admins can edit a product");
+
             _productService.Update(new ProductModel()
             {
                 Id = model.ProductId,

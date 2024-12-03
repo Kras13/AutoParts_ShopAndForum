@@ -42,7 +42,7 @@ namespace AutoParts_ShopAndForum.Core.Services
 
         public PostModel GetById(int id)
         {
-            var post = _context.Posts                
+            var post = _context.Posts
                 .Include(p => p.Comments)
                 .ThenInclude(cp => cp.User)
                 .Include(c => c.Creator)
@@ -50,7 +50,7 @@ namespace AutoParts_ShopAndForum.Core.Services
 
             if (post == null)
             {
-                return null;
+                throw new ArgumentException("Post with such id was not found.");
             }
 
             var comments = new List<CommentModel>();
@@ -116,7 +116,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                 throw new ArgumentException("Post with such id does not exist");
 
             return post.Comments.FirstOrDefault(e => e.Id == commentId) != null;
-        }        
+        }
 
         private CommentModel GetCurrentCommentParent(Comment comment, IList<CommentModel> comments)
         {
