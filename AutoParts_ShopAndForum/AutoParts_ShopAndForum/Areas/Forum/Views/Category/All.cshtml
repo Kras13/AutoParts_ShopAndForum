@@ -20,10 +20,13 @@
 
 </div>
 
+
 <div class="container" style="margin-top:30px">
     <div class="row mb-4">
         @foreach (var category in Model)
         {
+            int substringLength = Math.Min(category.Description.Length, 27);
+
             <div class="col-sm-4">
                 <div class="box box-1">
                     <img src="@category.ImageUrl" alt="@category.Name" style="width: 120px; height:90px; object-fit:cover;">
@@ -31,7 +34,7 @@
 
                 <div class="box box-2">
                     <a asp-controller="Post" asp-action="List" asp-route-categoryId="@(category.Id)">
-                        @category.Name (@category.PostsCount)
+                        @category.Name (@category.PostsCount) - @category.Description.Substring(0, substringLength)
                     </a>
                 </div>
             </div>

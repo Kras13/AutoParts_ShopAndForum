@@ -19,7 +19,6 @@ namespace AutoParts_ShopAndForum.Areas.Forum.Controllers
 
         public IActionResult List(int categoryId)
         {
-            var category = _categoryService.GetById(categoryId);
             var model = _postService
                 .GetByCategoryId(categoryId)
                 .Select(m => new PostListViewModel()
@@ -29,7 +28,6 @@ namespace AutoParts_ShopAndForum.Areas.Forum.Controllers
                     DateCreate = m.CreatedOn,
                     Title = m.Title,
                     CommentsCount = m.Comments.Length,
-                    CategoryDescription = category.Description,
                 }).ToArray();
 
             return View(model);

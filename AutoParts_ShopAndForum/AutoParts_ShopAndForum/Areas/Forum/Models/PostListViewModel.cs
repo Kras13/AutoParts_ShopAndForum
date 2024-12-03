@@ -7,6 +7,5 @@
         public string Author { get; set; }
         public string DateCreate { get; set; }
         public int CommentsCount { get; set; }
-        public string CategoryDescription { get; set; }
     }
 }

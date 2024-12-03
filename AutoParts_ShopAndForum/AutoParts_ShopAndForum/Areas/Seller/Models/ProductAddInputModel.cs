@@ -18,6 +18,7 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Models
         public string ImageUrl { get; set; }
 
         [Required]
+        //[Range(0.01, 10000, ErrorMessage = "Please enter value between 0.01 and 10000")]
         public decimal Price { get; set; }
 
         [Required]

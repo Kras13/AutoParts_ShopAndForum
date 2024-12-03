@@ -25,7 +25,7 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Controllers
             var model = new ProductAddInputModel()
             {
                 Subcategories = _categoryService.GetAllSubcategories()
-            };            
+            };
 
             return View(model);
         }

@@ -118,7 +118,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
                     new ProductCategory() {Name = "Oils and liquids", ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg"},
                     new ProductCategory() {Name = "Filters", ImageUrl = "https://www.autopower.bg/images/categories/%D0%A4%D0%B8%D0%BB%D1%82%D1%80%D0%B8.jpg" },
                     new ProductCategory() {Name = "Windows cleaning", ImageUrl = "https://www.autopower.bg/images/categories/%D0%9F%D0%BE%D1%87%D0%B8%D1%81%D1%82%D0%B2%D0%B0%D0%BD%D0%B5%20%D0%BD%D0%B0%20%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0%D1%82%D0%B0.jpg" },
-                    new ProductCategory() {Name = "Additives", ImageUrl = "https://bardahl.bg/wp-content/uploads/2023/06/bardahl-dobavka-za-maslo-protiv-iznosvane-b1.png"}
+                    new ProductCategory() {Name = "Additives", ImageUrl = "https://fanshop.vwclub.bg/xprod/155.jpg"}
                 };
 
             var savedCategories = await context.ProductsCategories.ToArrayAsync();
