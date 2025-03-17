@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoParts_ShopAndForum.Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Core", "AutoParts_ShopAndForum.Core\AutoParts_ShopAndForum.Core.csproj", "{7D06551F-5729-4EA0-894F-10CB629C3677}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Test", "AutoParts_ShopAndForum.Test\AutoParts_ShopAndForum.Test.csproj", "{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7D06551F-5729-4EA0-894F-10CB629C3677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D06551F-5729-4EA0-894F-10CB629C3677}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D06551F-5729-4EA0-894F-10CB629C3677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
