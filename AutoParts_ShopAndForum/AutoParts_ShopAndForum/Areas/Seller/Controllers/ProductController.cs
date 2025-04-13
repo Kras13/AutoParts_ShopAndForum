@@ -74,7 +74,7 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model.ProductId);
+                return View(model);
             }
 
             _productService.Update(new ProductModel()
