@@ -1,6 +1,8 @@
 using AutoParts_ShopAndForum.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using AutoParts_ShopAndForum.Hub;
+
 namespace AutoParts_ShopAndForum
 {
     public class Program
@@ -18,7 +20,7 @@ namespace AutoParts_ShopAndForum
                 .ConfigureContextIdentity()
                 .ConfigureBusinessServices();
 
-            
+            builder.Services.AddSignalR();
 
             builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>
@@ -60,6 +62,8 @@ namespace AutoParts_ShopAndForum
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
+            
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         }

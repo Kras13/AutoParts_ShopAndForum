@@ -1,25 +1,3 @@
-<style>
-    #chatWindow {
-        height: 400px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-        background: #f9f9f9;
-    }
-    .message {
-        margin-bottom: 5px;
-    }
-    .message.you {
-        text-align: right;
-        color: blue;
-    }
-    .message.other {
-        text-align: left;
-        color: green;
-    }
-</style>
-
 <div class="container mt-4">
     <h4>Live Chat</h4>
     <div id="chatWindow"></div>
@@ -31,7 +9,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
 <script>
-    const userId = '@User.FindFirst("sub")?.Value';
+    const userId = '@(User.Identity.IsAuthenticated ? User.GetId() : "-1")';
 
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/chatHub")
@@ -57,4 +35,10 @@
     });
 
     connection.start().catch(err => console.error(err.toString()));
+
+    $("#messageInput").on("keypress", function (e) {
+        if (e.which === 13) {
+            $("#sendButton").click();
+        }
+    });
 </script>

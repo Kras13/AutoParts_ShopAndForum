@@ -1,0 +1,19 @@
+﻿#chatWindow {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+.message {
+    margin-bottom: 5px;
+}
+.message.you {
+    text-align: right;
+    color: blue;
+}
+.message.other {
+    text-align: left;
+    color: green;
+}
