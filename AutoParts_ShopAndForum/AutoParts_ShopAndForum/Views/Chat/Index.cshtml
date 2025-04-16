@@ -1,44 +1,50 @@
 <div class="container mt-4">
-    <h4>Live Chat</h4>
-    <div id="chatWindow"></div>
-    <div class="input-group">
-        <input id="messageInput" type="text" class="form-control" placeholder="Type your message..." />
-        <button id="sendButton" class="btn btn-primary">Send</button>
+    <h4>Available Staff</h4>
+    <div id="availableUsers">
+        <div class="user" data-username="Admin1">Admin1</div>
+        <div class="user" data-username="SellerJoe">SellerJoe</div>
+        <div class="user" data-username="AdminLisa">AdminLisa</div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
-<script>
-    const userId = '@(User.Identity.IsAuthenticated ? User.GetId() : "-1")';
+<div class="chat-popup" id="chatPopup">
+    <div class="chat-header" id="chatWith"></div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendBtn" class="btn btn-primary btn-sm">Send</button>
+    </div>
+</div>
 
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chatHub")
-        .build();
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    connection.on("ReceiveMessage", function (senderId, message) {
-        const messageClass = senderId === userId ? "you" : "other";
-        const msgHtml = `<div class="message ${messageClass}"><strong>${senderId}</strong>: ${message}</div>`;
+    <script>
+        let currentChatUser = null;
 
-        const chatWindow = $("#chatWindow");
+        $(".user").on("dblclick", function () {
+            const username = $(this).data("username");
+            currentChatUser = username;
 
-        chatWindow.append(msgHtml);
-        chatWindow.scrollTop(chatWindow[0].scrollHeight);
-    });
+            $("#chatWith").text(`Chat with ${username}`);
+            $("#chatMessages").empty();
+            $("#chatPopup").fadeIn();
+        });
 
-    document.getElementById("sendButton").addEventListener("click", function () {
-        const messageInput = $("#messageInput");
-        const message = messageInput.val();
-        
-        connection.invoke("SendMessage", userId, message).catch(err => console.error(err.toString()));
+        $("#sendBtn").on("click", function () {
+            const message = $("#messageInput").val().trim();
+            if (message === "") return;
 
-        messageInput.val('');
-    });
+            const messageBox = $("#chatMessages");
+            messageBox.append(`<div class="message you"><strong>You:</strong> ${message}</div>`);
+            messageBox.scrollTop(messageBox[0].scrollHeight);
 
-    connection.start().catch(err => console.error(err.toString()));
+            $("#messageInput").val('');
 
-    $("#messageInput").on("keypress", function (e) {
-        if (e.which === 13) {
-            $("#sendButton").click();
-        }
-    });
-</script>
+            setTimeout(() => {
+                messageBox.append(`<div class="message other"><strong>${currentChatUser}:</strong> Got your message!</div>`);
+                messageBox.scrollTop(messageBox[0].scrollHeight);
+            }, 800);
+        });
+    </script>
+}
