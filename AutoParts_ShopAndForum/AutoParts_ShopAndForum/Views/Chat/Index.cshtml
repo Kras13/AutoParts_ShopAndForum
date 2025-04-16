@@ -1,9 +1,6 @@
 <div class="container mt-4">
     <h4>Available Staff</h4>
     <div id="availableUsers">
-        <div class="user" data-username="Admin1">Admin1</div>
-        <div class="user" data-username="SellerJoe">SellerJoe</div>
-        <div class="user" data-username="AdminLisa">AdminLisa</div>
     </div>
 </div>
 
@@ -16,35 +13,60 @@
     </div>
 </div>
 
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
 
-    <script>
-        let currentChatUser = null;
+<script>
+    const userId = '@(User.Identity.IsAuthenticated ? User.GetId() : "-1")';
+    let currentChatUser = null;
 
-        $(".user").on("dblclick", function () {
-            const username = $(this).data("username");
-            currentChatUser = username;
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
 
-            $("#chatWith").text(`Chat with ${username}`);
-            $("#chatMessages").empty();
-            $("#chatPopup").fadeIn();
+    connection.on("UpdateUserList", function (availableUsers) {
+        const container = $("#availableUsers");
+        container.empty();
+
+        availableUsers.forEach(username => {
+            if (username === userId) return;
+
+            const userDiv = $(`<div class='user' data-username='${username}'>${username}</div>`);
+            userDiv.on("dblclick", function () {
+                startChat(username);
+            });
+
+            container.append(userDiv);
         });
+    });
 
-        $("#sendBtn").on("click", function () {
-            const message = $("#messageInput").val().trim();
-            if (message === "") return;
+    function startChat(username) {
+        currentChatUser = username;
+        $("#chatWith").text(`Chat with ${username}`);
+        $("#chatMessages").empty();
+        $("#chatPopup").fadeIn();
 
-            const messageBox = $("#chatMessages");
-            messageBox.append(`<div class="message you"><strong>You:</strong> ${message}</div>`);
-            messageBox.scrollTop(messageBox[0].scrollHeight);
+        connection.invoke("StartPrivateChat", username).catch(err => console.error(err.toString()));
+    }
 
-            $("#messageInput").val('');
+    $("#sendBtn").on("click", function () {
+        const message = $("#messageInput").val().trim();
+        if (!message || !currentChatUser) return;
 
-            setTimeout(() => {
-                messageBox.append(`<div class="message other"><strong>${currentChatUser}:</strong> Got your message!</div>`);
-                messageBox.scrollTop(messageBox[0].scrollHeight);
-            }, 800);
-        });
-    </script>
+        const messageBox = $("#chatMessages");
+        messageBox.append(`<div class="message you"><strong>You:</strong> ${message}</div>`);
+        messageBox.scrollTop(messageBox[0].scrollHeight);
+
+        connection.invoke("SendPrivateMessage", currentChatUser, message).catch(err => console.error(err.toString()));
+        $("#messageInput").val('');
+    });
+
+    connection.on("ReceivePrivateMessage", function (fromUser, message) {
+        const messageBox = $("#chatMessages");
+        messageBox.append(`<div class="message other"><strong>${fromUser}:</strong> ${message}</div>`);
+        messageBox.scrollTop(messageBox[0].scrollHeight);
+    });
+
+    connection.start().catch(err => console.error(err.toString()));
+</script>
 }
