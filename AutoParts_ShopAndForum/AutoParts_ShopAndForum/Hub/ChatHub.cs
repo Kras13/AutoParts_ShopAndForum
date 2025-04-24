@@ -6,22 +6,27 @@ using Microsoft.AspNetCore.SignalR;
 
 public class ChatHub : Hub
 {
-    private static readonly Dictionary<string, (string UserId, bool IsAvailable)> ConnectedSellers = new();
+    private static readonly Dictionary<string, (string UserId, bool IsAvailable, bool IsSeller)> ConnectedUsers = new();
 
     public override Task OnConnectedAsync()
     {
+        var userId = Context.User.GetId();
+        
         if (!Context.User.IsAdmin() && !Context.User.IsSeller())
         {
+            lock (ConnectedUsers)
+            {
+                ConnectedUsers[Context.ConnectionId] = (userId, true, false);
+            }
+            
             BroadcastUserList();
 
             return base.OnConnectedAsync();
         }
 
-        var userId = Context.User.GetId();
-
-        lock (ConnectedSellers)
+        lock (ConnectedUsers)
         {
-            ConnectedSellers[Context.ConnectionId] = (userId, true);
+            ConnectedUsers[Context.ConnectionId] = (userId, true, true);
         }
 
         BroadcastUserList();
@@ -34,9 +39,9 @@ public class ChatHub : Hub
         if (!Context.User.IsAdmin() && !Context.User.IsSeller())
             return base.OnDisconnectedAsync(exception);
 
-        lock (ConnectedSellers)
+        lock (ConnectedUsers)
         {
-            ConnectedSellers.Remove(Context.ConnectionId);
+            ConnectedUsers.Remove(Context.ConnectionId);
         }
 
         BroadcastUserList();
@@ -46,8 +51,8 @@ public class ChatHub : Hub
 
     private Task BroadcastUserList()
     {
-        var availableUsers = ConnectedSellers
-            .Where(x => x.Value.IsAvailable)
+        var availableUsers = ConnectedUsers
+            .Where(x => x.Value is { IsAvailable: true, IsSeller: true })
             .Select(x => x.Value.UserId)
             .Distinct() // one user might have multiple connections...must appear once
             .ToList();
@@ -55,8 +60,10 @@ public class ChatHub : Hub
         return Clients.All.SendAsync("UpdateUserList", availableUsers);
     }
 
-    public async Task SendMessage(string senderId, string message)
+    public async Task SendPrivateMessage(string senderId, string receiverId, string message)
     {
-        await Clients.All.SendAsync("ReceiveMessage", senderId, message);
+        var receiverConnectionId = ConnectedUsers.FirstOrDefault(x => x.Value.UserId == receiverId).Key;
+        
+        await Clients.Client(receiverConnectionId).SendAsync("ReceivePrivateMessage", senderId, message);
     }
 }

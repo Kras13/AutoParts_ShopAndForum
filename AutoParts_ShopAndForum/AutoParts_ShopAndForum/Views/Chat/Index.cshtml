@@ -18,8 +18,8 @@
 @section Scripts
 {
 	<script>
-		const userId = '@(User.Identity.IsAuthenticated ? User.GetId() : "-1")';
-		let currentChatUser = null;
+		const currentUserId = '@(User.Identity.IsAuthenticated ? User.GetId() : "-1")';
+		let currentChatUserId = null;
 
 		const connection = new signalR.HubConnectionBuilder()
 			.withUrl("/chatHub")
@@ -30,44 +30,47 @@
 
 			container.empty();
 
-			availableUsers.forEach(username => {
-				if (username === userId) return;
+			availableUsers.forEach(userId => {
+				if (userId === currentUserId) return;
 
-				const userDiv = $(`<div class='user' data-username='${username}'>${username}</div>`);
+				const userDiv = $(`<div class='user' data-username='${userId}'>${userId}</div>`);
 
 				userDiv.on("dblclick", function () {
-					startChat(username);
+					startChat(userId);
 				});
 
 				container.append(userDiv);
 			});
 		});
 
-		function startChat(username) {
-			currentChatUser = username;
+		function startChat(userId) {
+			currentChatUserId = userId;
 
-			$("#chatWith").text(`Chat with ${username}`);
+			$("#chatWith").text(`Chat with ${userId}`);
 			$("#chatMessages").empty();
 			$("#chatPopup").fadeIn();
 
-			connection.invoke("StartPrivateChat", username).catch(err => console.error(err.toString()));
-		};
+			connection.invoke("StartPrivateChat", userId).catch(err => console.error(err.toString()));
+		}
 
 		$("#sendBtn").on("click", function () {
 			const message = $("#messageInput").val().trim();
 
-			if (!message || !currentChatUser) return;
+			if (!message || !currentChatUserId) return;
 
 			const messageBox = $("#chatMessages");
 
 			messageBox.append(`<div class="message you"><strong>You:</strong> ${message}</div>`);
 			messageBox.scrollTop(messageBox[0].scrollHeight);
 
-			connection.invoke("SendPrivateMessage", currentChatUser, message).catch(err => console.error(err.toString()));
+			connection.invoke("SendPrivateMessage", currentUserId, currentChatUserId, message).catch(err => console.error(err.toString()));
+			
 			$("#messageInput").val('');
 		});
 
 		connection.on("ReceivePrivateMessage", function (fromUser, message) {
+			console.log("Message received: " + message + " | From " + fromUser)
+			
 			const messageBox = $("#chatMessages");
 
 			messageBox.append(`<div class="message other"><strong>${fromUser}:</strong> ${message}</div>`);
