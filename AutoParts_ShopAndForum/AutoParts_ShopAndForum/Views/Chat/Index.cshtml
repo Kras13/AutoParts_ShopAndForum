@@ -54,9 +54,15 @@
 		}
 
 		$("#sendBtn").on("click", function () {
+			console.log("on click fired");
+			
 			const message = $("#messageInput").val().trim();
+			
+			console.log("message: " + message);
 
 			if (!message || !currentChatUserId) return;
+			
+			console.log("test passed");
 
 			const messageBox = $("#chatMessages");
 
@@ -69,7 +75,11 @@
 		});
 
 		connection.on("ReceivePrivateMessage", function (fromUser, message) {
-			console.log("Message received: " + message + " | From " + fromUser)
+			console.log("Message received: " + message + " | From " + fromUser);
+
+			currentChatUserId = fromUser;
+
+			$("#chatPopup").fadeIn();
 			
 			const messageBox = $("#chatMessages");
 
