@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+
 namespace AutoParts_ShopAndForum.Hub;
 
 using System;
@@ -6,7 +8,8 @@ using Microsoft.AspNetCore.SignalR;
 
 public class ChatHub : Hub
 {
-    private static readonly Dictionary<string, (string UserId, bool IsAvailable, bool IsSeller)> ConnectedUsers = new();
+    private static readonly ConcurrentDictionary<string, (string UserId, bool IsAvailable, bool IsSeller)> ConnectedUsers = new();
+    
 
     public override Task OnConnectedAsync()
     {
@@ -14,20 +17,14 @@ public class ChatHub : Hub
         
         if (!Context.User.IsAdmin() && !Context.User.IsSeller())
         {
-            lock (ConnectedUsers)
-            {
-                ConnectedUsers[Context.ConnectionId] = (userId, true, false);
-            }
+            ConnectedUsers[Context.ConnectionId] = (userId, true, false);
             
             BroadcastUserList();
 
             return base.OnConnectedAsync();
         }
 
-        lock (ConnectedUsers)
-        {
-            ConnectedUsers[Context.ConnectionId] = (userId, true, true);
-        }
+        ConnectedUsers[Context.ConnectionId] = (userId, true, true);
 
         BroadcastUserList();
 
@@ -39,10 +36,7 @@ public class ChatHub : Hub
         if (!Context.User.IsAdmin() && !Context.User.IsSeller())
             return base.OnDisconnectedAsync(exception);
 
-        lock (ConnectedUsers)
-        {
-            ConnectedUsers.Remove(Context.ConnectionId);
-        }
+        ConnectedUsers.Remove(Context.ConnectionId, out _);
 
         BroadcastUserList();
 
