@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
@@ -112,9 +113,22 @@ namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                
+                var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "User does not exists.");
+
+                    return Page();
+                }
+                
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                
                 if (result.Succeeded)
                 {
+                    var customClaims = new[] {new Claim("FirstName", user.FirstName)};
+                    await _signInManager.SignInWithClaimsAsync(user, Input.RememberMe, customClaims);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

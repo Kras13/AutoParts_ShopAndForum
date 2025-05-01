@@ -19,5 +19,10 @@ namespace AutoParts_ShopAndForum.Infrastructure
         {
             return user.IsInRole(RoleType.Seller);
         }
+
+        public static string GetName(this ClaimsPrincipal user)
+        {
+            return user.FindFirst("FirstName")?.Value;
+        }
     }
 }
