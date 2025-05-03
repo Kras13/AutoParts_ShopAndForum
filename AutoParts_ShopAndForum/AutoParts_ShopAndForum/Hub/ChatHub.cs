@@ -8,56 +8,64 @@ using Microsoft.AspNetCore.SignalR;
 
 public class ChatHub : Hub
 {
-    private static readonly ConcurrentDictionary<string, (string UserId, bool IsAvailable, bool IsSeller)> ConnectedUsers = new();
+    private static readonly ConcurrentDictionary<string, ChatUser> ConnectedUsers = new();
+    private static readonly ConcurrentDictionary<string, ChatUser> AvailableSellers = new();
     
-
     public override Task OnConnectedAsync()
     {
         var userId = Context.User.GetId();
-        
-        if (!Context.User.IsAdmin() && !Context.User.IsSeller())
-        {
-            ConnectedUsers[Context.ConnectionId] = (userId, true, false);
+        var isSeller = Context.User.IsSeller() || Context.User.IsAdmin();
             
-            BroadcastUserList();
-
-            return base.OnConnectedAsync();
-        }
-
-        ConnectedUsers[Context.ConnectionId] = (userId, true, true);
-
-        BroadcastUserList();
-
+        ConnectedUsers[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), isSeller);
+    
+        if (isSeller)
+            AvailableSellers[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), true);
+        
+        BroadcastSellersList();
+        
         return base.OnConnectedAsync();
     }
-
+    
     public override Task OnDisconnectedAsync(Exception exception)
     {
-        if (!Context.User.IsAdmin() && !Context.User.IsSeller())
-            return base.OnDisconnectedAsync(exception);
-
         ConnectedUsers.Remove(Context.ConnectionId, out _);
-
-        BroadcastUserList();
-
+        AvailableSellers.Remove(Context.ConnectionId, out _);
+    
+        BroadcastSellersList();
+    
         return base.OnDisconnectedAsync(exception);
     }
-
-    private Task BroadcastUserList()
+    
+    private Task BroadcastSellersList()
     {
-        var availableUsers = ConnectedUsers
-            .Where(x => x.Value is { IsAvailable: true, IsSeller: true })
-            .Select(x => x.Value.UserId)
+        var availableSellers = AvailableSellers
+            .Select(x => x.Value.Id)
             .Distinct() // one user might have multiple connections...must appear once
             .ToList();
-
-        return Clients.All.SendAsync("UpdateUserList", availableUsers);
+    
+        return Clients.All.SendAsync("UpdateUserList", availableSellers);
     }
 
+    public bool StartPrivateChat(string userId)
+    {
+        var sellerConnections = AvailableSellers.Where(x => x.Value.Id == userId)
+            .Select(x => x.Value.Id)
+            .ToArray();
+
+        foreach (var sellerConnection in sellerConnections)
+        {
+            AvailableSellers.Remove(sellerConnection, out _); // no loner available for other users
+        }
+
+        return true; // todo - think if the sellers to be kept in one connection only (bad if multiple tabs opened)
+    }
+    
     public async Task SendPrivateMessage(string senderId, string receiverId, string message)
     {
-        var receiverConnectionId = ConnectedUsers.FirstOrDefault(x => x.Value.UserId == receiverId).Key;
+        var receiverConnections = ConnectedUsers
+            .Where(x => x.Value.Id == receiverId)
+            .Select(x => x.Key);
         
-        await Clients.Client(receiverConnectionId).SendAsync("ReceivePrivateMessage", senderId, message);
+        await Clients.Clients(receiverConnections).SendAsync("ReceivePrivateMessage", senderId, message);
     }
 }
