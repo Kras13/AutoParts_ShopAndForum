@@ -43,19 +43,20 @@ public class ChatHub : Hub
             .Distinct() // one user might have multiple connections...must appear once
             .ToList();
     
-        return Clients.All.SendAsync("UpdateUserList", availableSellers);
+        return Clients.All.SendAsync("UpdateSellersList", availableSellers);
     }
 
     public bool StartPrivateChat(string userId)
     {
-        var sellerConnections = AvailableSellers.Where(x => x.Value.Id == userId)
-            .Select(x => x.Value.Id)
-            .ToArray();
+        var sellerConnections = AvailableSellers
+            .Where(x => x.Value.Id == userId);
 
         foreach (var sellerConnection in sellerConnections)
         {
-            AvailableSellers.Remove(sellerConnection, out _); // no loner available for other users
+            AvailableSellers.Remove(sellerConnection.Key, out _); // no longer available for other users
         }
+
+        BroadcastSellersList();
 
         return true; // todo - think if the sellers to be kept in one connection only (bad if multiple tabs opened)
     }

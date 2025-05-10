@@ -1,6 +1,6 @@
 <div class="container mt-4">
 	<h4>Available Staff</h4>
-	<div id="availableUsers">
+	<div id="availableSellers">
 	</div>
 </div>
 
@@ -25,12 +25,12 @@
 			.withUrl("/chatHub")
 			.build();
 
-		connection.on("UpdateUserList", function (availableUsers) {
-			const container = $("#availableUsers");
+		connection.on("UpdateSellersList", function (availableSellers) {
+			const container = $("#availableSellers");
 
 			container.empty();
 
-			availableUsers.forEach(userId => {
+			availableSellers.forEach(userId => {
 				if (userId === currentUserId) return;
 
 				const userDiv = $(`<div class='user' data-username='${userId}'>${userId}</div>`);
@@ -56,7 +56,9 @@
 		$("#sendBtn").on("click", function () {
 			console.log("on click fired");
 			
-			const message = $("#messageInput").val().trim();
+			const messageInput = $("#messageInput");
+			
+			const message = messageInput.val().trim();
 			
 			console.log("message: " + message);
 
@@ -69,9 +71,10 @@
 			messageBox.append(`<div class="message you"><strong>You:</strong> ${message}</div>`);
 			messageBox.scrollTop(messageBox[0].scrollHeight);
 
-			connection.invoke("SendPrivateMessage", currentUserId, currentChatUserId, message).catch(err => console.error(err.toString()));
-			
-			$("#messageInput").val('');
+			connection.invoke("SendPrivateMessage", currentUserId, currentChatUserId, message)
+				.catch(err => console.error(err.toString()));
+
+			messageInput.val('');
 		});
 
 		connection.on("ReceivePrivateMessage", function (fromUser, message) {
