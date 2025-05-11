@@ -3,24 +3,21 @@ using System.Collections.Concurrent;
 namespace AutoParts_ShopAndForum.Hub;
 
 using System;
-using AutoParts_ShopAndForum.Infrastructure;
+using Infrastructure;
 using Microsoft.AspNetCore.SignalR;
 
 public class ChatHub : Hub
 {
-    private static readonly ConcurrentDictionary<string, ChatUser> ConnectedUsers = new();
-    private static readonly ConcurrentDictionary<string, ChatUser> AvailableSellers = new();
+    private static readonly ConcurrentDictionary<string, ChatUser> UserConnections = new();
+    private static readonly ConcurrentDictionary<string, string> ReservedSellers = new();
     
     public override Task OnConnectedAsync()
     {
         var userId = Context.User.GetId();
         var isSeller = Context.User.IsSeller() || Context.User.IsAdmin();
             
-        ConnectedUsers[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), isSeller);
+        UserConnections[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), isSeller);
     
-        if (isSeller)
-            AvailableSellers[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), true);
-        
         BroadcastSellersList();
         
         return base.OnConnectedAsync();
@@ -28,8 +25,21 @@ public class ChatHub : Hub
     
     public override Task OnDisconnectedAsync(Exception exception)
     {
-        ConnectedUsers.Remove(Context.ConnectionId, out _);
-        AvailableSellers.Remove(Context.ConnectionId, out _);
+        UserConnections.Remove(Context.ConnectionId, out var chatUser);
+
+        if (chatUser == null)
+            return base.OnDisconnectedAsync(exception);
+        
+        if (chatUser.IsSeller)
+        {
+            ReservedSellers.TryRemove(chatUser.Id, out _);
+        }
+        else
+        {
+            var sellerId = ReservedSellers.FirstOrDefault(kvp => kvp.Value == chatUser.Id).Key;
+            
+            ReservedSellers.TryRemove(sellerId, out _);
+        }
     
         BroadcastSellersList();
     
@@ -38,7 +48,8 @@ public class ChatHub : Hub
     
     private Task BroadcastSellersList()
     {
-        var availableSellers = AvailableSellers
+        var availableSellers = UserConnections
+            .Where(user => user.Value.IsSeller && !ReservedSellers.ContainsKey(user.Value.Id))
             .Select(x => x.Value.Id)
             .Distinct() // one user might have multiple connections...must appear once
             .ToList();
@@ -46,24 +57,30 @@ public class ChatHub : Hub
         return Clients.All.SendAsync("UpdateSellersList", availableSellers);
     }
 
-    public bool StartPrivateChat(string userId)
+    public bool StartPrivateChat(string initiatorId, string sellerId)
     {
-        var sellerConnections = AvailableSellers
-            .Where(x => x.Value.Id == userId);
-
-        foreach (var sellerConnection in sellerConnections)
-        {
-            AvailableSellers.Remove(sellerConnection.Key, out _); // no longer available for other users
-        }
+        if (ReservedSellers.ContainsKey(sellerId))
+            return false;
+        
+        ReservedSellers.TryAdd(sellerId, initiatorId);
 
         BroadcastSellersList();
 
         return true; // todo - think if the sellers to be kept in one connection only (bad if multiple tabs opened)
     }
     
+    public bool EndPrivateChat(string sellerId)
+    {
+        var result = ReservedSellers.TryRemove(sellerId, out _);
+
+        BroadcastSellersList();
+        
+        return result;
+    }
+    
     public async Task SendPrivateMessage(string senderId, string receiverId, string message)
     {
-        var receiverConnections = ConnectedUsers
+        var receiverConnections = UserConnections
             .Where(x => x.Value.Id == receiverId)
             .Select(x => x.Key);
         

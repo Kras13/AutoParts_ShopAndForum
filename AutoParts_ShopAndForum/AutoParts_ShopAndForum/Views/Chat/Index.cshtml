@@ -5,12 +5,15 @@
 </div>
 
 <div id="chatPopup" class="chat-popup" style="display: none;">
+	<div class="d-flex justify-content-end">
+		<button id="closeBtn" class="btn btn-primary btn-close"></button>
+	</div>
 	<div class="card" id="chat1" style="border-radius: 15px;">
 		<div
 			class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
 			style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
 			<i class="fas fa-angle-left"></i>
-			<p class="mb-0 fw-bold">Live chat</p>
+			<p class="mb-0 fw-bold" id="liveChat"></p>
 			<i class="fas fa-times"></i>
 		</div>
 
@@ -42,6 +45,9 @@
 
 		connection.on("UpdateSellersList", function (availableSellers) {
 			const container = $("#availableSellers");
+			
+			console.log("Update users list called");
+			console.log(availableSellers);
 
 			container.empty();
 
@@ -61,12 +67,12 @@
 		function startChat(userId) {
 			currentChatUserId = userId;
 
-			$("#chatWith").text(`Chat with ${userId}`); // todo must be added in the html
+			$("#liveChat").text(`Live chat with ${userId}`);
 			$("#chatMessages").empty();
 
 			$("#chatPopup").fadeIn();
 
-			connection.invoke("StartPrivateChat", userId).catch(err => console.error(err.toString()));
+			connection.invoke("StartPrivateChat", currentUserId, userId).catch(err => console.error(err.toString()));
 		}
 
 		function appendMyMessage(text) {
@@ -116,12 +122,22 @@
 			messageInput.val('');
 		});
 
+		$("#closeBtn").on("click", function () {
+			console.log("Livechat close called");
+
+			connection.invoke("EndPrivateChat", currentChatUserId)
+				.catch(err => console.error(err.toString()));
+
+			$("#chatPopup").fadeOut();
+		});
+
 		connection.on("ReceivePrivateMessage", function (fromUser, message) {
 			console.log("Message received: " + message + " | From " + fromUser);
 
 			currentChatUserId = fromUser;
 
 			$("#chatPopup").fadeIn();
+			$("#liveChat").text(`Live chat with ${fromUser}`);
 
 			const messageBox = $("#chatMessages");
 			
