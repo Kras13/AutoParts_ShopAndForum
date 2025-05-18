@@ -146,3 +146,18 @@
     z-index: 1050;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+
+.staff-entry {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.staff-entry:hover,
+.staff-entry:focus {
+    background-color: #e0f7fa;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}

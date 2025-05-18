@@ -54,7 +54,7 @@
 			availableSellers.forEach(user => {
 				if (user.id === currentUserId) return;
 
-				const userDiv = $(`<div class='user' data-username='${user.id}'>${user.name}</div>`);
+				const userDiv = $(`<div class="staff-entry" tabindex="0">${user.name}</div>`);
 
 				userDiv.on("dblclick", function () {
 					startChat(user.id, user.name);
