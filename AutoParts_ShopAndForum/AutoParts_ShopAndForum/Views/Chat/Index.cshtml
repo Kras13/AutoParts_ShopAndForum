@@ -51,23 +51,23 @@
 
 			container.empty();
 
-			availableSellers.forEach(userId => {
-				if (userId === currentUserId) return;
+			availableSellers.forEach(user => {
+				if (user.id === currentUserId) return;
 
-				const userDiv = $(`<div class='user' data-username='${userId}'>${userId}</div>`);
+				const userDiv = $(`<div class='user' data-username='${user.id}'>${user.name}</div>`);
 
 				userDiv.on("dblclick", function () {
-					startChat(userId);
+					startChat(user.id, user.name);
 				});
 
 				container.append(userDiv);
 			});
 		});
 
-		function startChat(userId) {
+		function startChat(userId, userName) {
 			currentChatUserId = userId;
 
-			$("#liveChat").text(`Live chat with ${userId}`);
+			$("#liveChat").text(`Live chat with ${userName}`);
 			$("#chatMessages").empty();
 
 			$("#chatPopup").fadeIn();

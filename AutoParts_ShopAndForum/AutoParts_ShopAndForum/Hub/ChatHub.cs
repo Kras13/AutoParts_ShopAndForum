@@ -45,15 +45,15 @@ public class ChatHub : Hub
     
         return base.OnDisconnectedAsync(exception);
     }
-    
+
     private Task BroadcastSellersList()
     {
         var availableSellers = UserConnections
             .Where(user => user.Value.IsSeller && !ReservedSellers.ContainsKey(user.Value.Id))
-            .Select(x => x.Value.Id)
-            .Distinct() // one user might have multiple connections...must appear once
+            .Select(x => new { x.Value.Id, x.Value.Name })
+            .DistinctBy(x => x.Id) // one user might have multiple connections...must appear once
             .ToList();
-    
+
         return Clients.All.SendAsync("UpdateSellersList", availableSellers);
     }
 
