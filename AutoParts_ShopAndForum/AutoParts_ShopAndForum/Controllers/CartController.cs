@@ -79,8 +79,8 @@ namespace AutoParts_ShopAndForum.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        public void Finalise(string street, int townId)
+        [HttpGet]
+        public IActionResult Finalise(string street, int townId)
         {
             var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
 
@@ -89,14 +89,16 @@ namespace AutoParts_ShopAndForum.Controllers
                 throw new InvalidOperationException("Can not finalise an empty Cart...");
             }
 
-            int orderId = _cartService.Order(ref cart, this.User.GetId(), street, townId);
-
-            HttpContext.Session.SetObject(CartConstant.Cart, cart);
-
-            if (orderId > 0)
-            {
-                TempData["OrderSuccessful"] = 1;
-            }
+            return RedirectToAction("Index", "Checkout");
+            
+            // int orderId = _cartService.Order(ref cart, this.User.GetId(), street, townId);
+            //
+            // HttpContext.Session.SetObject(CartConstant.Cart, cart);
+            //
+            // if (orderId > 0)
+            // {
+            //     TempData["OrderSuccessful"] = 1;
+            // }
         }
     }
 }
