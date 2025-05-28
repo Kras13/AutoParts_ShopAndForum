@@ -25,6 +25,14 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         [Required]
         [MaxLength(OrderConstants.StreetMaxLength)]
         public string Street { get; set; }
+        
+        [Required]
+        public string InvoicePersonFirstName { get; set; }
+
+        [Required]
+        public string InvoicePersonLastName { get; set; }
+
+        public AddressType AddressType { get; set; }
 
         [Required]
         [ForeignKey(nameof(User))]
