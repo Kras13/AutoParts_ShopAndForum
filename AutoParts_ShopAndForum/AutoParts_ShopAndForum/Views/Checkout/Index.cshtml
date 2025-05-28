@@ -1,0 +1,9 @@
+﻿@using AutoParts_ShopAndForum.Core.Models.Cart
+@model ICollection<ProductCartModel>
+
+@foreach (var element in Model)
+{
+    <div>
+        @element.Name + @element.Price
+    </div>
+}
