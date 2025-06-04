@@ -16,6 +16,11 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         [Required]
         [MaxLength(TownConstants.NameMaxLength)]
         public string Name { get; set; }
+        
+        [MaxLength(TownConstants.PostCodeMaxLength)]
+        public string PostCode { get; set; }
+
+        public bool? IsCity { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
 

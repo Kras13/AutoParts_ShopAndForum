@@ -1,5 +1,6 @@
 using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Infrastructure;
+using AutoParts_ShopAndForum.Models.Checkout;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,6 @@ public class CheckoutController : Controller
     [HttpPost]
     public IActionResult Checkout(CheckoutModel model)
     {
-        
+        throw new NotImplementedException();
     }
 }

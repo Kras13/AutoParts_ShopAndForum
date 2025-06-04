@@ -9,6 +9,7 @@
     internal class TownConstants
     {
         internal const int NameMaxLength = 64;
+        internal const int PostCodeMaxLength = 4;
     }
 
     internal class OrderConstants
