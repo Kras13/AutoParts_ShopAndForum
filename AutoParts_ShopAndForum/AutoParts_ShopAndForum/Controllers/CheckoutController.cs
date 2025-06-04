@@ -19,4 +19,10 @@ public class CheckoutController : Controller
 
         return View(cart);
     }
+
+    [HttpPost]
+    public IActionResult Checkout(CheckoutModel model)
+    {
+        
+    }
 }
