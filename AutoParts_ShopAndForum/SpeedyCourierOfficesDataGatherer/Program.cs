@@ -26,11 +26,11 @@ namespace SpeedyCourierOfficesDataGatherer
             ;
         }
 
-        private static Dictionary<string, string> GetTownsOffices(ICollection<TownOption> townOptions)
+        private static Dictionary<string, OfficeModel> GetTownsOffices(ICollection<TownOption> townOptions)
         {
             // speedy-offices-automats?city=182&formToken=-false
 
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, OfficeModel>();
 
             foreach (var option in townOptions)
             {
@@ -52,12 +52,28 @@ namespace SpeedyCourierOfficesDataGatherer
                 var rawHtml = GetHtml(response);
                 var wholeDocument = _parser.ParseDocument(rawHtml);
                 var offices = wholeDocument
-                    .QuerySelectorAll(".offices-list");
+                    .QuerySelectorAll(".offices-list .boxes .box");
 
-
+                foreach (var office in offices)
+                {
+                    var officeRaw = office.InnerHtml;
+                    var parsedOfficeDocument = _parser.ParseDocument(officeRaw);
+                    
+                    var officeTitle = parsedOfficeDocument.QuerySelector(".office-name")?.InnerHtml;
+                    var officeFullAddress = parsedOfficeDocument.QuerySelector("br")?.NextSibling?.TextContent ?? "";
+                    
+                    if (string.IsNullOrEmpty(officeTitle))
+                        continue;
+                    
+                    result[option.FullName] = new OfficeModel
+                    {
+                        Title = officeTitle,
+                        FullAddress = officeFullAddress,
+                    };
+                }
             }
 
-            return null;
+            return result;
         }
 
         private static ICollection<TownOption> GeTownOptions()
@@ -77,7 +93,6 @@ namespace SpeedyCourierOfficesDataGatherer
 
             if (citiesSelect == null)
                 throw new InvalidOperationException("Office options were not found on this page.");
-
 
             var parsedOptions = _parser.ParseDocument(citiesSelect.InnerHtml);
 
