@@ -11,4 +11,8 @@
     <PackageReference Include="AngleSharp" Version="1.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

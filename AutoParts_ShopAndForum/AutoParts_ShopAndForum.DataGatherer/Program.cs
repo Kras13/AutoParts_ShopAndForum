@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Web;
 using AngleSharp.Html.Parser;
+using AutoParts_ShopAndForum.Infrastructure.Data;
+using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 
 namespace AutoParts_ShopAndForum.DataGatherer
 {
@@ -20,10 +22,44 @@ namespace AutoParts_ShopAndForum.DataGatherer
 
         static void Main(string[] args)
         {
+            using var context = new ApplicationDbContext();
+            
             var townOptions = GeTownOptions();
             var townsOffices = GetTownsOffices(townOptions);
+
+            foreach (var office in townsOffices)
+            {
+                var town = AddOrUpdateTown(office.Value, context);
+            }
+        }
+
+        private static Town AddOrUpdateTown(OfficeModel office, ApplicationDbContext context)
+        {
+            const string cityKeWord = "гр.";
+            const string villageKeyWord = "с.";
             
-            ;
+            var townName = office.FullAddress;
+            var isCity = townName.Contains(cityKeWord);
+            var code = townName.Substring(townName.IndexOf('[') + 1, 4);
+            var clearTownName = townName
+                .Replace(cityKeWord, "")
+                .Replace(villageKeyWord, "");
+            var name = clearTownName[..(clearTownName.IndexOf('[')-1)].Trim();
+
+            var town = context.Towns
+                .FirstOrDefault(x => x.PostCode == code);
+
+            if (town == null)
+            {
+                town = context.Towns.Add(new Town
+                {
+                    PostCode = code,
+                    Name = name,
+                    IsCity = isCity,
+                }).Entity;
+            }
+
+            return town;
         }
 
         private static Dictionary<string, OfficeModel> GetTownsOffices(ICollection<TownOption> townOptions)
@@ -70,7 +106,11 @@ namespace AutoParts_ShopAndForum.DataGatherer
                         Title = officeTitle,
                         FullAddress = officeFullAddress,
                     };
+
+                    break;
                 }
+
+                break;
             }
 
             return result;
