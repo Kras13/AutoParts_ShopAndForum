@@ -1,4 +1,4 @@
-namespace SpeedyCourierOfficesDataGatherer;
+namespace AutoParts_ShopAndForum.DataGatherer;
 
 public class OfficeModel
 {

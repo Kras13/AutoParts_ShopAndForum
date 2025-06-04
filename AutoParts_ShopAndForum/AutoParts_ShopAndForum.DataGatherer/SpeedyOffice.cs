@@ -1,4 +1,4 @@
-﻿namespace SpeedyCourierOfficesDataGatherer
+﻿namespace AutoParts_ShopAndForum.DataGatherer
 {
     internal class SpeedyOffice
     {

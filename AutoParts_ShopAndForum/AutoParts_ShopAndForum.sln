@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.Test", "AutoParts_ShopAndForum.Test\AutoParts_ShopAndForum.Test.csproj", "{3E10D18C-E9AE-A5AF-D0E9-B0C3FF64585E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedyCourierOfficesDataGatherer", "SpeedyCourierOfficesDataGatherer\SpeedyCourierOfficesDataGatherer.csproj", "{CCC5C946-1971-40F7-94A5-3DD1F3659A8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoParts_ShopAndForum.DataGatherer", "AutoParts_ShopAndForum.DataGatherer\AutoParts_ShopAndForum.DataGatherer.csproj", "{CCC5C946-1971-40F7-94A5-3DD1F3659A8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

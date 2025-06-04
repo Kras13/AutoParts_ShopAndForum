@@ -2,7 +2,7 @@
 using System.Web;
 using AngleSharp.Html.Parser;
 
-namespace SpeedyCourierOfficesDataGatherer
+namespace AutoParts_ShopAndForum.DataGatherer
 {
     internal class Program
     {
