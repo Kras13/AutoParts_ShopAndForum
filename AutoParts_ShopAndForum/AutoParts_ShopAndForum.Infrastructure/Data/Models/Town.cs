@@ -9,6 +9,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         {
             Users = new HashSet<User>();
             Orders = new HashSet<Order>();
+            CourierStations = new HashSet<CourierStation>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
+        
+        public virtual ICollection<CourierStation> CourierStations { get; set; }
     }
 }

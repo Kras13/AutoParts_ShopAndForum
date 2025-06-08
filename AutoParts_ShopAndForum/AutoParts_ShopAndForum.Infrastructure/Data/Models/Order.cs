@@ -22,17 +22,21 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
 
         public bool IsDelivered { get; set; }
 
-        [Required]
         [MaxLength(OrderConstants.StreetMaxLength)]
-        public string Street { get; set; }
+        public string DeliveryStreet { get; set; }
         
         [Required]
+        [MaxLength(OrderConstants.InvoicePersonFirstNameMaxLength)]
         public string InvoicePersonFirstName { get; set; }
 
         [Required]
+        [MaxLength(OrderConstants.InvoicePersonLastNameMaxLength)]
         public string InvoicePersonLastName { get; set; }
 
-        public AddressType AddressType { get; set; }
+        [ForeignKey(nameof(CourierStation))]
+        public int? CourierStationId { get; set; }
+
+        public CourierStation CourierStation { get; set; }
 
         [Required]
         [ForeignKey(nameof(User))]

@@ -53,16 +53,16 @@ namespace AutoParts_ShopAndForum.Core.Services
             {
                 try
                 {
-                    order = new Order()
+                    order = new Order
                     {
-                        Street = street,
-                        DateCreated = System.DateTime.Now,
+                        DeliveryStreet = street,
+                        DateCreated = DateTime.Now,
                         OverallSum = cart.Sum(p => p.Price * p.Quantity),
                         TownId = townId,
                         UserId = userId
                     };
 
-                    _context.Orders.Add(order);
+                    order = _context.Orders.Add(order).Entity; // todo double check
 
                     foreach (var product in cart)
                     {

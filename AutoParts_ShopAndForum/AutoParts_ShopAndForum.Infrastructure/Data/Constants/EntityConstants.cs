@@ -15,6 +15,8 @@
     internal class OrderConstants
     {
         internal const int StreetMaxLength = 256;
+        internal const int InvoicePersonFirstNameMaxLength = 256;
+        internal const int InvoicePersonLastNameMaxLength = 256;
     }
 
     internal class ProductCategoryConstants
@@ -48,5 +50,11 @@
     internal class CommentConstants
     {
         internal const int ContentMaxLength = 1024 * 1024;
+    }
+
+    internal class CourierStationConstants
+    {
+        internal const int TitleMaxLength = 256;
+        internal const int FullAddressMaxLength = 1024 * 1024;
     }
 }

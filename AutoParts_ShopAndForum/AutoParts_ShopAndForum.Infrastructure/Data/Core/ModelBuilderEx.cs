@@ -187,5 +187,15 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
 
             return builder;
         }
+
+        internal static ModelBuilder ConfigureCourierStations(this ModelBuilder builder)
+        {
+            builder.Entity<CourierStation>()
+                .HasOne(cs => cs.Town)
+                .WithMany(t => t.CourierStations)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            return builder;
+        }
     }
 }

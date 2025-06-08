@@ -1,7 +1,6 @@
 namespace AutoParts_ShopAndForum.Infrastructure.Data.Models;
 
-public enum AddressType
+public enum CourierStationFirm
 {
-    Personal,
-    CourierOffice,
+    Speedy = 0,
 }

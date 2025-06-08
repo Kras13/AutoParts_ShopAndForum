@@ -32,7 +32,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                 var currentOrder = new OrderModel()
                 {
                     Id = order.Id,
-                    Street = order.Street,
+                    Street = order.DeliveryStreet,
                     Town = order.Town.Name,
                     Products = order.OrderProducts.Select(p => new ProductCartModel()
                     {
