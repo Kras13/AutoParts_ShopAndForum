@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Web;
+using AngleSharp.Common;
 using AngleSharp.Html.Parser;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
@@ -27,38 +28,87 @@ namespace AutoParts_ShopAndForum.DataGatherer
             var townOptions = GeTownOptions();
             var townsOffices = GetTownsOffices(townOptions);
 
-            foreach (var office in townsOffices)
+            foreach (var offices in townsOffices)
             {
-                var town = AddOrUpdateTown(office.Value, context); // stara zagora
-                
-                
+                foreach (var concreteOffice in offices.Value)
+                {
+                    var town = AddOrUpdateTown(concreteOffice, context); // stara zagora
+
+                    if (town == null)
+                        continue;
+
+                    AddOrUpdateOffice(concreteOffice, context, town);
+                }
             }
         }
 
-        private static Town AddOrUpdateTown(OfficeModel office, ApplicationDbContext context)
+        private static void AddOrUpdateOffice(
+            OfficeModel office, ApplicationDbContext context, Town town)
+        {
+            var title = office.Title;
+            var fullAddress = office.FullAddress;
+            
+            var station = context.CourierStations.FirstOrDefault(s => s.Title == title && s.TownId == town.Id);
+
+            if (station != null)
+            {
+                station.FullAddress = fullAddress;
+                
+                context.SaveChanges();
+
+                return;
+            }
+
+            context.CourierStations.Add(new CourierStation()
+            {
+                FullAddress = fullAddress,
+                Title = title,
+                Town = town,
+                Firm = CourierStationFirm.Speedy,
+                Type = title.Contains("автомат", StringComparison.CurrentCultureIgnoreCase)
+                    ? CourierStationType.Machine 
+                    : CourierStationType.Office,
+            });
+            
+            context.SaveChanges();
+        }
+
+        private static Town? AddOrUpdateTown(OfficeModel office, ApplicationDbContext context)
         {
             const string cityKeWord = "гр.";
             const string villageKeyWord = "с.";
             
             var townName = office.FullAddress;
             var isCity = townName.Contains(cityKeWord);
-            var code = townName.Substring(townName.IndexOf('[') + 1, 4);
+            string code = null;
+
+            if (townName.Contains('['))
+              code = townName.Substring(townName.IndexOf('[') + 1, 4);
+            
             var clearTownName = townName
                 .Replace(cityKeWord, "")
                 .Replace(villageKeyWord, "");
-            var name = clearTownName[..(clearTownName.IndexOf('[')-1)].Trim();
+
+            string name;
+            
+            if (code == null) // oblasten grad (nqma post code)
+                name = clearTownName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            else
+                name = clearTownName[..(clearTownName.IndexOf('[')-1)].Trim();
 
             var town = context.Towns
-                .FirstOrDefault(x => x.PostCode == code);
+                .FirstOrDefault(x => x.PostCode == code && x.Name == name);
 
             if (town == null)
             {
                 town = context.Towns.Add(new Town
                 {
                     PostCode = code,
-                    Name = TransLiterateCyrToLatin(name),
+                    Name = name,
                     IsCity = isCity,
                 }).Entity;
+                
+                context.SaveChanges();
             }
 
             return town;
@@ -98,11 +148,11 @@ namespace AutoParts_ShopAndForum.DataGatherer
             return result.ToString();
         }
 
-        private static Dictionary<string, OfficeModel> GetTownsOffices(ICollection<TownOption> townOptions)
+        private static Dictionary<string, List<OfficeModel>> GetTownsOffices(ICollection<TownOption> townOptions)
         {
             // speedy-offices-automats?city=182&formToken=-false
 
-            var result = new Dictionary<string, OfficeModel>();
+            var result = new Dictionary<string, List<OfficeModel>>();
 
             foreach (var option in townOptions)
             {
@@ -137,16 +187,15 @@ namespace AutoParts_ShopAndForum.DataGatherer
                     if (string.IsNullOrEmpty(officeTitle))
                         continue;
                     
-                    result[option.FullName] = new OfficeModel
+                    if (!result.ContainsKey(option.FullName))
+                        result[option.FullName] = new List<OfficeModel>();
+                    
+                    result[option.FullName].Add(new OfficeModel
                     {
                         Title = officeTitle,
                         FullAddress = officeFullAddress,
-                    };
-
-                    break;
+                    });
                 }
-
-                break;
             }
 
             return result;

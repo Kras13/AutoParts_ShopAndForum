@@ -59,6 +59,38 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.CourierStation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Firm")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FullAddress")
+                        .HasMaxLength(1048576)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("TownId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TownId");
+
+                    b.ToTable("CourierStations");
+                });
+
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -67,7 +99,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressType")
+                    b.Property<int?>("CourierStationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
@@ -76,13 +108,19 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Property<DateTime>("DateDelivered")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeliveryStreet")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("InvoicePersonFirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("InvoicePersonLastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("IsDelivered")
                         .HasColumnType("bit");
@@ -90,11 +128,6 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Property<decimal>("OverallSum")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("TownId")
                         .HasColumnType("int");
@@ -104,6 +137,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourierStationId");
 
                     b.HasIndex("TownId");
 
@@ -558,8 +593,23 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.CourierStation", b =>
+                {
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.Town", "Town")
+                        .WithMany("CourierStations")
+                        .HasForeignKey("TownId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Town");
+                });
+
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Order", b =>
                 {
+                    b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.CourierStation", "CourierStation")
+                        .WithMany()
+                        .HasForeignKey("CourierStationId");
+
                     b.HasOne("AutoParts_ShopAndForum.Infrastructure.Data.Models.Town", "Town")
                         .WithMany("Orders")
                         .HasForeignKey("TownId")
@@ -571,6 +621,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CourierStation");
 
                     b.Navigation("Town");
 
@@ -738,6 +790,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoParts_ShopAndForum.Infrastructure.Data.Models.Town", b =>
                 {
+                    b.Navigation("CourierStations");
+
                     b.Navigation("Orders");
 
                     b.Navigation("Users");
