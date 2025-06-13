@@ -1,4 +1,6 @@
+using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Cart;
+using AutoParts_ShopAndForum.Core.Models.CourierStation;
 using AutoParts_ShopAndForum.Infrastructure;
 using AutoParts_ShopAndForum.Models.Checkout;
 using Microsoft.AspNetCore.Authorization;
@@ -9,26 +11,42 @@ namespace AutoParts_ShopAndForum.Controllers;
 [Authorize]
 public class CheckoutController : Controller
 {
+    private readonly ICourierStationService _courierStationService;
+    private readonly ITownService _townService;
+
+    public CheckoutController(
+        ICourierStationService courierStationService, ITownService townService)
+    {
+        _courierStationService = courierStationService;
+        _townService = townService;
+    }
+
     public IActionResult Index()
     {
         var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
-        
+
         if (cart == null || cart.Count == 0)
         {
             throw new ArgumentException("Cart is empty");
         }
 
-        var model = new CheckoutModel
+        var model = new CheckoutFormModel
         {
             Products = cart,
+            Towns = _townService.GetAll(),
         };
 
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult Index(CheckoutModel model)
+    public IActionResult Index(CheckoutFormModel formModel)
     {
         throw new NotImplementedException();
+    }
+
+    public ICollection<CourierStationModel> GetCourierStationsForTown(int townId) // FromRoute might need to be specified
+    {
+        return _courierStationService.GetAllByTownId(townId);
     }
 }

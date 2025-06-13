@@ -43,15 +43,17 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
         public static IServiceCollection ConfigureBusinessServices(this IServiceCollection services)
         {
-            services.AddTransient<IProductCategoryService, ProductCategoryService>();
-            services.AddTransient<ITownService, TownService>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductSubcategoryService, ProductSubcategoryService>();
-            services.AddTransient<ICartService, CartService>();
-            services.AddTransient<IForumCategoryService, ForumCategoryService>();
-            services.AddTransient<IPostService, PostService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<IOrderService, OrderService>();
+            services
+                .AddTransient<IProductCategoryService, ProductCategoryService>()
+                .AddTransient<ITownService, TownService>()
+                .AddTransient<IProductService, ProductService>()
+                .AddTransient<IProductSubcategoryService, ProductSubcategoryService>()
+                .AddTransient<ICartService, CartService>()
+                .AddTransient<IForumCategoryService, ForumCategoryService>()
+                .AddTransient<IPostService, PostService>()
+                .AddTransient<ICommentService, CommentService>()
+                .AddTransient<IOrderService, OrderService>()
+                .AddTransient<ICourierStationService, CourierStationService>();
 
             return services;
         }

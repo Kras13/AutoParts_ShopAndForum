@@ -1,5 +1,5 @@
 ﻿@using AutoParts_ShopAndForum.Models.Checkout
-@model CheckoutModel
+@model CheckoutFormModel
 
 @{
     ViewData["Title"] = "Checkout";
@@ -10,21 +10,30 @@
         <h4 class="mb-4">Данни за доставка</h4>
         <form method="post">
             <div class="row">
-
                 <div id="RadioButtonGroup">
-                
-                <div class="col-md-8 col-sm-12">
-                    <div class="form-check">
-                        <input asp-for="DeliveryMethod" value="0" type="radio" class="form-check-input" checked="checked" id="toPersonalAddress" onclick="onDeliverySetToPersonalAddress()">
-                        <label class="form-check-label" for="toPersonalAddress">Доставка с куриер</label>
-                    </div>
-                    
-                    <div class="form-check">
-                        <input asp-for="DeliveryMethod" value="1" type="radio" class="form-check-input" id="toCourierAddress" onclick="onDeliverySetToCourierAddress()">
-                        <label class="form-check-label" for="toCourierAddress">Лично вземане</label>
-                    </div>
+                    <div class="col-md-8 col-sm-12">
+                        <div class="form-check">
+                            <input asp-for="DeliveryMethod"
+                                   value="@DeliveryMethod.DeliverToAddress"
+                                   type="radio"
+                                   id="toAddressDeliveryMethod"
+                                   class="form-check-input"
+                                   checked="checked"
+                                   onclick="onDeliverySetToPersonalAddress()">
 
-                </div>
+                            <label class="form-check-label" for="toAddressDeliveryMethod">Доставка с куриер</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="DeliveryMethod"
+                                   value="@DeliveryMethod.PersonalTake"
+                                   type="radio"
+                                   id="toCourierAddress"
+                                   class="form-check-input"
+                                   onclick="onDeliverySetToCourierAddress()">
+
+                            <label class="form-check-label" for="toCourierAddress">Лично вземане</label>
+                        </div>
+                    </div>
 
                     @* <div class="col-md-6 mb-3"> *@
                     @*     <label for="firstName">First name</label> *@
@@ -42,9 +51,7 @@
                     <div class="my-2" id="courierAddressComp" style="display: none">
                         <partial name="_PersonalProductsReceive" model="@Model"/>
                     </div>
-
                 </div>
-                
             </div>
 
             <button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
@@ -60,14 +67,14 @@
     <script>
         function onDeliverySetToPersonalAddress() {
             console.log("To home address triggered")
-            
+
             $("#homeAddressComp").show();
             $("#courierAddressComp").hide();
         }
-        
+
         function onDeliverySetToCourierAddress() {
             console.log("to courier address triggered")
-            
+
             $("#courierAddressComp").show();
             $("#homeAddressComp").hide();
         }
