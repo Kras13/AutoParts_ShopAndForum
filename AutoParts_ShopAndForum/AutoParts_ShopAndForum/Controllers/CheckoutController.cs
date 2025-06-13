@@ -18,11 +18,16 @@ public class CheckoutController : Controller
             throw new ArgumentException("Cart is empty");
         }
 
-        return View(cart);
+        var model = new CheckoutModel
+        {
+            Products = cart,
+        };
+
+        return View(model);
     }
 
     [HttpPost]
-    public IActionResult Checkout(CheckoutModel model)
+    public IActionResult Index(CheckoutModel model)
     {
         throw new NotImplementedException();
     }

@@ -22,6 +22,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
 
         public bool IsDelivered { get; set; }
 
+        public DeliveryMethod DeliveryMethod { get; set; }
+
         [MaxLength(OrderConstants.StreetMaxLength)]
         public string DeliveryStreet { get; set; }
         

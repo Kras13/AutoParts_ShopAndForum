@@ -1,46 +1,57 @@
-﻿@using AutoParts_ShopAndForum.Core.Models.Cart
-@model ICollection<ProductCartModel>
+﻿@using AutoParts_ShopAndForum.Models.Checkout
+@model CheckoutModel
 
 @{
     ViewData["Title"] = "Checkout";
 }
 
 <div class="row">
-    <div class="col-md-4 order-md-2 mb-4">
-        Right panel elements here
-    </div>
     <div class="col-md-8 order-md-1">
-        <h4 class="mb-3">Billing address</h4>
-        <form method="post" class="needs-validation was-validated">
+        <h4 class="mb-4">Данни за доставка</h4>
+        <form method="post">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="firstName">First name</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+
+                <div id="RadioButtonGroup">
+                
+                <div class="col-md-8 col-sm-12">
+                    <div class="form-check">
+                        <input asp-for="DeliveryMethod" value="0" type="radio" class="form-check-input" checked="checked" id="toPersonalAddress" onclick="onDeliverySetToPersonalAddress()">
+                        <label class="form-check-label" for="toPersonalAddress">Доставка с куриер</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input asp-for="DeliveryMethod" value="1" type="radio" class="form-check-input" id="toCourierAddress" onclick="onDeliverySetToCourierAddress()">
+                        <label class="form-check-label" for="toCourierAddress">Лично вземане</label>
+                    </div>
+
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="lastName">Last name</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+
+                    @* <div class="col-md-6 mb-3"> *@
+                    @*     <label for="firstName">First name</label> *@
+                    @*     <input type="text" class="form-control" id="firstName" placeholder="" value="" required=""> *@
+                    @* </div> *@
+                    @* <div class="col-md-6 mb-3"> *@
+                    @*     <label for="lastName">Last name</label> *@
+                    @*     <input type="text" class="form-control" id="lastName" placeholder="" value="" required=""> *@
+                    @* </div> *@
+                    @* <div class="mb-3" id="homeAddressComp"> *@
+                    @*     <label for="homeAddress">Home address</label> *@
+                    @*     <input type="text" class="form-control" id="homeAddress" placeholder="1234 Main St" required=""> *@
+                    @* </div> *@
+
+                    <div class="my-2" id="courierAddressComp" style="display: none">
+                        <partial name="_PersonalProductsReceive" model="@Model"/>
+                    </div>
+
                 </div>
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" checked="checked" id="toPersonalAddress" name="radio-stacked" required onclick="onDeliverySetToPersonalAddress()">
-                    <label class="form-check-label" for="toPersonalAddress">To home address</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" id="toCourierAddress" name="radio-stacked" required onclick="onDeliverySetToCourierAddress()">
-                    <label class="form-check-label" for="toCourierAddress">To courier address</label>
-                </div>
-                <div class="mb-3" id="homeAddressComp">
-                    <label for="homeAddress">Home address</label>
-                    <input type="text" class="form-control" id="homeAddress" placeholder="1234 Main St" required="">
-                </div>
-                <div class="mb-3" id="courierAddressComp" style="display: none">
-                    <label for="courierAddress">Courier address</label>
-                    <input type="text" class="form-control" id="courierAddress" placeholder="1234 Main St" required="">
-                </div>
+                
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            <button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
         </form>
+    </div>
+    <div class="col-md-4 order-md-2 mb-4">
+        Right panel elements here
     </div>
 </div>
 
