@@ -18,8 +18,16 @@ public class CheckoutFormModel
     [Display(Name = "Офис станция")]
     public int SelectedCourierStationId { get; set; }
 
+    [Required]
+    [Display(Name = "Име")]
+    public string InvoiceFirstName { get; set; }
+
+    [Required]
+    [Display(Name = "Фамилия")]
+    public string InvoiceLastName { get; set; }
+
     public IList<TownModel> Towns { get; set; }
 
     public IList<CourierStationModel> CourierStations { get; set; }
-    public ICollection<ProductCartModel> Products { get; set; }
+    public IList<ProductCartModel> Products { get; set; }
 }
