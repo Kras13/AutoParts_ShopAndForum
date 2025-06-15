@@ -7,6 +7,10 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
+        public ApplicationDbContext()
+        {
+        }
+        
         public ApplicationDbContext(DbContextOptions options)
             : base(options)
         {
@@ -16,10 +20,12 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
+                var dockerConnection2 =
+                    "Server=localhost;Database=AutoParts_ShopAndForum;User Id=SA;Password=SQL_SERVER_12;TrustServerCertificate=True;";
                 var dockerConnection = "Server=localhost;Database=AutoParts_ShopAndForum;User Id=sa;Password=DB_pass123456;TrustServerCertificate=True;";
                 var defaultConnection = "Server=DESKTOP-P07L97L\\SQLEXPRESS;Database=AutoParts_ShopAndForum;Trusted_Connection=True;TrustServerCertificate=True;";
 
-                optionsBuilder.UseSqlServer(dockerConnection);
+                optionsBuilder.UseSqlServer(dockerConnection2);
             }
 
             base.OnConfiguring(optionsBuilder);
@@ -37,7 +43,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
                 .ConfigureOrders()
                 .ConfigurePostsCategories()
                 .ConfigurePosts()
-                .ConfigureComments();
+                .ConfigureComments()
+                .ConfigureCourierStations();
 
             base.OnModelCreating(builder);
         }
@@ -51,5 +58,6 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data
         public DbSet<PostCategory> PostsCategories { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<CourierStation> CourierStations { get; set; }
     }
 }
