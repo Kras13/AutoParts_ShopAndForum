@@ -2,81 +2,118 @@
 @model CheckoutFormModel
 
 @{
-    ViewData["Title"] = "Checkout";
+	ViewData["Title"] = "Checkout";
 }
 
 <div class="row">
-    <div class="col-md-8 order-md-1">
-        <h4 class="mb-4">Данни за доставка</h4>
-        <form method="post">
-            <div class="row">
-                <div id="RadioButtonGroup">
-                    <div class="col-md-8 col-sm-12">
-                        <div class="form-check">
-                            <input asp-for="DeliveryMethod"
-                                   value="@DeliveryMethod.DeliverToAddress"
-                                   type="radio"
-                                   id="toAddressDeliveryMethod"
-                                   class="form-check-input"
-                                   checked="checked"
-                                   onclick="onDeliverySetToPersonalAddress()">
+	<div class="col-md-8 order-md-1">
+		<h4 class="mb-4">Данни за доставка</h4>
+		<form method="post">
+			<div class="row">
+				<div class="form-group" id="DeliveryWayGroup">
+					<div class="col-md-8 col-sm-12">
+						<div class="form-check">
+							<input asp-for="DeliveryMethod"
+								   value="@DeliveryMethod.DeliverToAddress"
+								   type="radio"
+								   id="toAddressDeliveryMethod"
+								   class="form-check-input"
+								   checked="checked"
+								   onclick="onDeliverySetToPersonalAddress()">
 
-                            <label class="form-check-label" for="toAddressDeliveryMethod">Доставка с куриер</label>
-                        </div>
-                        <div class="form-check">
-                            <input asp-for="DeliveryMethod"
-                                   value="@DeliveryMethod.PersonalTake"
-                                   type="radio"
-                                   id="toCourierAddress"
-                                   class="form-check-input"
-                                   onclick="onDeliverySetToCourierAddress()">
+							<label class="form-check-label" for="toAddressDeliveryMethod">Доставка с куриер</label>
+						</div>
+						<div class="form-check">
+							<input asp-for="DeliveryMethod"
+								   value="@DeliveryMethod.PersonalTake"
+								   type="radio"
+								   id="toCourierAddress"
+								   class="form-check-input"
+								   onclick="onDeliverySetToCourierAddress()">
 
-                            <label class="form-check-label" for="toCourierAddress">Лично вземане</label>
-                        </div>
-                    </div>
+							<label class="form-check-label" for="toCourierAddress">Лично вземане</label>
+						</div>
+					</div>
 
-                    @* <div class="col-md-6 mb-3"> *@
-                    @*     <label for="firstName">First name</label> *@
-                    @*     <input type="text" class="form-control" id="firstName" placeholder="" value="" required=""> *@
-                    @* </div> *@
-                    @* <div class="col-md-6 mb-3"> *@
-                    @*     <label for="lastName">Last name</label> *@
-                    @*     <input type="text" class="form-control" id="lastName" placeholder="" value="" required=""> *@
-                    @* </div> *@
-                    @* <div class="mb-3" id="homeAddressComp"> *@
-                    @*     <label for="homeAddress">Home address</label> *@
-                    @*     <input type="text" class="form-control" id="homeAddress" placeholder="1234 Main St" required=""> *@
-                    @* </div> *@
+					<div class="my-2" id="courierAddressComp" style="display: none">
+						<div class="form-group my-2">
+							<label asp-for="@Model.SelectedTownId"></label>
+							<select asp-for="@Model.SelectedTownId" id="townsDropDown">
+								@foreach (var town in Model.Towns)
+								{
+									<option value="@town.Id">@town.Name</option>
+								}
+							</select>
+						</div>
+						<div class="form-group">
+							<label asp-for="@Model.SelectedCourierStationId"></label>
+							<select asp-for="@Model.SelectedCourierStationId" id="courierStationsDropDown">
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
 
-                    <div class="my-2" id="courierAddressComp" style="display: none">
-                        <partial name="_PersonalProductsReceive" model="@Model"/>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
-        </form>
-    </div>
-    <div class="col-md-4 order-md-2 mb-4">
-        Right panel elements here
-    </div>
+			<button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
+		</form>
+	</div>
+	<div class="col-md-4 order-md-2 mb-4">
+		Right panel elements here
+	</div>
 </div>
 
 @section Scripts
 {
-    <script>
-        function onDeliverySetToPersonalAddress() {
-            console.log("To home address triggered")
+	<script>
+		function onDeliverySetToPersonalAddress() {
+			console.log("To home address triggered")
 
-            $("#homeAddressComp").show();
-            $("#courierAddressComp").hide();
-        }
+			$("#homeAddressComp").show();
+			$("#courierAddressComp").hide();
+		}
 
-        function onDeliverySetToCourierAddress() {
-            console.log("to courier address triggered")
+		function onDeliverySetToCourierAddress() {
+			console.log("to courier address triggered")
 
-            $("#courierAddressComp").show();
-            $("#homeAddressComp").hide();
-        }
-    </script>
+			$("#courierAddressComp").show();
+			$("#homeAddressComp").hide();
+		}
+
+		$(document).ready(function () {
+			console.log('OKOKOK');
+			var townsDropDown = $("#townsDropDown");
+			var stationsDropDown = $("#courierStationsDropDown");
+
+			townsDropDown.ready(function () {
+				LoadStations();
+			});
+
+			townsDropDown.on("change", function () {
+				console.log("town changed");
+				LoadStations();
+			});
+
+			var LoadStations = function () {
+				var townId = townsDropDown.val();
+
+				if (townId == -1)
+					return;
+
+				console.log('loading stations for town with id: ' + townId);
+
+				$.ajax({
+					type: "GET",
+					url: "/Checkout/GetCourierStationsForTown/" + townId,
+					dataType: "json",
+					success: function (data) {
+						stationsDropDown.empty();
+						$.each(data, function () {
+							stationsDropDown.append("<option value='" + this.id + "'>" + this.displayName + "</option>");
+							console.log(data[0].displayName);
+						});
+					}
+				});
+			}
+		});
+	</script>
 }

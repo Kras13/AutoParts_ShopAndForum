@@ -24,9 +24,24 @@ public class CourierStationService(ApplicationDbContext context) : ICourierStati
                 Town = new TownModel
                 {
                     Id = x.TownId,
-                    Name = x.Town.Name
-                }
+                    Name = x.Town.Name,
+                },
+                Type = MapToModelType(x.Type)
             })
             .ToArray();
+    }
+
+    private static Core.Models.CourierStation.CourierStationType MapToModelType(
+        Infrastructure.Data.Models.CourierStationType type)
+    {
+        switch (type)
+        {
+            case Infrastructure.Data.Models.CourierStationType.Office:
+                return CourierStationType.Office;
+            case Infrastructure.Data.Models.CourierStationType.Machine:
+                return CourierStationType.Machine;
+        }
+
+        throw new ArgumentException("Invalid station type.");
     }
 }

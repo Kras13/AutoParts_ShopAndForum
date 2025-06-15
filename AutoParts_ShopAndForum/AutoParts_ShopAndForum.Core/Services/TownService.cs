@@ -17,6 +17,7 @@ namespace AutoParts_ShopAndForum.Core.Services
         {
             return _context.Towns
                 .Select(m => new TownModel() { Id = m.Id, Name = m.Name })
+                .OrderBy(m => m.Id)
                 .ToArray();
         }
     }

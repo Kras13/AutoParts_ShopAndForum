@@ -30,10 +30,14 @@ public class CheckoutController : Controller
             throw new ArgumentException("Cart is empty");
         }
 
+        var towns = _townService.GetAll();
+        var selectedTownId = towns.FirstOrDefault()?.Id ?? -1;
+
         var model = new CheckoutFormModel
         {
             Products = cart,
-            Towns = _townService.GetAll(),
+            Towns = towns,
+            SelectedTownId = selectedTownId,
         };
 
         return View(model);
@@ -45,8 +49,8 @@ public class CheckoutController : Controller
         throw new NotImplementedException();
     }
 
-    public ICollection<CourierStationModel> GetCourierStationsForTown(int townId) // FromRoute might need to be specified
+    public ICollection<CourierStationModel> GetCourierStationsForTown([FromRoute] int id) // FromRoute might need to be specified
     {
-        return _courierStationService.GetAllByTownId(townId);
+        return _courierStationService.GetAllByTownId(id);
     }
 }

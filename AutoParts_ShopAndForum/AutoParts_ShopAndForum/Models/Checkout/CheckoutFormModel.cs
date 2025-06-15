@@ -11,11 +11,11 @@ public class CheckoutFormModel
     public DeliveryMethod DeliveryMethod { get; set; }
 
     [Required]
-    [Display(Name = "Town")]
+    [Display(Name = "Град")]
     public int SelectedTownId { get; set; }
 
     [Required]
-    [Display(Name = "Courier station")]
+    [Display(Name = "Офис станция")]
     public int SelectedCourierStationId { get; set; }
 
     public IList<TownModel> Towns { get; set; }
