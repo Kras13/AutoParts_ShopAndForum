@@ -29,5 +29,5 @@ public class CheckoutFormModel
     public IList<TownModel> Towns { get; set; }
 
     public IList<CourierStationModel> CourierStations { get; set; }
-    public IList<ProductCartModel> Products { get; set; }
+    public ICollection<ProductCartModel> Products { get; set; }
 }
