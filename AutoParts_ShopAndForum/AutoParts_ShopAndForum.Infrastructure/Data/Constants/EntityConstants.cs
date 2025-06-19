@@ -17,6 +17,7 @@
         internal const int StreetMaxLength = 256;
         internal const int InvoicePersonFirstNameMaxLength = 256;
         internal const int InvoicePersonLastNameMaxLength = 256;
+        internal const int InvoiceAddressMaxLength = 256;
     }
 
     internal class ProductCategoryConstants

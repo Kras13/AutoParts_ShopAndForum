@@ -24,8 +24,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
                     dbContext.Database.Migrate();
 
-                    await SeedTowns(dbContext);
-                    await dbContext.SaveChangesAsync();
+                    //await SeedTowns(dbContext);
+                    //await dbContext.SaveChangesAsync();
 
                     await SeedAdministrator(serviceScope.ServiceProvider, dbContext);
                     await dbContext.SaveChangesAsync();
@@ -198,7 +198,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
                     UserName = adminEmail,
                     FirstName = "Admin",
                     LastName = "Adminchev",
-                    TownId = dbContext.Towns.ToArray()[1].Id,
+                    TownId = dbContext.Towns.First(t => t.Name.ToUpper() == "СТАРА ЗАГОРА").Id,
                 };
 
                 await userManager.CreateAsync(user, adminPassword);

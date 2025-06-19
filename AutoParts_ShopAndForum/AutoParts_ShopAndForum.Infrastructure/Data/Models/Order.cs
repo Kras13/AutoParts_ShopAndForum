@@ -26,7 +26,17 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
 
         [MaxLength(OrderConstants.StreetMaxLength)]
         public string DeliveryStreet { get; set; }
-        
+
+        [ForeignKey(nameof(Town))]
+        public int TownId { get; set; }
+
+        public virtual Town Town { get; set; }
+
+        [ForeignKey(nameof(CourierStation))]
+        public int? CourierStationId { get; set; }
+
+        public CourierStation CourierStation { get; set; }
+
         [Required]
         [MaxLength(OrderConstants.InvoicePersonFirstNameMaxLength)]
         public string InvoicePersonFirstName { get; set; }
@@ -35,21 +45,15 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         [MaxLength(OrderConstants.InvoicePersonLastNameMaxLength)]
         public string InvoicePersonLastName { get; set; }
 
-        [ForeignKey(nameof(CourierStation))]
-        public int? CourierStationId { get; set; }
-
-        public CourierStation CourierStation { get; set; }
+        [Required]
+        [MaxLength(OrderConstants.InvoiceAddressMaxLength)]
+        public string InvoiceAddress { get; set; }
 
         [Required]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
 
         public virtual User User { get; set; }
-
-        [ForeignKey(nameof(Town))]
-        public int TownId { get; set; }
-
-        public virtual Town Town { get; set; }
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }

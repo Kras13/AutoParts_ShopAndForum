@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Web;
-using AngleSharp.Common;
 using AngleSharp.Html.Parser;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
@@ -23,6 +22,8 @@ namespace AutoParts_ShopAndForum.DataGatherer
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Began the data gather...");
+
             using var context = new ApplicationDbContext();
             
             var townOptions = GeTownOptions();
@@ -35,11 +36,15 @@ namespace AutoParts_ShopAndForum.DataGatherer
                     var town = AddOrUpdateTown(concreteOffice, context); // stara zagora
 
                     if (town == null)
-                        continue;
+                        continue;                    
 
                     AddOrUpdateOffice(concreteOffice, context, town);
+
+                    Console.WriteLine(town.Name + " and its offices were imported.");
                 }
             }
+
+            Console.WriteLine("Finish the data gather");
         }
 
         private static void AddOrUpdateOffice(
@@ -69,7 +74,7 @@ namespace AutoParts_ShopAndForum.DataGatherer
                     ? CourierStationType.Machine 
                     : CourierStationType.Office,
             });
-            
+
             context.SaveChanges();
         }
 
@@ -92,9 +97,15 @@ namespace AutoParts_ShopAndForum.DataGatherer
             string name;
             
             if (code == null) // oblasten grad (nqma post code)
+            {
                 name = clearTownName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+
+                name = FixDoublePartedName(name);
+            }
             else
-                name = clearTownName[..(clearTownName.IndexOf('[')-1)].Trim();
+            {
+                name = clearTownName[..(clearTownName.IndexOf('[') - 1)].Trim();
+            }
 
             var town = context.Towns
                 .FirstOrDefault(x => x.PostCode == code && x.Name == name);
@@ -112,6 +123,19 @@ namespace AutoParts_ShopAndForum.DataGatherer
             }
 
             return town;
+        }
+
+        private static string FixDoublePartedName(string name)
+        {
+            var upperedName = name.ToUpper();
+
+            if (upperedName == "СТАРА")
+                return "СТАРА ЗАГОРА";
+
+            if (upperedName == "ВЕЛИКО")
+                return "ВЕЛИКО ТЪРНОВО";
+
+            return name;
         }
 
         private static string TransLiterateCyrToLatin(string cyrText)

@@ -26,6 +26,10 @@ public class CheckoutFormModel
     [Display(Name = "Фамилия")]
     public string InvoiceLastName { get; set; }
 
+    [Required]
+    [Display(Name = "Адрес")]
+    public string InvoiceAddress { get; set; }
+
     public IList<TownModel> Towns { get; set; }
 
     public IList<CourierStationModel> CourierStations { get; set; }
