@@ -1,4 +1,4 @@
-namespace AutoParts_ShopAndForum.Models.Checkout;
+namespace AutoParts_ShopAndForum.Core.Models.Order;
 
 public enum DeliveryMethod
 {

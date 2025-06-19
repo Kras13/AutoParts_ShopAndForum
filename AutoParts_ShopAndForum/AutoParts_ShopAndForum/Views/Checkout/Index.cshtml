@@ -1,4 +1,5 @@
-﻿@using AutoParts_ShopAndForum.Models.Checkout
+﻿@using AutoParts_ShopAndForum.Core.Models.Order
+@using AutoParts_ShopAndForum.Models.Checkout
 @model CheckoutFormModel
 
 @{
@@ -15,35 +16,39 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="form-group" id="DeliveryWayGroup">
-							<div class="col-md-8 col-sm-12">
-								<div class="form-check">
-									<input asp-for="DeliveryMethod"
-										   value="@DeliveryMethod.DeliverToAddress"
-										   type="radio"
-										   id="toAddressDeliveryMethod"
-										   class="form-check-input"
-										   checked="checked"
-										   onclick="onDeliverySetToPersonalAddress()">
+							<div class="row mb-3">
+								<div class="col-md-8 col-sm-12 d-flex gap-4 align-items-center">
+									<div class="form-check">
+										<input asp-for="DeliveryMethod"
+											   value="@DeliveryMethod.DeliverToAddress"
+											   type="radio"
+											   id="toAddressDeliveryMethod"
+											   class="form-check-input"
+											   checked="checked"
+											   onclick="onDeliverySetToPersonalAddress()">
+										<label class="form-check-label" for="toAddressDeliveryMethod">
+											Доставка с куриер до адрес
+										</label>
+									</div>
 
-									<label class="form-check-label" for="toAddressDeliveryMethod">Доставка с куриер до адрес</label>
-
-								</div>
-								<div class="form-check">
-									<input asp-for="DeliveryMethod"
-										   value="@DeliveryMethod.PersonalTake"
-										   type="radio"
-										   id="toCourierAddress"
-										   class="form-check-input"
-										   onclick="onDeliverySetToCourierAddress()">
-
-									<label class="form-check-label" for="toCourierAddress">Лично вземане Speedy</label>
+									<div class="form-check">
+										<input asp-for="DeliveryMethod"
+											   value="@DeliveryMethod.PersonalTake"
+											   type="radio"
+											   id="toCourierAddress"
+											   class="form-check-input"
+											   onclick="onDeliverySetToCourierAddress()">
+										<label class="form-check-label" for="toCourierAddress">
+											Лично вземане Speedy
+										</label>
+									</div>
 								</div>
 							</div>
 
-							<div class="my-2" id="courierAddressComp" style="display: none">
+							<div class="my-2" id="homeAddressComp" style="display: block">
 								<div class="form-group my-2">
-									<label asp-for="@Model.SelectedTownId"></label>
-									<select asp-for="@Model.SelectedTownId" id="townsDropDown">
+									<label asp-for="DeliverToAddressTownId"></label>
+									<select asp-for="DeliverToAddressTownId" id="toAddressTownsDropDown" class="form-select">
 										@foreach (var town in Model.Towns)
 										{
 											<option value="@town.Id">@town.Name</option>
@@ -51,8 +56,25 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<label asp-for="@Model.SelectedCourierStationId"></label>
-									<select asp-for="@Model.SelectedCourierStationId" id="courierStationsDropDown">
+									<label asp-for="DeliverAddress"></label>
+									<input asp-for="DeliverAddress" id="DeliverAddress" class="form-control" placeholder="Населено място, улица, номер">
+									<span asp-validation-for="DeliverAddress" class="small text-danger"></span>
+								</div>
+							</div>
+
+							<div class="my-2" id="courierAddressComp" style="display: none">
+								<div class="form-group my-2">
+									<label asp-for="SelectedTownId"></label>
+									<select asp-for="SelectedTownId" id="townsDropDown" class="form-select">
+										@foreach (var town in Model.Towns)
+										{
+											<option value="@town.Id">@town.Name</option>
+										}
+									</select>
+								</div>
+								<div class="form-group">
+									<label asp-for="SelectedCourierStationId"></label>
+									<select asp-for="SelectedCourierStationId" id="courierStationsDropDown" class="form-select">
 									</select>
 								</div>
 							</div>
@@ -60,7 +82,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="card my-4">
 				<div class="card-header">
 					<h5 class="mb-0">Данни за фактуриране</h5>
@@ -91,6 +112,43 @@
 				</div>
 			</div>
 
+			<div class="card my-4">
+				<div class="card-header">
+					<h5 class="mb-0">Данни за плащане</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="form-group" id="PaymentInformation">
+
+							<div class="d-flex gap-4 align-items-center">
+								<div class="form-check">
+									<input asp-for="PayWay"
+										   value="@OrderPayWay.CashOnDelivery"
+										   type="radio"
+										   id="payWayCashOnDelivery"
+										   class="form-check-input"
+										   checked="checked">
+									<label class="form-check-label" for="payWayCashOnDelivery">
+										Наложен платеж
+									</label>
+								</div>
+
+								<div class="form-check">
+									<input asp-for="PayWay"
+										   value="@OrderPayWay.OnlinePayment"
+										   type="radio"
+										   id="payWayOnline"
+										   class="form-check-input">
+									<label class="form-check-label" for="payWayOnline">
+										Онлайн плащане чрез Stripe
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
 		</form>
