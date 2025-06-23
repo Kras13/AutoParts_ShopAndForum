@@ -1,6 +1,7 @@
 using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Core.Models.CourierStation;
+using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Infrastructure;
 using AutoParts_ShopAndForum.Models.Checkout;
 using Microsoft.AspNetCore.Authorization;
@@ -46,10 +47,16 @@ public class CheckoutController : Controller
     [HttpPost]
     public IActionResult Index(CheckoutFormModel formModel)
     {
+        if (formModel.PayWay == OrderPayWay.OnlinePayment)
+        {
+            return RedirectToAction("Index", "OnlinePayment");
+        }
+        
         throw new NotImplementedException();
     }
 
-    public ICollection<CourierStationModel> GetCourierStationsForTown([FromRoute] int id) // FromRoute might need to be specified
+    public ICollection<CourierStationModel> 
+        GetCourierStationsForTown([FromRoute] int id) // FromRoute might need to be specified
     {
         return _courierStationService.GetAllByTownId(id);
     }
