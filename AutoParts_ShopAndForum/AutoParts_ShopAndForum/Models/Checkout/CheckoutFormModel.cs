@@ -42,9 +42,5 @@ public class CheckoutFormModel
     public OrderPayWay PayWay { get; set; }
 
     public IList<TownModel> Towns { get; set; }
-
-    public IList<CourierStationModel> CourierStations { get; set; }
-
-    public CartSummaryModel Summary { get; set; }
     public ICollection<ProductCartModel> Products { get; set; }
 }

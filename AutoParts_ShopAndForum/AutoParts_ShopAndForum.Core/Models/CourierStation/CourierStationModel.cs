@@ -8,5 +8,5 @@ public class CourierStationModel
     public string FullAddress { get; set; }
     public TownModel Town { get; set; }
     public CourierStationType Type { get; set; }
-    public string DisplayName => $"{FullAddress} - [{(Type == CourierStationType.Office ? "ŒÙËÒ" : "¿‚ÚÓÏ‡Ú")}]";
+    public string DisplayName => $"{FullAddress} - [{(Type == CourierStationType.Office ? "–û–§–ò–°" : "–ê–í–¢–û–ú–ê–¢")}]";
 }
