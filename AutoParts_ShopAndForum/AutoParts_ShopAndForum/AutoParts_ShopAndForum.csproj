@@ -27,8 +27,4 @@
     <ProjectReference Include="..\AutoParts_ShopAndForum.Infrastructure\AutoParts_ShopAndForum.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Shared\Components\" />
-  </ItemGroup>
-
 </Project>
