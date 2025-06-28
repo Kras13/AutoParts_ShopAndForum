@@ -51,12 +51,13 @@ public class CheckoutController : Controller
         {
             return RedirectToAction("Index", "OnlinePayment");
         }
-        
-        throw new NotImplementedException();
+
+        formModel.SuccessfulOrder = true;
+
+        return View(formModel);
     }
 
-    public ICollection<CourierStationModel> 
-        GetCourierStationsForTown([FromRoute] int id) // FromRoute might need to be specified
+    public ICollection<CourierStationModel> GetCourierStationsForTown([FromRoute] int id)
     {
         return _courierStationService.GetAllByTownId(id);
     }

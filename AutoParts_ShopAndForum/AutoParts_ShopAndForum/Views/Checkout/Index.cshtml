@@ -15,47 +15,9 @@
 			<div class="card my-4">
 				<partial name="_CheckoutInvoicePartial" model="@Model"/>
 			</div>
-
 			<div class="card my-4">
-				<div class="card-header">
-					<h5 class="mb-0">Данни за плащане</h5>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="form-group" id="PaymentInformation">
-
-							<div class="d-flex gap-4 align-items-center">
-								<div class="form-check">
-									<input asp-for="PayWay"
-									       value="@OrderPayWay.CashOnDelivery"
-									       type="radio"
-									       id="payWayCashOnDelivery"
-									       class="form-check-input"
-									       checked="checked">
-									<label class="form-check-label" for="payWayCashOnDelivery">
-										Наложен платеж
-									</label>
-								</div>
-
-								<div class="form-check">
-									<input asp-for="PayWay"
-									       value="@OrderPayWay.OnlinePayment"
-									       type="radio"
-									       id="payWayOnline"
-									       class="form-check-input">
-									<label class="form-check-label" for="payWayOnline">
-										Онлайн плащане чрез Stripe
-									</label>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-				
-				
+				<partial name="_CheckoutPayWayPartial" model="@Model"/>
 			</div>
-
 			<button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Поръчай</button>
 		</form>
 	</div>

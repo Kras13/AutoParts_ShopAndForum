@@ -41,6 +41,8 @@ public class CheckoutFormModel
     [Required]
     public OrderPayWay PayWay { get; set; }
 
+    public bool SuccessfulOrder { get; set; }
+
     public IList<TownModel> Towns { get; set; }
     public ICollection<ProductCartModel> Products { get; set; }
 }
