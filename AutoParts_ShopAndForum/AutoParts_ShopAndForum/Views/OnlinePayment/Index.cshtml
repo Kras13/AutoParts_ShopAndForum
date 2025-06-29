@@ -1,11 +1,13 @@
 <p>Redirecting to Stripe Checkout... Please wait.</p>
 <div id="spinner">Loading...</div>
 
-<form id="stripeForm" method="post" action="/OnlinePayment/CreateStripeSession">
+<form id="stripeForm" method="post" asp-action="CreateStripeSession">
 </form>
 
 <script>
     setTimeout(function () {
+        console.log("begin the post");
+        
         document.getElementById('stripeForm').submit();
     }, 1000);
 </script>

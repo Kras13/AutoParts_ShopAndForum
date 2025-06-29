@@ -14,6 +14,9 @@ namespace AutoParts_ShopAndForum
             var cultureInfo = new CultureInfo("en-US");
             cultureInfo.NumberFormat.NumberGroupSeparator = ".";
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            
+            var stripeKey = builder.Configuration["Stripe:SecretKey"];
+            Stripe.StripeConfiguration.ApiKey = stripeKey;
 
             builder.Services
                 .AddApplicationDbContext(builder.Configuration)
