@@ -9,9 +9,12 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public Order()
         {
             OrderProducts = new HashSet<OrderProduct>();
+            PublicToken = Guid.NewGuid();
         }
 
         public int Id { get; set; }
+        
+        public Guid PublicToken { get; set; }
 
         public decimal OverallSum { get; set; }
 
@@ -25,6 +28,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public DeliveryMethod DeliveryMethod { get; set; }
 
         public OrderPayWay PayWay { get; set; }
+
+        public OnlinePaymentStatus? OnlinePaymentStatus { get; set; }
 
         [MaxLength(OrderConstants.StreetMaxLength)]
         public string DeliveryStreet { get; set; }
