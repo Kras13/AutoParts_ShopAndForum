@@ -41,6 +41,9 @@ public class CheckoutController(
     [HttpPost]
     public IActionResult Index(CheckoutFormModel formModel)
     {
+        if (!ModelState.IsValid)
+            return View(formModel);
+        
         var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
 
         var order = orderService.PlaceOrderAndClearCart(
@@ -61,11 +64,6 @@ public class CheckoutController(
         {
             return RedirectToAction(
                 "Index", "OnlinePayment", new { orderToken = order.PublicToken });
-        }
-
-        if (!ModelState.IsValid)
-        {
-            return View(formModel);
         }
         
         return RedirectToAction(nameof(Success));
