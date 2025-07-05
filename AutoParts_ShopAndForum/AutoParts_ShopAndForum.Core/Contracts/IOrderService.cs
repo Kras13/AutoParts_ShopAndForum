@@ -7,5 +7,8 @@ namespace AutoParts_ShopAndForum.Core.Contracts
     {
         OrderSummaryModel[] GetAllByUserId(string userId);
         OrderModel PlaceOrderAndClearCart(ref ICollection<ProductCartModel> cart, OrderInputModel inputModel);
+        OrderModel FindByPublicToken(Guid orderToken);
+        int MarkOnlinePaymentAsSuccessful(Guid orderToken);
+        int MarkOnlinePaymentAsCancelled(Guid orderToken);
     }
 }

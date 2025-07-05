@@ -10,18 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace AutoParts_ShopAndForum.Controllers;
 
 [Authorize]
-public class CheckoutController : Controller
+public class CheckoutController(
+    ICourierStationService courierStationService,
+    ITownService townService,
+    IOrderService orderService)
+    : Controller
 {
-    private readonly ICourierStationService _courierStationService;
-    private readonly ITownService _townService;
-
-    public CheckoutController(
-        ICourierStationService courierStationService, ITownService townService)
-    {
-        _courierStationService = courierStationService;
-        _townService = townService;
-    }
-
     public IActionResult Index()
     {
         var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
@@ -31,7 +25,7 @@ public class CheckoutController : Controller
             throw new ArgumentException("Cart is empty");
         }
 
-        var towns = _townService.GetAll();
+        var towns = townService.GetAll();
         var selectedTownId = towns.FirstOrDefault()?.Id ?? -1;
 
         var model = new CheckoutFormModel
@@ -47,18 +41,54 @@ public class CheckoutController : Controller
     [HttpPost]
     public IActionResult Index(CheckoutFormModel formModel)
     {
+        var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
+
+        var order = orderService.PlaceOrderAndClearCart(
+            ref cart, new OrderInputModel
+            {
+                DeliveryMethod = formModel.DeliveryMethod,
+                PayWay = formModel.PayWay,
+                DeliveryStreet = formModel.DeliveryStreet,
+                TownId = formModel.SelectedTownId,
+                CourierStationId = formModel.SelectedCourierStationId,
+                InvoicePersonFirstName = formModel.InvoiceFirstName,
+                InvoicePersonLastName = formModel.InvoiceLastName,
+                InvoiceAddress = formModel.InvoiceAddress,
+                UserId = User.GetId(),
+            });
+
         if (formModel.PayWay == OrderPayWay.OnlinePayment)
         {
-            return RedirectToAction("Index", "OnlinePayment");
+            return RedirectToAction(
+                "Index", "OnlinePayment", new { orderToken = order.PublicToken });
         }
 
-        formModel.SuccessfulOrder = true;
+        if (!ModelState.IsValid)
+        {
+            return View(formModel);
+        }
+        
+        return RedirectToAction(nameof(Success));
+    }
 
-        return View(formModel);
+    public IActionResult Success(int orderId)
+    {
+        var model = new CheckoutSuccessModel
+        {
+            OrderId = orderId,
+            UserEmailAddress = User.GetEmail(),
+        };
+        
+        return View(model);
+    }
+    
+    public IActionResult Cancel()
+    {
+        return View();
     }
 
     public ICollection<CourierStationModel> GetCourierStationsForTown([FromRoute] int id)
     {
-        return _courierStationService.GetAllByTownId(id);
+        return courierStationService.GetAllByTownId(id);
     }
 }

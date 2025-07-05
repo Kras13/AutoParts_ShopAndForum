@@ -114,6 +114,54 @@ namespace AutoParts_ShopAndForum.Core.Services
                 }
             }
 
+            return OrderModelProjection(order);
+        }
+
+        public OrderModel FindByPublicToken(Guid orderToken)
+        {
+            return _context.Orders
+                .Select(OrderModelProjection)
+                .FirstOrDefault(o => o.PublicToken == orderToken);
+        }
+
+        public int MarkOnlinePaymentAsSuccessful(Guid orderToken)
+        {
+            var order = _context.Orders
+                .FirstOrDefault(o => o.PublicToken == orderToken);
+
+            if (order == null)
+                throw new ArgumentException("Order not found");
+
+            if (order.PayWay != Infrastructure.Data.Models.OrderPayWay.OnlinePayment)
+                throw new InvalidOperationException("Selected order is not registered for online payment.");
+
+            order.OnlinePaymentStatus = Infrastructure.Data.Models.OnlinePaymentStatus.SuccessfullyPaid;
+            
+            _context.SaveChanges();
+            
+            return order.Id;
+        }
+
+        public int MarkOnlinePaymentAsCancelled(Guid orderToken)
+        {
+            var order = _context.Orders
+                .FirstOrDefault(o => o.PublicToken == orderToken);
+
+            if (order == null)
+                throw new ArgumentException("Order not found");
+
+            if (order.PayWay != Infrastructure.Data.Models.OrderPayWay.OnlinePayment)
+                throw new InvalidOperationException("Selected order is not registered for online payment.");
+
+            order.OnlinePaymentStatus = Infrastructure.Data.Models.OnlinePaymentStatus.Cancelled;
+            
+            _context.SaveChanges();
+            
+            return order.Id;
+        }
+
+        private OrderModel OrderModelProjection(Order order)
+        {
             return new OrderModel
             {
                 Id = order.Id,

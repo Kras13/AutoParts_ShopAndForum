@@ -24,5 +24,10 @@ namespace AutoParts_ShopAndForum.Infrastructure
         {
             return user.FindFirst("FirstName")?.Value;
         }
+
+        public static string GetEmail(this ClaimsPrincipal user)
+        {
+            return user.FindFirst("Emails")?.Value;
+        }
     }
 }

@@ -1,26 +1,36 @@
+using AutoParts_ShopAndForum.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 
 namespace AutoParts_ShopAndForum.Controllers;
 
-public class OnlinePaymentController : Controller
+[Authorize]
+public class OnlinePaymentController(IOrderService orderService) : Controller
 {
-    public IActionResult Index()
+    public IActionResult Index(Guid orderToken)
     {
-        //return RedirectPermanent("http://127.0.0.1:4242/checkout.html");
-
-        return View();
+        return View(orderToken);
     }
 
     [HttpPost]
-    public IActionResult CreateStripeSession()
+    public IActionResult CreateStripeSession(Guid orderToken)
     {
-        var domain = $"{Request.Scheme}://{Request.Host}";
-        var successUrl = Url.Action("Success", "Checkout", null, Request.Scheme);
-        var cancelUrl = Url.Action("Cancel", "Checkout", null, Request.Scheme);
+        var order = orderService.FindByPublicToken(orderToken);
+
+        if (order == null)
+            throw new ArgumentException("Order not found");
+
+        //var domain = $"{Request.Scheme}://{Request.Host}";
+        var successUrl = Url.Action("Success", "Checkout", new { orderToken = order.PublicToken }, Request.Scheme);
+        var cancelUrl = Url.Action("Cancel", "Checkout", new { orderToken = order.PublicToken }, Request.Scheme);
 
         var options = new SessionCreateOptions
         {
+            Metadata = new()
+            {
+                { "orderToken", order.PublicToken.ToString() }
+            },
             LineItems = new()
             {
                 new SessionLineItemOptions
@@ -47,5 +57,19 @@ public class OnlinePaymentController : Controller
         var session = service.Create(options);
 
         return Redirect(session.Url);
+    }
+    
+    public IActionResult Success(Guid orderToken)
+    {
+        var orderId = orderService.MarkOnlinePaymentAsSuccessful(orderToken);
+        
+        return RedirectToAction("Success", "Checkout", new { orderId = orderId });
+    }
+
+    public IActionResult Cancel(Guid orderToken)
+    {
+        orderService.MarkOnlinePaymentAsCancelled(orderToken);
+        
+        return RedirectToAction("Cancel", "Checkout");
     }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AutoParts_ShopAndForum.Attributes;
 using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Core.Models.CourierStation;
 using AutoParts_ShopAndForum.Core.Models.Order;
@@ -13,7 +14,8 @@ public class CheckoutFormModel
     public DeliveryMethod DeliveryMethod { get; set; }
 
     [Display(Name = "Адрес")]
-    public string DeliverAddress { get; set; }
+    [CheckoutDeliveryAddress(DeliveryMethodName = nameof(DeliveryMethod))]
+    public string DeliveryStreet { get; set; }
 
     [Display(Name = "Населено място")]
     public int DeliverToAddressTownId { get; set; }
@@ -40,8 +42,6 @@ public class CheckoutFormModel
 
     [Required]
     public OrderPayWay PayWay { get; set; }
-
-    public bool SuccessfulOrder { get; set; }
 
     public IList<TownModel> Towns { get; set; }
     public ICollection<ProductCartModel> Products { get; set; }
