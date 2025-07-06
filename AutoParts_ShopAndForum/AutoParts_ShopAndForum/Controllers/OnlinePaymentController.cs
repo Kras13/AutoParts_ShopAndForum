@@ -21,9 +21,8 @@ public class OnlinePaymentController(IOrderService orderService) : Controller
         if (order == null)
             throw new ArgumentException("Order not found");
 
-        //var domain = $"{Request.Scheme}://{Request.Host}";
-        var successUrl = Url.Action("Success", "Checkout", new { orderToken = order.PublicToken }, Request.Scheme);
-        var cancelUrl = Url.Action("Cancel", "Checkout", new { orderToken = order.PublicToken }, Request.Scheme);
+        var successUrl = Url.Action("Success", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
+        var cancelUrl = Url.Action("Cancel", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
 
         var options = new SessionCreateOptions
         {

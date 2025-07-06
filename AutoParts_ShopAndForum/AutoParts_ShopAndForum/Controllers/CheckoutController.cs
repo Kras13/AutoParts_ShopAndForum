@@ -41,10 +41,21 @@ public class CheckoutController(
     [HttpPost]
     public IActionResult Index(CheckoutFormModel formModel)
     {
-        if (!ModelState.IsValid)
-            return View(formModel);
-        
         var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
+
+        if (cart == null || cart.Count == 0)
+        {
+            throw new ArgumentException("Cart is empty");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            formModel.Products = cart;
+            formModel.Towns = townService.GetAll();
+            formModel.SelectedTownId = formModel.Towns.FirstOrDefault()?.Id ?? -1;
+
+            return View(formModel);
+        }
 
         var order = orderService.PlaceOrderAndClearCart(
             ref cart, new OrderInputModel
@@ -65,8 +76,8 @@ public class CheckoutController(
             return RedirectToAction(
                 "Index", "OnlinePayment", new { orderToken = order.PublicToken });
         }
-        
-        return RedirectToAction(nameof(Success));
+
+        return RedirectToAction(nameof(Success), new { orderId = order.Id });
     }
 
     public IActionResult Success(int orderId)
@@ -76,10 +87,10 @@ public class CheckoutController(
             OrderId = orderId,
             UserEmailAddress = User.GetEmail(),
         };
-        
+
         return View(model);
     }
-    
+
     public IActionResult Cancel()
     {
         return View();
