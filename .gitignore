@@ -399,3 +399,8 @@ FodyWeavers.xsd
 AutoParts_ShopAndForum/Notes.notes
 
 appsettings.Development.json
+
+venv/
+__pycache__/
+*.pyc
+.DS_Store
