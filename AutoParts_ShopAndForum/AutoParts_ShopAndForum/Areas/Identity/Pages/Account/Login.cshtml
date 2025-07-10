@@ -1,4 +1,5 @@
 ﻿@page
+@using AutoParts_ShopAndForum.Localization
 @model LoginModel
 
 @{
@@ -43,14 +44,13 @@
                                                 <img src="/img/gmail.png" alt="Gmail" width="32" height="32">
                                             </button>
                                         }
-                                    </p>
                                 </div>
                             </form>
                         }
 
                         <form method="post">
 
-                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Or use a local account to log in</h3>
+                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;"></h3>
 
                             <div class="form-outline mb-4">
                                 <label asp-for="Input.Email" class="form-label"></label>

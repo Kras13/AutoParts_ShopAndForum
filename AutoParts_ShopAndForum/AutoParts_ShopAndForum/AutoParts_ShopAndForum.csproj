@@ -30,7 +30,7 @@
   <ItemGroup>
     <EmbeddedResource Update="Localization\MainLocalization.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Main.Designer.cs</LastGenOutput>
+      <LastGenOutput>MainLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
