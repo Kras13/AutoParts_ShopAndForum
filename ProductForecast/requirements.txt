@@ -1,3 +1,4 @@
 pandas
-pyodbc
 pymssql
+scikit-learn
+joblib
