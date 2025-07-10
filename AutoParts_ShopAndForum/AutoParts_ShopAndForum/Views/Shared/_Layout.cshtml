@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using AutoParts_ShopAndForum.Localization
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AutoParts_ShopAndForum</title>
+    <title>@ViewData["Title"] - AutoParts</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AutoParts_ShopAndForum.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
 </head>
 <body>
@@ -22,7 +22,9 @@
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="All">All</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="All">
+                                @MainLocalization.AllProducts_HomePage
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Forum" asp-controller="Category" asp-action="All">Forum</a>
@@ -46,7 +48,7 @@
                     <ul style="list-style: none">
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Cart" asp-action="All">
-                                <img src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/shopping_cart.png" alt="HTML tutorial" style="width:42px;height:42px;">
+                                <img src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/shopping_cart.png" alt="Shopping cart" style="width:42px;height:42px;">
                             </a>
                         </li>
                     </ul>
@@ -62,7 +64,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - AutoParts_ShopAndForum - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - AutoParts_ShopAndForum
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
