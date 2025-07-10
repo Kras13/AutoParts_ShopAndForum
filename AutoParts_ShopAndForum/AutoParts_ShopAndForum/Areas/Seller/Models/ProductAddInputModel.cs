@@ -1,5 +1,6 @@
 ﻿using AutoParts_ShopAndForum.Core.Models.ProductSubcategory;
 using System.ComponentModel.DataAnnotations;
+using AutoParts_ShopAndForum.Localization;
 
 namespace AutoParts_ShopAndForum.Areas.Seller.Models
 {
@@ -7,13 +8,14 @@ namespace AutoParts_ShopAndForum.Areas.Seller.Models
     {
         public int ProductId { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "InputFieldRequired", ErrorMessageResourceType = typeof(MainLocalization))]
         [MaxLength(ProductConstants.NameMaxLength)]
         [MinLength(2, ErrorMessage = "Please enter at least 2 symbols")]
+        [Display(Name = "ProductAdd_Name", ResourceType = typeof(MainLocalization))]
         public string Name { get; set; }
 
-        [Required]
-        [MinLength(2)]
+        [Required(ErrorMessageResourceName = "InputFieldRequired", ErrorMessageResourceType = typeof(MainLocalization))]
+        [MinLength(2, ErrorMessageResourceName = "InputFieldAtLeastLength", ErrorMessageResourceType = typeof(MainLocalization))]
         [Display(Name = "Image url")]
         public string ImageUrl { get; set; }
 

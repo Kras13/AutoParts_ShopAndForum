@@ -14,7 +14,7 @@ namespace AutoParts_ShopAndForum.Localization {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MainLocalization {
+    public class MainLocalization {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace AutoParts_ShopAndForum.Localization {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("AutoParts_ShopAndForum.Localization.MainLocalization", typeof(MainLocalization).Assembly);
@@ -36,7 +36,7 @@ namespace AutoParts_ShopAndForum.Localization {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,153 +45,171 @@ namespace AutoParts_ShopAndForum.Localization {
             }
         }
         
-        internal static string Account_Email {
+        public static string Account_Email {
             get {
                 return ResourceManager.GetString("Account_Email", resourceCulture);
             }
         }
         
-        internal static string Account_LoginWithLocalAccount {
+        public static string Account_LoginWithLocalAccount {
             get {
                 return ResourceManager.GetString("Account_LoginWithLocalAccount", resourceCulture);
             }
         }
         
-        internal static string Account_Password {
+        public static string Account_Password {
             get {
                 return ResourceManager.GetString("Account_Password", resourceCulture);
             }
         }
         
-        internal static string Account_RegisterAsNewUser {
+        public static string Account_RegisterAsNewUser {
             get {
                 return ResourceManager.GetString("Account_RegisterAsNewUser", resourceCulture);
             }
         }
         
-        internal static string AddProduct_Navigation {
+        public static string AddProduct_Navigation {
             get {
                 return ResourceManager.GetString("AddProduct_Navigation", resourceCulture);
             }
         }
         
-        internal static string AllProducts_Navigation {
+        public static string AllProducts_Navigation {
             get {
                 return ResourceManager.GetString("AllProducts_Navigation", resourceCulture);
             }
         }
         
-        internal static string Chat_Navigation {
+        public static string Chat_Navigation {
             get {
                 return ResourceManager.GetString("Chat_Navigation", resourceCulture);
             }
         }
         
-        internal static string Forum_Navigation {
+        public static string Forum_Navigation {
             get {
                 return ResourceManager.GetString("Forum_Navigation", resourceCulture);
             }
         }
         
-        internal static string LoginNavigation {
+        public static string LoginNavigation {
             get {
                 return ResourceManager.GetString("LoginNavigation", resourceCulture);
             }
         }
         
-        internal static string PostCategory_BestAdditives {
+        public static string PostCategory_BestAdditives {
             get {
                 return ResourceManager.GetString("PostCategory_BestAdditives", resourceCulture);
             }
         }
         
-        internal static string PostCategory_BestFilters {
+        public static string PostCategory_BestFilters {
             get {
                 return ResourceManager.GetString("PostCategory_BestFilters", resourceCulture);
             }
         }
         
-        internal static string PostCategory_BestOils {
+        public static string PostCategory_BestOils {
             get {
                 return ResourceManager.GetString("PostCategory_BestOils", resourceCulture);
             }
         }
         
-        internal static string ProductCategory_Filters {
+        public static string ProductCategory_Filters {
             get {
                 return ResourceManager.GetString("ProductCategory_Filters", resourceCulture);
             }
         }
         
-        internal static string ProductCategory_OilsAndLiquids {
+        public static string ProductCategory_OilsAndLiquids {
             get {
                 return ResourceManager.GetString("ProductCategory_OilsAndLiquids", resourceCulture);
             }
         }
         
-        internal static string ProductCategory_WindowsCleaning {
+        public static string ProductCategory_WindowsCleaning {
             get {
                 return ResourceManager.GetString("ProductCategory_WindowsCleaning", resourceCulture);
             }
         }
         
-        internal static string ProductsCategory_Additives {
+        public static string ProductsCategory_Additives {
             get {
                 return ResourceManager.GetString("ProductsCategory_Additives", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_AirFilters {
+        public static string ProductSubcategory_AirFilters {
             get {
                 return ResourceManager.GetString("ProductSubcategory_AirFilters", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_Antifreeze {
+        public static string ProductSubcategory_Antifreeze {
             get {
                 return ResourceManager.GetString("ProductSubcategory_Antifreeze", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_BackWindow {
+        public static string ProductSubcategory_BackWindow {
             get {
                 return ResourceManager.GetString("ProductSubcategory_BackWindow", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_CoolantAdditives {
+        public static string ProductSubcategory_CoolantAdditives {
             get {
                 return ResourceManager.GetString("ProductSubcategory_CoolantAdditives", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_FrontWindow {
+        public static string ProductSubcategory_FrontWindow {
             get {
                 return ResourceManager.GetString("ProductSubcategory_FrontWindow", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_OilAdditives {
+        public static string ProductSubcategory_OilAdditives {
             get {
                 return ResourceManager.GetString("ProductSubcategory_OilAdditives", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_OilFilters {
+        public static string ProductSubcategory_OilFilters {
             get {
                 return ResourceManager.GetString("ProductSubcategory_OilFilters", resourceCulture);
             }
         }
         
-        internal static string ProductSubcategory_Oils {
+        public static string ProductSubcategory_Oils {
             get {
                 return ResourceManager.GetString("ProductSubcategory_Oils", resourceCulture);
             }
         }
         
-        internal static string Register_Navigation {
+        public static string Register_Navigation {
             get {
                 return ResourceManager.GetString("Register_Navigation", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_Name {
+            get {
+                return ResourceManager.GetString("ProductAdd_Name", resourceCulture);
+            }
+        }
+        
+        public static string InputFieldRequired {
+            get {
+                return ResourceManager.GetString("InputFieldRequired", resourceCulture);
+            }
+        }
+        
+        public static string InputFieldAtLeastLength {
+            get {
+                return ResourceManager.GetString("InputFieldAtLeastLength", resourceCulture);
             }
         }
     }

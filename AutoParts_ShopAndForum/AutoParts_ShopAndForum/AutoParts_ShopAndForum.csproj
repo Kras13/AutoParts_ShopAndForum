@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Localization\MainLocalization.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

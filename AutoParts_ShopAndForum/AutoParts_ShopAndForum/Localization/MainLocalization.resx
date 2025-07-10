@@ -93,4 +93,13 @@
     <data name="Register_Navigation" xml:space="preserve">
         <value>Регистрация</value>
     </data>
+    <data name="ProductAdd_Name" xml:space="preserve">
+        <value>Име</value>
+    </data>
+    <data name="InputFieldRequired" xml:space="preserve">
+        <value>Полето "{0}" трябва да има стойност</value>
+    </data>
+    <data name="InputFieldAtLeastLength" xml:space="preserve">
+        <value>Моля въведете поне {1} символа за полето "{0}"</value>
+    </data>
 </root>
