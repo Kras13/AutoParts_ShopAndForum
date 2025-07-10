@@ -1,5 +1,6 @@
 ﻿using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
+using AutoParts_ShopAndForum.Localization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,18 +54,25 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
             var newCategories = new PostCategory[]
             {
-                new PostCategory(){
-                    Name = "Best oils",
-                    Description = "A place where the oils can be reviewed",
-                    ImageUrl = "https://d2hucwwplm5rxi.cloudfront.net/wp-content/uploads/2021/08/24094058/Wrong-Engine-Oil-080420210237.jpg"},
-                new PostCategory(){
-                    Name = "Best filters",
-                    Description = "A place where the filters can be reviewed",
-                    ImageUrl = "https://s19528.pcdn.co/wp-content/uploads/2018/05/Air-and-Oil-Filters-Automotive.jpg"},
-                new PostCategory(){
-                    Name = "Best timing belts",
-                    Description = "A place where the timing belts can be reviewed",
-                    ImageUrl = "https://www.kmotorshop.com/document/shop/CT1168K1/CT1168K1A.jpg"},
+                new ()
+                {
+                    Name = MainLocalization.PostCategory_BestOils,
+                    Description = "",
+                    ImageUrl =
+                        "https://d2hucwwplm5rxi.cloudfront.net/wp-content/uploads/2021/08/24094058/Wrong-Engine-Oil-080420210237.jpg"
+                },
+                new ()
+                {
+                    Name = MainLocalization.PostCategory_BestFilters,
+                    Description = "",
+                    ImageUrl = "https://s19528.pcdn.co/wp-content/uploads/2018/05/Air-and-Oil-Filters-Automotive.jpg"
+                },
+                new ()
+                {
+                    Name = MainLocalization.PostCategory_BestAdditives,
+                    Description = "",
+                    ImageUrl = "https://www.kmotorshop.com/document/shop/CT1168K1/CT1168K1A.jpg"
+                },
             };
 
             foreach (var category in newCategories)
@@ -83,16 +91,16 @@ namespace AutoParts_ShopAndForum.Infrastructure
             var categories = await dbContext.ProductsCategories.ToArrayAsync();
 
             var subcategories = new ProductSubcategory[]
-                {
-                    new ProductSubcategory(){Name = "Oils", CategoryId = categories[0].Id},
-                    new ProductSubcategory(){Name = "Antifreeze", CategoryId = categories[0].Id},
-                    new ProductSubcategory(){Name = "Oil filters", CategoryId = categories[1].Id},
-                    new ProductSubcategory(){Name = "Air filters", CategoryId = categories[1].Id},
-                    new ProductSubcategory(){Name = "Front window", CategoryId = categories[2].Id},
-                    new ProductSubcategory(){Name = "Back window", CategoryId = categories[2].Id},
-                    new ProductSubcategory(){Name = "Oil additives", CategoryId = categories[3].Id},
-                    new ProductSubcategory(){Name = "Coolant additives", CategoryId = categories[3].Id},
-                };
+            {
+                new () { Name = MainLocalization.ProductSubcategory_Oils, CategoryId = categories[0].Id },
+                new () { Name = MainLocalization.ProductSubcategory_Antifreeze, CategoryId = categories[0].Id },
+                new () { Name = MainLocalization.ProductSubcategory_OilFilters, CategoryId = categories[1].Id },
+                new () { Name = MainLocalization.ProductSubcategory_AirFilters, CategoryId = categories[1].Id },
+                new () { Name = MainLocalization.ProductSubcategory_FrontWindow, CategoryId = categories[2].Id },
+                new () { Name = MainLocalization.ProductSubcategory_BackWindow, CategoryId = categories[2].Id },
+                new () { Name = MainLocalization.ProductSubcategory_OilAdditives, CategoryId = categories[3].Id },
+                new () { Name = MainLocalization.ProductSubcategory_CoolantAdditives, CategoryId = categories[3].Id },
+            };
 
             var savedSubcategories = await dbContext.ProductsSubcategories.ToArrayAsync();
 
@@ -114,12 +122,30 @@ namespace AutoParts_ShopAndForum.Infrastructure
         private static async Task SeedProductCategories(ApplicationDbContext context)
         {
             var categories = new ProductCategory[]
+            {
+                new()
                 {
-                    new ProductCategory() {Name = "Oils and liquids", ImageUrl = "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg"},
-                    new ProductCategory() {Name = "Filters", ImageUrl = "https://www.autopower.bg/images/categories/%D0%A4%D0%B8%D0%BB%D1%82%D1%80%D0%B8.jpg" },
-                    new ProductCategory() {Name = "Windows cleaning", ImageUrl = "https://www.autopower.bg/images/categories/%D0%9F%D0%BE%D1%87%D0%B8%D1%81%D1%82%D0%B2%D0%B0%D0%BD%D0%B5%20%D0%BD%D0%B0%20%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0%D1%82%D0%B0.jpg" },
-                    new ProductCategory() {Name = "Additives", ImageUrl = "https://fanshop.vwclub.bg/xprod/155.jpg"}
-                };
+                    Name = MainLocalization.ProductCategory_OilsAndLiquids,
+                    ImageUrl =
+                        "https://www.autopower.bg/images/categories/%D0%9C%D0%B0%D1%81%D0%BB%D0%B0%20%D0%B8%20%D1%82%D0%B5%D1%87%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpg"
+                },
+                new()
+                {
+                    Name = MainLocalization.ProductCategory_Filters,
+                    ImageUrl = "https://www.autopower.bg/images/categories/%D0%A4%D0%B8%D0%BB%D1%82%D1%80%D0%B8.jpg"
+                },
+                new()
+                {
+                    Name = MainLocalization.ProductCategory_WindowsCleaning,
+                    ImageUrl =
+                        "https://www.autopower.bg/images/categories/%D0%9F%D0%BE%D1%87%D0%B8%D1%81%D1%82%D0%B2%D0%B0%D0%BD%D0%B5%20%D0%BD%D0%B0%20%D1%81%D1%82%D1%8A%D0%BA%D0%BB%D0%B0%D1%82%D0%B0.jpg"
+                },
+                new()
+                {
+                    Name = MainLocalization.ProductsCategory_Additives,
+                    ImageUrl = "https://fanshop.vwclub.bg/xprod/155.jpg"
+                }
+            };
 
             var savedCategories = await context.ProductsCategories.ToArrayAsync();
 

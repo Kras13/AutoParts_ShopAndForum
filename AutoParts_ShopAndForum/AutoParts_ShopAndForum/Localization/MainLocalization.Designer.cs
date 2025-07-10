@@ -45,9 +45,129 @@ namespace AutoParts_ShopAndForum.Localization {
             }
         }
         
-        internal static string AllProducts_HomePage {
+        internal static string AllProducts_Navigation {
             get {
-                return ResourceManager.GetString("AllProducts_HomePage", resourceCulture);
+                return ResourceManager.GetString("AllProducts_Navigation", resourceCulture);
+            }
+        }
+        
+        internal static string Forum_Navigation {
+            get {
+                return ResourceManager.GetString("Forum_Navigation", resourceCulture);
+            }
+        }
+        
+        internal static string AddProduct_Navigation {
+            get {
+                return ResourceManager.GetString("AddProduct_Navigation", resourceCulture);
+            }
+        }
+        
+        internal static string LoginNavigation {
+            get {
+                return ResourceManager.GetString("LoginNavigation", resourceCulture);
+            }
+        }
+        
+        internal static string Register_Navigation {
+            get {
+                return ResourceManager.GetString("Register_Navigation", resourceCulture);
+            }
+        }
+        
+        internal static string Chat_Navigation {
+            get {
+                return ResourceManager.GetString("Chat_Navigation", resourceCulture);
+            }
+        }
+        
+        internal static string ProductCategory_OilsAndLiquids {
+            get {
+                return ResourceManager.GetString("ProductCategory_OilsAndLiquids", resourceCulture);
+            }
+        }
+        
+        internal static string ProductCategory_Filters {
+            get {
+                return ResourceManager.GetString("ProductCategory_Filters", resourceCulture);
+            }
+        }
+        
+        internal static string ProductCategory_WindowsCleaning {
+            get {
+                return ResourceManager.GetString("ProductCategory_WindowsCleaning", resourceCulture);
+            }
+        }
+        
+        internal static string ProductsCategory_Additives {
+            get {
+                return ResourceManager.GetString("ProductsCategory_Additives", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_Oils {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_Oils", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_Antifreeze {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_Antifreeze", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_OilFilters {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_OilFilters", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_AirFilters {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_AirFilters", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_FrontWindow {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_FrontWindow", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_BackWindow {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_BackWindow", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_OilAdditives {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_OilAdditives", resourceCulture);
+            }
+        }
+        
+        internal static string ProductSubcategory_CoolantAdditives {
+            get {
+                return ResourceManager.GetString("ProductSubcategory_CoolantAdditives", resourceCulture);
+            }
+        }
+        
+        internal static string PostCategory_BestOils {
+            get {
+                return ResourceManager.GetString("PostCategory_BestOils", resourceCulture);
+            }
+        }
+        
+        internal static string PostCategory_BestFilters {
+            get {
+                return ResourceManager.GetString("PostCategory_BestFilters", resourceCulture);
+            }
+        }
+        
+        internal static string PostCategory_BestAdditives {
+            get {
+                return ResourceManager.GetString("PostCategory_BestAdditives", resourceCulture);
             }
         }
     }

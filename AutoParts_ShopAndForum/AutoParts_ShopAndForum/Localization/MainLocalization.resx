@@ -18,7 +18,67 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="AllProducts_HomePage" xml:space="preserve">
+    <data name="AllProducts_Navigation" xml:space="preserve">
         <value>Продукти</value>
+    </data>
+    <data name="Forum_Navigation" xml:space="preserve">
+        <value>Форум</value>
+    </data>
+    <data name="AddProduct_Navigation" xml:space="preserve">
+        <value>Добави продукт</value>
+    </data>
+    <data name="LoginNavigation" xml:space="preserve">
+        <value>Логин</value>
+    </data>
+    <data name="Register_Navigation" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+    <data name="Chat_Navigation" xml:space="preserve">
+        <value>Онлайн поддръжка</value>
+    </data>
+    <data name="ProductCategory_OilsAndLiquids" xml:space="preserve">
+        <value>Масла и течности</value>
+    </data>
+    <data name="ProductCategory_Filters" xml:space="preserve">
+        <value>Филтри</value>
+    </data>
+    <data name="ProductCategory_WindowsCleaning" xml:space="preserve">
+        <value>Почистване на стъкла</value>
+    </data>
+    <data name="ProductsCategory_Additives" xml:space="preserve">
+        <value>Добавки</value>
+    </data>
+    <data name="ProductSubcategory_Oils" xml:space="preserve">
+        <value>Масла</value>
+    </data>
+    <data name="ProductSubcategory_Antifreeze" xml:space="preserve">
+        <value>Антифриз</value>
+    </data>
+    <data name="ProductSubcategory_OilFilters" xml:space="preserve">
+        <value>Маслени филтри</value>
+    </data>
+    <data name="ProductSubcategory_AirFilters" xml:space="preserve">
+        <value>Въздушни филтри</value>
+    </data>
+    <data name="ProductSubcategory_FrontWindow" xml:space="preserve">
+        <value>Почистване на предно стъкло</value>
+    </data>
+    <data name="ProductSubcategory_BackWindow" xml:space="preserve">
+        <value>Почистване на задно стъкло</value>
+    </data>
+    <data name="ProductSubcategory_OilAdditives" xml:space="preserve">
+        <value>Добавки за маслена система</value>
+    </data>
+    <data name="ProductSubcategory_CoolantAdditives" xml:space="preserve">
+        <value>Добавки за охладителна течност</value>
+    </data>
+    <data name="PostCategory_BestOils" xml:space="preserve">
+        <value>Най-добрите масла</value>
+    </data>
+    <data name="PostCategory_BestFilters" xml:space="preserve">
+        <value>Най-добрите филтри</value>
+    </data>
+    <data name="PostCategory_BestAdditives" xml:space="preserve">
+        <value>Най-добрите добавки</value>
     </data>
 </root>

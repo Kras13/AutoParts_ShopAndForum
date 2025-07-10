@@ -22,11 +22,9 @@
 }
 
 #filterbar {
-    width: 30%;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 15px;
-    float: left
 }
 
     #filterbar input[type="radio"] {
@@ -42,7 +40,6 @@
         background-color: #ddd;
         color: #333;
         border: none;
-        width: 115px
     }
 
         #filterbar .btn.btn-success:hover {
@@ -176,54 +173,3 @@ label {
     color: red
 }
 
-@media(min-width:1199.6px) {
-    #filterbar {
-        width: 25%
-    }
-}
-
-@media(max-width:1199.5px) {
-    #filterbar {
-        width: 28%
-    }
-
-    .card {
-        height: 350px
-    }
-
-    .price {
-        font-size: 0.9rem
-    }
-
-    .product-name {
-        font-size: 0.8rem
-    }
-}
-
-@media(max-width: 991.5px) {
-
-    #sort {
-        background-color: inherit;
-        color: #fff;
-        margin: 0;
-        margin-bottom: 20px;
-        width: 100%
-    }
-
-        #sort option, #pro option {
-            color: #000
-        }
-
-    #pro, #select2, .result {
-        background-color: inherit;
-        color: #fff
-    }
-
-    .card {
-        height: 345px
-    }
-
-    .price {
-        font-size: 0.85rem
-    }
-}

@@ -23,24 +23,30 @@
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="All">
-                                @MainLocalization.AllProducts_HomePage
+                                @MainLocalization.AllProducts_Navigation
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Forum" asp-controller="Category" asp-action="All">Forum</a>
+                            <a class="nav-link text-dark" asp-area="Forum" asp-controller="Category" asp-action="All">
+                                @MainLocalization.Forum_Navigation
+                            </a>
                         </li>
 
                         @if (this.User.IsAdmin() || this.User.IsSeller())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Seller" asp-controller="Product" asp-action="Add">Add Product</a>
+                                <a class="nav-link text-dark" asp-area="Seller" asp-controller="Product" asp-action="Add">
+                                    @MainLocalization.AddProduct_Navigation
+                                </a>
                             </li>
                         }
                         
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">Chat</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">
+                                    @MainLocalization.Chat_Navigation
+                                </a>
                             </li>
                         }
                     </ul>
