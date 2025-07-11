@@ -120,4 +120,55 @@
     <data name="ProductAdd_PageTitle" xml:space="preserve">
         <value>Добавяне на продукт</value>
     </data>
+    <data name="Home_PageTitle" xml:space="preserve">
+        <value>Онлайн авточасти</value>
+    </data>
+    <data name="ProductQueryViewModel_NoSorting" xml:space="preserve">
+        <value>Без сортиране</value>
+    </data>
+    <data name="ProductQueryViewModel_PriceAscending" xml:space="preserve">
+        <value>Цена - възходящ</value>
+    </data>
+    <data name="ProductQueryViewModel_PriceDescending" xml:space="preserve">
+        <value>Цена - низходящ</value>
+    </data>
+    <data name="ProductQueryViewModel_NameAscending" xml:space="preserve">
+        <value>Име - възходящ</value>
+    </data>
+    <data name="ProductQueryViewModel_NameDescending" xml:space="preserve">
+        <value>Име - низходящ</value>
+    </data>
+    <data name="ProductQueryViewModel_DateAddedAscending" xml:space="preserve">
+        <value>Дата на добавяне - възходяш</value>
+    </data>
+    <data name="ProductQueryViewModel_DateAddedDescending" xml:space="preserve">
+        <value>Дата на добавяне - низходящ</value>
+    </data>
+    <data name="ProductQueryViewModel_AllPages" xml:space="preserve">
+        <value>Всички</value>
+    </data>
+    <data name="ProductAll_NextPage" xml:space="preserve">
+        <value>Напред</value>
+    </data>
+    <data name="ProductAll_PreviousPage" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="ProductAll_Apply" xml:space="preserve">
+        <value>Приложи</value>
+    </data>
+    <data name="ProductAll_Reset" xml:space="preserve">
+        <value>Нулирай</value>
+    </data>
+    <data name="ProductAll_Subcategories" xml:space="preserve">
+        <value>Подкатегории</value>
+    </data>
+    <data name="ProductAll_Buy" xml:space="preserve">
+        <value>Купи</value>
+    </data>
+    <data name="ProductAll_Edit" xml:space="preserve">
+        <value>Редактирай</value>
+    </data>
+    <data name="Currency_Name" xml:space="preserve">
+        <value>лева</value>
+    </data>
 </root>

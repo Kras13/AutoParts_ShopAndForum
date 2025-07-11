@@ -248,5 +248,107 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("ProductAdd_PageTitle", resourceCulture);
             }
         }
+        
+        public static string Home_PageTitle {
+            get {
+                return ResourceManager.GetString("Home_PageTitle", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_NoSorting {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_NoSorting", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_PriceAscending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_PriceAscending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_PriceDescending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_PriceDescending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_NameAscending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_NameAscending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_NameDescending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_NameDescending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_DateAddedAscending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_DateAddedAscending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_DateAddedDescending {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_DateAddedDescending", resourceCulture);
+            }
+        }
+        
+        public static string ProductQueryViewModel_AllPages {
+            get {
+                return ResourceManager.GetString("ProductQueryViewModel_AllPages", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_NextPage {
+            get {
+                return ResourceManager.GetString("ProductAll_NextPage", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_PreviousPage {
+            get {
+                return ResourceManager.GetString("ProductAll_PreviousPage", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_Apply {
+            get {
+                return ResourceManager.GetString("ProductAll_Apply", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_Reset {
+            get {
+                return ResourceManager.GetString("ProductAll_Reset", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_Subcategories {
+            get {
+                return ResourceManager.GetString("ProductAll_Subcategories", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_Buy {
+            get {
+                return ResourceManager.GetString("ProductAll_Buy", resourceCulture);
+            }
+        }
+        
+        public static string ProductAll_Edit {
+            get {
+                return ResourceManager.GetString("ProductAll_Edit", resourceCulture);
+            }
+        }
+        
+        public static string Currency_Name {
+            get {
+                return ResourceManager.GetString("Currency_Name", resourceCulture);
+            }
+        }
     }
 }

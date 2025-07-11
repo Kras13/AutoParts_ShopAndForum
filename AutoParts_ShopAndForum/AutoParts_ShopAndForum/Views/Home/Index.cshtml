@@ -1,9 +1,10 @@
 ﻿@using AutoParts_ShopAndForum.Core.Models.ProductCategory
+@using AutoParts_ShopAndForum.Localization
 
 @model ProductCategoryModel[]
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = @MainLocalization.Home_PageTitle;
 }
 
 <div class="text-center">
@@ -12,9 +13,7 @@
     </h1>
 </div>
 
-<p>@this.User.GetName()</p>
-
-<div class="container">
+<div class="container my-5">
     <div class="row mb-4">
         @foreach (var category in Model)
         {

@@ -1,9 +1,10 @@
-﻿@using AutoParts_ShopAndForum.Models.Product
+﻿@using AutoParts_ShopAndForum.Localization
+@using AutoParts_ShopAndForum.Models.Product
 
 @model ProductQueryViewModel
 
 @{
-    ViewData["Title"] = "Browse Products";
+    ViewData["Title"] = @MainLocalization.Home_PageTitle;
 }
 
 @{
@@ -22,10 +23,10 @@
 </div>
 
 <form method="get" id="myForm">
-    <div class="container">
+    <div class="container my-5">
         <div class="row border border-primary align-items-center p-2" style="margin-top:45px">
             <div class="col-sm-4">
-                <select asp-for="Sorting" class="form-control" onchange="this.form.submit()">
+                <select asp-for="Sorting" class="form-select" onchange="this.form.submit()">
                     <option value="" hidden selected>Sort by</option>
 
                     @foreach (var product in Model.Sortings)
@@ -58,7 +59,7 @@
                                 value="Previous"
                                 onclick="ChangePage(@Model.CurrentPage > 0 ? @Model.CurrentPage - 1 : 1)"
                                 id="btnPrevious">
-                            Previous
+                            @MainLocalization.ProductAll_PreviousPage
                         </button>
                     </li>
                     <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
@@ -74,7 +75,7 @@
                         <button class="btn btn-primary float-left" @(enableButton)
                                 name="Pagination" value="Next" onclick="ChangePage(@Model.CurrentPage + 1)"
                                 id="btnNext">
-                            Next
+                            @MainLocalization.ProductAll_NextPage
                         </button>
                     </li>
                 </ul>
@@ -88,17 +89,17 @@
             <div class="col-3"><div id="filterbar">
                     <div class="box border-bottom">
                         <div class="form-group text-center">
-                            <input class="btn btn-primary" type="submit" value="Apply"/>
+                            <input class="btn btn-primary" type="submit" value="@MainLocalization.ProductAll_Apply"/>
                             <a class="btn btn-danger" asp-controller="Product" asp-action="All"
-                               asp-route-categoryid="@Model.CategoryId">Reset</a>
+                               asp-route-categoryid="@Model.CategoryId">@MainLocalization.ProductAll_Reset</a>
                         </div>
                     </div>
                     <div class="box border-bottom">
                         <div class="box-label text-uppercase d-flex align-items-center">
-                            Subcategories
+                            @MainLocalization.ProductAll_Subcategories
                         </div>
                         <div id="inner-box" class="collapse show mt-2 mr-1">
-                            @for (int i = 0; i < Model.Subcategories.Length; i++)
+                            @for (var i = 0; i < Model.Subcategories.Length; i++)
                             {
                                 <div class="my-1">
                                     <input type="hidden" asp-for="@Model.Subcategories[i].Id"/>
@@ -131,7 +132,7 @@
                                 </a>
                                 <div class="card-body pt-5">
                                     <div class="d-flex align-items-center justify-content-center price">
-                                        <div class="font-weight-bold">@product.Price leva</div>
+                                        <div class="font-weight-bold">@product.Price @MainLocalization.Currency_Name</div>
                                     </div>
                                     <a class="btn btn-danger float-right"
                                        asp-controller="Cart"
@@ -142,7 +143,7 @@
                                        asp-route-quantity="1"
                                        asp-route-description="@product.Description"
                                        asp-route-imageurl="@product.ImageUrl"
-                                       asp-route-lasturl="@Model.CurrentUrl">Buy</a>
+                                       asp-route-lasturl="@Model.CurrentUrl">@MainLocalization.ProductAll_Buy</a>
 
                                     @if (User.IsAdmin())
                                     {
@@ -150,7 +151,7 @@
                                            asp-area="Seller"
                                            asp-controller="Product"
                                            asp-action="Edit"
-                                           asp-route-productId="@product.Id">Edit</a>
+                                           asp-route-productId="@product.Id">@MainLocalization.ProductAll_Edit</a>
                                     }
                                 </div>
                             </div>
