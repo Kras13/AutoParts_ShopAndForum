@@ -16,7 +16,8 @@ public class ChatHub : Hub
         var userId = Context.User.GetId();
         var isSeller = Context.User.IsSeller() || Context.User.IsAdmin();
             
-        UserConnections[Context.ConnectionId] = new ChatUser(userId, Context.User.GetName(), isSeller);
+        UserConnections[Context.ConnectionId] = new ChatUser(
+            userId, Context.User.GetEmail(), isSeller);
     
         BroadcastSellersList();
         
@@ -50,7 +51,7 @@ public class ChatHub : Hub
     {
         var availableSellers = UserConnections
             .Where(user => user.Value.IsSeller && !ReservedSellers.ContainsKey(user.Value.Id))
-            .Select(x => new { id = x.Value.Id, name = x.Value.Name })
+            .Select(x => new { id = x.Value.Id, name = x.Value.Email })
             .DistinctBy(x => x.id) // one user might have multiple connections...must appear once
             .ToList();
 
@@ -84,6 +85,8 @@ public class ChatHub : Hub
             .Where(x => x.Value.Id == receiverId)
             .Select(x => x.Key);
         
-        await Clients.Clients(receiverConnections).SendAsync("ReceivePrivateMessage", senderId, message);
+        var senderEmail = UserConnections.FirstOrDefault(x => x.Value.Id == senderId).Value.Email;
+        
+        await Clients.Clients(receiverConnections).SendAsync("ReceivePrivateMessage", senderId, senderEmail, message);
     }
 }

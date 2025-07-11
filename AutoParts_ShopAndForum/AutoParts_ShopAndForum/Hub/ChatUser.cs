@@ -1,8 +1,8 @@
 namespace AutoParts_ShopAndForum.Hub;
 
-public class ChatUser(string id, string name, bool isSeller)
+public class ChatUser(string id, string email, bool isSeller)
 {
-    public string Id { get; set; } = id;
-    public string Name { get; set; } = name;
-    public bool IsSeller { get; set; } = isSeller;
+    public string Id { get; } = id;
+    public bool IsSeller { get; } = isSeller;
+    public string Email { get; } = email;
 }

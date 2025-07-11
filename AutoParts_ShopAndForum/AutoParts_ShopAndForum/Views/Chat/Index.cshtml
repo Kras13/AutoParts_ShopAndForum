@@ -131,13 +131,13 @@
 			$("#chatPopup").fadeOut();
 		});
 
-		connection.on("ReceivePrivateMessage", function (fromUser, message) {
-			console.log("Message received: " + message + " | From " + fromUser);
+		connection.on("ReceivePrivateMessage", function (fromUserId, fromUserEmail, message) {
+			console.log("Message received: " + message + " | From " + fromUserId);
 
-			currentChatUserId = fromUser;
+			currentChatUserId = fromUserId;
 
 			$("#chatPopup").fadeIn();
-			$("#liveChat").text(`Live chat with ${fromUser}`);
+			$("#liveChat").text(`Live chat with ${fromUserEmail}`);
 
 			const messageBox = $("#chatMessages");
 			
