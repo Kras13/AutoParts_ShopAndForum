@@ -102,4 +102,22 @@
     <data name="InputFieldAtLeastLength" xml:space="preserve">
         <value>Моля въведете поне {1} символа за полето "{0}"</value>
     </data>
+    <data name="ProductAdd_ImageUrl" xml:space="preserve">
+        <value>Публичен URL до снимка</value>
+    </data>
+    <data name="ProductAdd_Price" xml:space="preserve">
+        <value>Цена</value>
+    </data>
+    <data name="ProductAdd_PriceRange" xml:space="preserve">
+        <value>Моля въведете стойност между {1} и {2} за полето "{0}"</value>
+    </data>
+    <data name="ProductAdd_Description" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="ProductAdd_SelectedSubcategory" xml:space="preserve">
+        <value>Подкатегория</value>
+    </data>
+    <data name="ProductAdd_PageTitle" xml:space="preserve">
+        <value>Добавяне на продукт</value>
+    </data>
 </root>

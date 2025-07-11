@@ -212,5 +212,41 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("InputFieldAtLeastLength", resourceCulture);
             }
         }
+        
+        public static string ProductAdd_ImageUrl {
+            get {
+                return ResourceManager.GetString("ProductAdd_ImageUrl", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_Price {
+            get {
+                return ResourceManager.GetString("ProductAdd_Price", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_PriceRange {
+            get {
+                return ResourceManager.GetString("ProductAdd_PriceRange", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_Description {
+            get {
+                return ResourceManager.GetString("ProductAdd_Description", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_SelectedSubcategory {
+            get {
+                return ResourceManager.GetString("ProductAdd_SelectedSubcategory", resourceCulture);
+            }
+        }
+        
+        public static string ProductAdd_PageTitle {
+            get {
+                return ResourceManager.GetString("ProductAdd_PageTitle", resourceCulture);
+            }
+        }
     }
 }

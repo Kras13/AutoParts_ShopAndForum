@@ -26,7 +26,7 @@
     </div>
     <div class="form-group mt-3">
         <label asp-for="SelectedSubcategoryId"></label>
-        <select asp-for="SelectedSubcategoryId" class="form-control">
+        <select asp-for="SelectedSubcategoryId" class="form-select">
             @foreach (var subCategory in Model.Subcategories)
             {
                 string selectedText = String.Empty;
