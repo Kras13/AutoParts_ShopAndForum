@@ -1,0 +1,39 @@
+@page
+@model OrdersModel
+@{
+    ViewData["Title"] = "Your Orders";
+    ViewData["ActivePage"] = ManageNavPages.Orders;
+    // Layout = "~/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+}
+
+<h4>Your Orders</h4>
+<hr />
+
+@if (Model.Orders?.Any() == true)
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Order #@order.Id</h5>
+                        <p class="card-text">
+                            <strong>Street:</strong> @order.Street<br />
+                            <strong>Town:</strong> @order.Town
+                        </p>
+                    </div>
+                    <div class="card-footer text-end bg-white border-0">
+                        <a asp-page="./OrderDetails" asp-route-id="@order.Id" class="btn btn-primary btn-sm">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">You have no orders yet.</div>
+}
