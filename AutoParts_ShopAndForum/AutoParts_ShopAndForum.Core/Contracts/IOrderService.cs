@@ -10,5 +10,6 @@ namespace AutoParts_ShopAndForum.Core.Contracts
         OrderModel FindByPublicToken(Guid orderToken);
         int MarkOnlinePaymentAsSuccessful(Guid orderToken);
         int MarkOnlinePaymentAsCancelled(Guid orderToken);
+        OrderDetailsModel GetOrderDetails(int orderId, string userId);
     }
 }

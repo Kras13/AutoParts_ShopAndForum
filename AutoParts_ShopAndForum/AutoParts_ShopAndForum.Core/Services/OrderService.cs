@@ -160,6 +160,20 @@ namespace AutoParts_ShopAndForum.Core.Services
             return order.Id;
         }
 
+        public OrderDetailsModel GetOrderDetails(int orderId, string userId)
+        {
+            var order = _context.Orders
+                .FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+                throw new ArgumentException("Order not found");
+            
+            if (order.UserId != userId)
+                throw new ArgumentException("User does not have access to this order.");
+
+            throw new NotImplementedException();
+        }
+
         private OrderModel OrderModelProjection(Order order)
         {
             return new OrderModel
