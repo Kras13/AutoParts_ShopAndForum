@@ -1,18 +1,24 @@
 using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Infrastructure;
-using AutoParts_ShopAndForum.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account.Manage;
 
 public class OrdersModel(IOrderService orderService) : PageModel
 {
-    public OrderSummaryModel[] Orders { get; set; }
+    public OrderPagedModel OrderPagedModel { get; set; }
     
-    public void OnGetAsync()
+    [BindProperty(SupportsGet = true)]
+    public int PageNumber { get; set; } = 1;
+    
+    public int TotalPages { get; set; }
+    
+    private const int PageSize = 6;
+    
+    public void OnGet()
     {
-        Orders = orderService.GetAllByUserId(User.GetId());
+        OrderPagedModel = orderService.GetAllByUserId(User.GetId(), PageNumber, PageSize);
     }
 }

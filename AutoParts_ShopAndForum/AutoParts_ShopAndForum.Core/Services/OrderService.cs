@@ -16,40 +16,29 @@ namespace AutoParts_ShopAndForum.Core.Services
             _context = context;
         }
 
-        public OrderSummaryModel[] GetAllByUserId(string userId)
+        public OrderPagedModel GetAllByUserId(string userId, int pageNumber, int pageSize)
         {
-            var result = new List<OrderSummaryModel>();
-
             var userOrders = _context.Orders
                 .Include(u => u.User)
                 .Include(t => t.Town)
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
-                .Where(o => o.UserId == userId)
+                .OrderBy(x => x.Id)
+                .Where(u => u.UserId == userId)
+                .AsQueryable();
+            
+            var totalOrders = userOrders.Count();
+            var orders = userOrders
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).ToList()
+                .Select(OrderModelProjection)
                 .ToArray();
-
-            foreach (var order in userOrders)
+            
+            return new OrderPagedModel
             {
-                var currentOrder = new OrderSummaryModel()
-                {
-                    Id = order.Id,
-                    Street = order.DeliveryStreet,
-                    Town = order.Town.Name,
-                    Products = order.OrderProducts.Select(p => new ProductCartModel()
-                    {
-                        Id = p.ProductId,
-                        Description = p.Product.Description,
-                        ImageUrl = p.Product.ImageUrl,
-                        Name = p.Product.Name,
-                        Price = p.SinglePrice,
-                        Quantity = p.Quantity
-                    }).ToArray()
-                };
-
-                result.Add(currentOrder);
-            }
-
-            return result.ToArray();
+                TotalProductsWithoutPagination = totalOrders,
+                Orders = orders,
+            };
         }
 
         public OrderModel PlaceOrderAndClearCart(
@@ -163,15 +152,28 @@ namespace AutoParts_ShopAndForum.Core.Services
         public OrderDetailsModel GetOrderDetails(int orderId, string userId)
         {
             var order = _context.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .FirstOrDefault(o => o.Id == orderId);
 
             if (order == null)
                 throw new ArgumentException("Order not found");
-            
+
             if (order.UserId != userId)
                 throw new ArgumentException("User does not have access to this order.");
 
-            throw new NotImplementedException();
+            return new OrderDetailsModel
+            {
+                Id = order.Id,
+                Products = order.OrderProducts.Select(p => new OrderProductModel
+                {
+                    Id = p.ProductId,
+                    SinglePrice = p.SinglePrice,
+                    Quantity = p.Quantity,
+                    ImageUrl = p.Product.ImageUrl,
+                }).ToArray(),
+                OverallSum = order.OverallSum
+            };
         }
 
         private OrderModel OrderModelProjection(Order order)
@@ -180,8 +182,62 @@ namespace AutoParts_ShopAndForum.Core.Services
             {
                 Id = order.Id,
                 PublicToken = order.PublicToken,
-                // todo and so on
+                DateCreated = order.DateCreated,
+                IsDelivered = order.IsDelivered,
+                OverallSum = order.OverallSum,
+                DeliveryMethod = FromDbDeliveryMethod(order.DeliveryMethod),
+                PayWay = FromDbPayWay(order.PayWay),
+                OnlinePaymentStatus = FromDbOnlinePaymentStatus(order.OnlinePaymentStatus),
+                DateDelivered = order.DateDelivered,
+                DeliveryStreet = order.DeliveryStreet,
+                Town = order.Town.Name,
             };
+        }
+
+        private Core.Models.Order.OnlinePaymentStatus? FromDbOnlinePaymentStatus(
+            Infrastructure.Data.Models.OnlinePaymentStatus? onlinePaymentStatus)
+        {
+            if (!onlinePaymentStatus.HasValue)
+                return null;
+            
+            switch (onlinePaymentStatus)
+            {
+                case Infrastructure.Data.Models.OnlinePaymentStatus.Pending:
+                    return Models.Order.OnlinePaymentStatus.Pending;
+                case Infrastructure.Data.Models.OnlinePaymentStatus.Cancelled:
+                    return Models.Order.OnlinePaymentStatus.Cancelled;
+                case Infrastructure.Data.Models.OnlinePaymentStatus.SuccessfullyPaid:
+                    return Models.Order.OnlinePaymentStatus.SuccessfullyPaid;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(onlinePaymentStatus), onlinePaymentStatus, null);
+            }
+        }
+        
+        private Core.Models.Order.DeliveryMethod FromDbDeliveryMethod(
+            Infrastructure.Data.Models.DeliveryMethod deliveryMethod)
+        {
+            switch (deliveryMethod)
+            {
+                case Infrastructure.Data.Models.DeliveryMethod.DeliverToAddress:
+                    return Models.Order.DeliveryMethod.DeliverToAddress;
+                case Infrastructure.Data.Models.DeliveryMethod.PersonalTake:
+                    return Models.Order.DeliveryMethod.PersonalTake;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(deliveryMethod), deliveryMethod, null);
+            }
+        }
+
+        private Core.Models.Order.OrderPayWay FromDbPayWay(Infrastructure.Data.Models.OrderPayWay payWay)
+        {
+            switch (payWay)
+            {
+                case Infrastructure.Data.Models.OrderPayWay.CashOnDelivery:
+                    return Models.Order.OrderPayWay.CashOnDelivery;
+                case Infrastructure.Data.Models.OrderPayWay.OnlinePayment:
+                    return Models.Order.OrderPayWay.OnlinePayment;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(payWay), payWay, null);
+            }
         }
 
         private Infrastructure.Data.Models.OrderPayWay PayWayToDb(Models.Order.OrderPayWay inputModelPayWay)

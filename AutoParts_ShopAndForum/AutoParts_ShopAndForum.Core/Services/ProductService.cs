@@ -17,7 +17,7 @@ namespace AutoParts_ShopAndForum.Core.Services
 
         public const int AllProducts = -1;
 
-        ProductQueryModel IProductService.GetQueried(
+        public ProductQueryModel GetQueried(
             int currentPage,
             int productsPerPage,
             string searchCriteria,

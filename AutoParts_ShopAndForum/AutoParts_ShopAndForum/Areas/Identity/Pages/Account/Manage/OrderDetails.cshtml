@@ -1,0 +1,43 @@
+@page "{id:int}"
+@model OrderDetailsModel
+@{
+    ViewData["Title"] = $"Order #{Model.Order.Id} Details";
+    Layout = "~/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+}
+
+<h4 class="mb-4">Order #@Model.Order.Id</h4>
+
+@if (Model.Order.Products == null || !Model.Order.Products.Any())
+{
+    <div class="alert alert-warning">No products found in this order.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var product in Model.Order.Products)
+        {
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="@product.ImageUrl"
+                         class="card-img-top img-fluid"
+                         style="height: 200px; object-fit: contain; background-color: #f8f9fa;"
+                         alt="Product image">
+                    <div class="card-body">
+                        <h5 class="card-title">Product #@product.Id</h5>
+                        <p class="card-text">
+                            <strong>Quantity:</strong> @product.Quantity<br />
+                            <strong>Price (per item):</strong> @(product.SinglePrice.ToString("C"))<br />
+                            <strong>Subtotal:</strong> @((product.SinglePrice * product.Quantity).ToString("C"))
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex justify-content-end">
+        <h5>Total: <span class="badge bg-success fs-5">@(Model.Order.OverallSum.ToString("C"))</span></h5>
+    </div>
+}

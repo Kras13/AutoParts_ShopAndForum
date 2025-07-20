@@ -9,17 +9,17 @@
 <h4>Your Orders</h4>
 <hr />
 
-@if (Model.Orders?.Any() == true)
+@if (Model.OrderPagedModel.Orders?.Any() == true)
 {
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var order in Model.Orders)
+        @foreach (var order in Model.OrderPagedModel.Orders)
         {
             <div class="col">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Order #@order.Id</h5>
                         <p class="card-text">
-                            <strong>Street:</strong> @order.Street<br />
+                            <strong>Street:</strong> @order.DeliveryStreet<br />
                             <strong>Town:</strong> @order.Town
                         </p>
                     </div>

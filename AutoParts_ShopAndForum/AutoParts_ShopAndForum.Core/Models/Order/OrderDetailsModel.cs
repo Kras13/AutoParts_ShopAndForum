@@ -6,5 +6,5 @@ public class OrderDetailsModel
 {
     public int Id { get; set; }
     public ICollection<OrderProductModel> Products { get; set; }
-    public decimal TotalPrice { get; set; }
+    public decimal OverallSum { get; set; }
 }

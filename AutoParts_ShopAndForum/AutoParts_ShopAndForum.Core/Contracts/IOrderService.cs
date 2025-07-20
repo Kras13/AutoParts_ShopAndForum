@@ -5,7 +5,7 @@ namespace AutoParts_ShopAndForum.Core.Contracts
 {
     public interface IOrderService
     {
-        OrderSummaryModel[] GetAllByUserId(string userId);
+        OrderPagedModel GetAllByUserId(string userId, int pageNumber, int pageSize);
         OrderModel PlaceOrderAndClearCart(ref ICollection<ProductCartModel> cart, OrderInputModel inputModel);
         OrderModel FindByPublicToken(Guid orderToken);
         int MarkOnlinePaymentAsSuccessful(Guid orderToken);

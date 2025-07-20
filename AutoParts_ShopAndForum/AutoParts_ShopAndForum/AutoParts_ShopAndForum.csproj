@@ -42,4 +42,8 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Order\List.cshtml" />
+  </ItemGroup>
+
 </Project>
