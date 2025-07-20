@@ -1,45 +1,22 @@
-import pandas as pd
-import pymssql
-from datetime import datetime
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from model.model_loader import load_model
+import numpy as np
 
-DB_CONFIG = {
-    'server': 'localhost',
-    'user': 'SA',
-    'password': 'SQL_SERVER_12',
-    'database': 'AutoParts_ShopAndForum',
-}
+app = FastAPI(title="Sales Forecast API")
 
-def get_sales_data():
-    conn = pymssql.connect(**DB_CONFIG)
-    cursor = conn.cursor(as_dict=True)
+model = load_model()
 
-    query = """
-    SELECT 
-        op.ProductId,
-        o.DateCreated,
-        op.Quantity
-    FROM dbo.[OrdersProducts] op
-    INNER JOIN dbo.[Orders] o ON op.OrderId = o.Id
-    """
+class PredictionInput(BaseModel):
+    product_id: int
+    year: int
+    month: int
 
-    cursor.execute(query)
-    rows = cursor.fetchall()
-    conn.close()
-
-    df = pd.DataFrame(rows)
-
-    if df.empty:
-        print("⚠️ Няма намерени продажби.")
-        return pd.DataFrame()
-
-    df['DateCreated'] = pd.to_datetime(df['DateCreated'], errors='coerce')
-    df['Year'] = df['DateCreated'].dt.year
-    df['Month'] = df['DateCreated'].dt.month
-
-    grouped = df.groupby(['ProductId', 'Year', 'Month'])['Quantity'].sum().reset_index()
-
-    return grouped
-
-if __name__ == '__main__':
-    df = get_sales_data()
-    print(df.head())
+@app.post("/predict")
+def predict_quantity(input_data: PredictionInput):
+    try:
+        X = np.array([[input_data.product_id, input_data.year, input_data.month]])
+        predicted_quantity = model.predict(X)[0]
+        return {"predicted_quantity": round(predicted_quantity)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

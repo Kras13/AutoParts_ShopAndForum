@@ -1,11 +1,6 @@
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-import joblib
 import pandas as pd
 import pymssql
 from datetime import datetime
-import numpy as np
 
 DB_CONFIG = {
     'server': 'localhost',
@@ -45,24 +40,6 @@ def get_sales_data():
 
     return grouped
 
-def train_model(df):
-    X = df[['ProductId', 'Year', 'Month']]
-    y = df['Quantity']
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
-
-    y_pred = model.predict(X_test)
-
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    print(f"✅ Обучението е завършено. RMSE: {rmse:.2f}")
-
-    joblib.dump(model, 'sales_forecast_model.pkl')
-    print("📦 Моделът е запазен в sales_forecast_model.pkl")
-
 if __name__ == '__main__':
     df = get_sales_data()
-    if not df.empty:
-        train_model(df)
+    print(df.head())

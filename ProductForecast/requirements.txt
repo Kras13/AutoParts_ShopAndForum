@@ -2,3 +2,6 @@ pandas
 pymssql
 scikit-learn
 joblib
+fastapi
+uvicorn
+pydantic

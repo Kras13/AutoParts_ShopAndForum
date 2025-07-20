@@ -12,7 +12,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         public static IServiceCollection AddApplicationDbContext(
             this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection") ??
+            var connectionString = config.GetConnectionString("Docker2Connection") ??
                 throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             services
