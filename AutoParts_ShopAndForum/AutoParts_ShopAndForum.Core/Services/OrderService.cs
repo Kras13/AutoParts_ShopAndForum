@@ -45,6 +45,7 @@ namespace AutoParts_ShopAndForum.Core.Services
             ref ICollection<ProductCartModel> cart, OrderInputModel inputModel)
         {
             var order = new Order();
+            
             Infrastructure.Data.Models.OnlinePaymentStatus? onlinePaymentStatus = null;
 
             if (inputModel.PayWay == Models.Order.OrderPayWay.OnlinePayment)
@@ -56,7 +57,17 @@ namespace AutoParts_ShopAndForum.Core.Services
 
             if (inputModel.DeliveryMethod == Models.Order.DeliveryMethod.PersonalTake)
                 courierStatioId = inputModel.CourierStationId;
+            
+            var town = _context.Towns.FirstOrDefault(t => t.Id == inputModel.TownId);
+            
+            if (town == null)
+                throw new ArgumentException("Invalid town");
+            
+            var user = _context.Users.FirstOrDefault(u => u.Id == inputModel.UserId);
 
+            if (user == null)
+                throw new ArgumentException("Invalid user");
+            
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -71,15 +82,15 @@ namespace AutoParts_ShopAndForum.Core.Services
                         PayWay = PayWayToDb(inputModel.PayWay),
                         OnlinePaymentStatus = onlinePaymentStatus,
                         DeliveryStreet = inputModel.DeliveryStreet,
-                        TownId = inputModel.TownId,
+                        Town = town,
                         CourierStationId = courierStatioId,
-                        UserId = inputModel.UserId,
+                        User = user,
                         InvoicePersonFirstName = inputModel.InvoicePersonFirstName,
                         InvoicePersonLastName = inputModel.InvoicePersonLastName,
                         InvoiceAddress = inputModel.InvoiceAddress,
                     };
 
-                    order = _context.Orders.Add(order).Entity; // todo double check
+                    order = _context.Orders.Add(order).Entity;
 
                     foreach (var product in cart)
                     {

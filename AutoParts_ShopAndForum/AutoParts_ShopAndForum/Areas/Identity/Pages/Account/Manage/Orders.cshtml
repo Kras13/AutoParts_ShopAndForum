@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Your Orders";
     ViewData["ActivePage"] = ManageNavPages.Orders;
-    // Layout = "~/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 }
 
 <h4>Your Orders</h4>
@@ -32,6 +31,30 @@
             </div>
         }
     </div>
+
+    <div class="row mt-4">
+        <div class="col text-end">
+            <nav aria-label="Order pagination">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-page="./Orders" asp-route-CurrentPage="@(Model.CurrentPage - 1)">Previous</a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-page="./Orders" asp-route-CurrentPage="@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-page="./Orders" asp-route-CurrentPage="@(Model.CurrentPage + 1)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
 }
 else
 {

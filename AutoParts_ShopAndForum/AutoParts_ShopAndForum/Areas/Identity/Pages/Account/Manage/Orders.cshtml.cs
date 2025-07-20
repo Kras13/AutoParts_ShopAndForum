@@ -11,7 +11,7 @@ public class OrdersModel(IOrderService orderService) : PageModel
     public OrderPagedModel OrderPagedModel { get; set; }
     
     [BindProperty(SupportsGet = true)]
-    public int PageNumber { get; set; } = 1;
+    public int CurrentPage { get; set; } = 1;
     
     public int TotalPages { get; set; }
     
@@ -19,6 +19,7 @@ public class OrdersModel(IOrderService orderService) : PageModel
     
     public void OnGet()
     {
-        OrderPagedModel = orderService.GetAllByUserId(User.GetId(), PageNumber, PageSize);
+        OrderPagedModel = orderService.GetAllByUserId(User.GetId(), CurrentPage, PageSize);
+        TotalPages = (int)Math.Ceiling(OrderPagedModel.TotalProductsWithoutPagination / (double)PageSize);
     }
 }
