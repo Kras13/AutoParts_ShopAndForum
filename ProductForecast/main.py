@@ -5,7 +5,6 @@ import pandas as pd
 
 app = FastAPI()
 
-# Зареждаме модела
 model = joblib.load("sales_forecast_model.pkl")
 
 class ForecastRequest(BaseModel):
