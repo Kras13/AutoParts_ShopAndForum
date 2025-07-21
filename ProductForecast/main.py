@@ -1,22 +1,48 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from model.model_loader import load_model
-import numpy as np
+import joblib
+import pandas as pd
 
-app = FastAPI(title="Sales Forecast API")
+app = FastAPI()
 
-model = load_model()
+# Зареждаме модела
+model = joblib.load("sales_forecast_model.pkl")
 
-class PredictionInput(BaseModel):
+class ForecastRequest(BaseModel):
+    product_id: int
+    month: int
+    year: int
+
+class YearlyForecastRequest(BaseModel):
     product_id: int
     year: int
-    month: int
 
 @app.post("/predict")
-def predict_quantity(input_data: PredictionInput):
-    try:
-        X = np.array([[input_data.product_id, input_data.year, input_data.month]])
-        predicted_quantity = model.predict(X)[0]
-        return {"predicted_quantity": round(predicted_quantity)}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def predict_quantity(req: ForecastRequest):
+    X = pd.DataFrame([{
+        "ProductId": req.product_id,
+        "Year": req.year,
+        "Month": req.month
+    }])
+    prediction = model.predict(X)[0]
+    return {"predicted_quantity": round(prediction)}
+
+@app.post("/predict/yearly")
+def predict_yearly(req: YearlyForecastRequest):
+    forecast = []
+    for month in range(1, 13):
+        X = pd.DataFrame([{
+            "ProductId": req.product_id,
+            "Year": req.year,
+            "Month": month
+        }])
+        prediction = model.predict(X)[0]
+        forecast.append({
+            "month": month,
+            "year": req.year,
+            "predicted_quantity": round(prediction)
+        })
+    return {
+        "product_id": req.product_id,
+        "forecast": forecast
+    }
