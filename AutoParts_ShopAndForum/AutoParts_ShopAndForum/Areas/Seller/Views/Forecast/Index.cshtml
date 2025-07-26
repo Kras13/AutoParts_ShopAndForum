@@ -1,44 +1,89 @@
 @model AutoParts_ShopAndForum.Areas.Seller.Models.ForecastViewModel
+
 @{
-    ViewData["Title"] = "Прогноза на продажби";
+    ViewData["Title"] = "Годишна прогноза по месеци";
+
+    var forecast = Model.ForecastResults.OrderBy(f => f.Month).ToList();
+    var monthLabels = forecast.Select(f => System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(f.Month));
+    var quantities = forecast.Select(f => f.PredictedQuantity);
 }
 
-<h2 class="mb-4">Прогноза на продажби по продукт и година</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<form method="post" class="row g-3 mb-4">
-    <div class="col-md-6">
-        <label asp-for="SelectedProductId" class="form-label">Продукт</label>
-        <select asp-for="SelectedProductId" asp-items="Model.Products" class="form-select">
-            <option value="">-- Изберете продукт --</option>
-        </select>
-    </div>
-    <div class="col-md-4">
-        <label asp-for="SelectedYear" class="form-label">Година</label>
-        <input asp-for="SelectedYear" type="number" min="2020" max="2100" class="form-control" />
-    </div>
-    <div class="col-md-2 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">Прогнозирай</button>
-    </div>
-</form>
+    <form method="post" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label asp-for="SelectedProductId" class="form-label">Избери продукт</label>
+            <select asp-for="SelectedProductId" asp-items="Model.Products" class="form-select">
+                <option value="">-- Избери --</option>
+            </select>
+        </div>
 
-@if (Model.ForecastResults?.Any() == true)
-{
-    <h4 class="mt-5">Резултати</h4>
-    <table class="table table-bordered table-striped mt-3">
-        <thead class="table-dark">
-        <tr>
-            <th>Месец</th>
-            <th>Прогнозирано количество</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var result in Model.ForecastResults.OrderBy(r => r.Month))
-        {
-            <tr>
-                <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(result.Month)</td>
-                <td>@result.PredictedQuantity</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+        <div class="col-md-2">
+            <label asp-for="SelectedYear" class="form-label">Година</label>
+            <input asp-for="SelectedYear" class="form-control" type="number" min="2000" max="2100" />
+        </div>
+
+        <div class="col-md-2 align-self-end">
+            <button type="submit" class="btn btn-primary">Покажи прогноза</button>
+        </div>
+    </form>
+
+    @if (Model.ForecastResults.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <canvas id="forecastChart" height="100"></canvas>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(monthLabels)),
+                    datasets: [{
+                        label: 'Прогнозирано количество',
+                        data: @Html.Raw(Json.Serialize(quantities)),
+                        fill: true,
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13,110,253,0.1)',
+                        tension: 0.3,
+                        pointBackgroundColor: '#0d6efd',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Бройки'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Месеци'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+    else if (Model.SelectedProductId != 0)
+    {
+        <div class="alert alert-info">Няма данни за избрания продукт и година.</div>
+    }
+</div>
