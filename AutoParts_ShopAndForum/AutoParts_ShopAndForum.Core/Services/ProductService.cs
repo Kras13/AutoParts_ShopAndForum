@@ -140,27 +140,25 @@ namespace AutoParts_ShopAndForum.Core.Services
 
         public ProductModel GetById(int id)
         {
-            var model = _context.Products.FirstOrDefault(p => p.Id == id);
-
-            if (model != null)
-            {
-                return new ProductModel()
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Price = model.Price,
-                    SubcategoryId = model.SubcategoryId,
-                    Description = model.Description,
-                    ImageUrl = model.ImageUrl,
-                    Creatorid = model.CreatorId
-                };
-            }
-            else
-            {
-                return null;
-            }
+            return _context.Products
+                .Select(GetProductModelProjection)
+                .FirstOrDefault(p => p.Id == id);
         }
 
+        private ProductModel GetProductModelProjection(Product product)
+        {
+            return new ProductModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                SubcategoryId = product.SubcategoryId,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Creatorid = product.CreatorId
+            };
+        }
+        
         public ProductModel Update(ProductModel product)
         {
             var model = _context.Products
@@ -180,6 +178,13 @@ namespace AutoParts_ShopAndForum.Core.Services
             _context.SaveChanges();
 
             return product;
+        }
+
+        public ProductModel[] GetAll()
+        {
+            return _context.Products
+                .Select(GetProductModelProjection)
+                .ToArray();
         }
     }
 }

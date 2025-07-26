@@ -1,0 +1,44 @@
+@model AutoParts_ShopAndForum.Areas.Seller.Models.ForecastViewModel
+@{
+    ViewData["Title"] = "Прогноза на продажби";
+}
+
+<h2 class="mb-4">Прогноза на продажби по продукт и година</h2>
+
+<form method="post" class="row g-3 mb-4">
+    <div class="col-md-6">
+        <label asp-for="SelectedProductId" class="form-label">Продукт</label>
+        <select asp-for="SelectedProductId" asp-items="Model.Products" class="form-select">
+            <option value="">-- Изберете продукт --</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="SelectedYear" class="form-label">Година</label>
+        <input asp-for="SelectedYear" type="number" min="2020" max="2100" class="form-control" />
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Прогнозирай</button>
+    </div>
+</form>
+
+@if (Model.ForecastResults?.Any() == true)
+{
+    <h4 class="mt-5">Резултати</h4>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+        <tr>
+            <th>Месец</th>
+            <th>Прогнозирано количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var result in Model.ForecastResults.OrderBy(r => r.Month))
+        {
+            <tr>
+                <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(result.Month)</td>
+                <td>@result.PredictedQuantity</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

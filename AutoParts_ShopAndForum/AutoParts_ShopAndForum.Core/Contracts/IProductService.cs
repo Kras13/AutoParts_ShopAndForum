@@ -20,5 +20,6 @@ namespace AutoParts_ShopAndForum.Core.Contracts
         ProductModel GetById(int id);
 
         ProductModel Update(ProductModel product);
+        ProductModel[] GetAll();
     }
 }
