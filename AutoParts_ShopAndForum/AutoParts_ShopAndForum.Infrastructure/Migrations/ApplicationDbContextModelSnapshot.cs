@@ -105,7 +105,7 @@ namespace AutoParts_ShopAndForum.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateDelivered")
+                    b.Property<DateTime?>("DateDelivered")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DeliveryMethod")

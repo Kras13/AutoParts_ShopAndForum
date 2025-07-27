@@ -14,7 +14,7 @@ public class OrderModel
     
     public DateTime DateCreated { get; set; }
 
-    public DateTime DateDelivered { get; set; }
+    public DateTime? DateDelivered { get; set; }
 
     public bool IsDelivered { get; set; }
 
