@@ -23,6 +23,7 @@ public class OnlinePaymentController(IOrderService orderService) : Controller
 
         var successUrl = Url.Action("Success", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
         var cancelUrl = Url.Action("Cancel", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
+        var moneyInStots = (long)order.OverallSum * 100;
 
         var options = new SessionCreateOptions
         {
@@ -37,14 +38,14 @@ public class OnlinePaymentController(IOrderService orderService) : Controller
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         Currency = "bgn",
-                        UnitAmount = 2599,
+                        UnitAmount = moneyInStots,
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = "Brake Pads",
-                            Description = "Fits Honda Accord 2.4 (2007)"
+                            Name = "Онлайн авточасти",
+                            Description = "Онлайн авточасти"
                         }
                     },
-                    Quantity = 1
+                    Quantity = 1,
                 },
             },
             Mode = "payment",

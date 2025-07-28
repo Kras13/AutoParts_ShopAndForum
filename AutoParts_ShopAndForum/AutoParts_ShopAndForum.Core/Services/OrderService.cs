@@ -201,7 +201,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                 OnlinePaymentStatus = FromDbOnlinePaymentStatus(order.OnlinePaymentStatus),
                 DateDelivered = order.DateDelivered,
                 DeliveryStreet = order.DeliveryStreet,
-                Town = order.Town.Name,
+                Town = order.Town?.Name,
             };
         }
 
