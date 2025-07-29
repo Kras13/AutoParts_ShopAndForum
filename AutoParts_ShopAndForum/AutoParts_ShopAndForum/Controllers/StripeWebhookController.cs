@@ -10,13 +10,6 @@ namespace AutoParts_ShopAndForum.Controllers;
 public class StripeWebhookController(IConfiguration config, IOrderService orderService)
     : ControllerBase
 {
-    [HttpGet]
-    public IActionResult Demo()
-    {
-        return Ok("It is ok");
-    }
-    
-    
     [HttpPost]
     public async Task<IActionResult> Index()
     {
@@ -27,7 +20,7 @@ public class StripeWebhookController(IConfiguration config, IOrderService orderS
         {
             var signatureHeader = Request.Headers["Stripe-Signature"];
             var stripeEvent = EventUtility.ConstructEvent(stripeContent, signatureHeader, endpointSecret);
-
+            
             if (stripeEvent.Type == EventTypes.CheckoutSessionCompleted)
             {
                 var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
@@ -38,7 +31,18 @@ public class StripeWebhookController(IConfiguration config, IOrderService orderS
 
                 _ = orderService.MarkOnlinePaymentAsSuccessful(orderTokenParsed);
             }
-            
+            else if (stripeEvent.Type == EventTypes.CheckoutSessionExpired ||
+                     stripeEvent.Type == EventTypes.CheckoutSessionAsyncPaymentFailed)
+            {
+                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                var orderToken = session?.Metadata["orderToken"];
+
+                if (orderToken == null || Guid.TryParse(orderToken, out var orderTokenParsed))
+                    return BadRequest();
+
+                _ = orderService.MarkOnlinePaymentAsCancelled(orderTokenParsed);
+            }
+
             return Ok();
         }
         catch (StripeException e)

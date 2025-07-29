@@ -9,8 +9,8 @@
         <p>We’ve sent a confirmation email to <strong>@Model.UserEmailAddress</strong>.</p>
 
         <div class="mt-4">
-            <a href="/Orders/Details/@Model.OrderId" class="btn btn-primary">View Order</a>
-            <a href="/Shop" class="btn btn-outline-secondary">Continue Shopping</a>
+            <a href="/Identity/Account/Manage/OrderDetails/@(Model.OrderId)" class="btn btn-primary">View Order</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Continue Shopping</a>
         </div>
     </div>
 </div>
