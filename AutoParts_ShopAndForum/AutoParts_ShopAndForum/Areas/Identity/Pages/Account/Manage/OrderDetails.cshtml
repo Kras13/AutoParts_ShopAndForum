@@ -7,37 +7,181 @@
 
 <h4 class="mb-4">Order #@Model.Order.Id</h4>
 
+<hr class="my-4"/>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        Данни за фактуриране
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Собствено име</label>
+                <input type="text" class="form-control" value="@Model.Order.InvoiceFirstName" readonly/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Фамилия</label>
+                <input type="text" class="form-control" value="@Model.Order.InvoiceLastName" readonly/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Адрес</label>
+                <input type="text" class="form-control" value="@Model.Order.InvoiceAddress" readonly/>
+            </div>
+        </div>
+    </div>
+</div>
+
 @if (Model.Order.Products == null || !Model.Order.Products.Any())
 {
     <div class="alert alert-warning">No products found in this order.</div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var product in Model.Order.Products)
-        {
-            <div class="col">
-                <div class="card shadow-sm">
-                    <img src="@product.ImageUrl"
-                         class="card-img-top img-fluid"
-                         style="height: 200px; object-fit: contain; background-color: #f8f9fa;"
-                         alt="Product image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product #@product.Id</h5>
-                        <p class="card-text">
-                            <strong>Quantity:</strong> @product.Quantity<br />
-                            <strong>Price (per item):</strong> @(product.SinglePrice.ToString("C"))<br />
-                            <strong>Subtotal:</strong> @((product.SinglePrice * product.Quantity).ToString("C"))
-                        </p>
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Продукти
+        </div>
+
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach (var product in Model.Order.Products)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="@product.ImageUrl"
+                                 class="card-img-top img-fluid"
+                                 style="height: 200px; object-fit: contain; background-color: #f8f9fa;"
+                                 alt="Product image">
+                            <div class="card-body">
+                                <h5 class="card-title">Product #@product.Id</h5>
+                                <p class="card-text">
+                                    <strong>Quantity:</strong> @product.Quantity<br/>
+                                    <strong>Price (per item):</strong> @(product.SinglePrice.ToString("C"))<br/>
+                                    <strong>Subtotal:</strong> @((product.SinglePrice * product.Quantity).ToString("C"))
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-        }
+        </div>
     </div>
 
-    <hr class="my-4" />
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Данни за доставка
+        </div>
+        <div class="card-body">
+            @{ var deliveryMethodAsText =
+                       Model.Order.DeliveryMethod == AutoParts_ShopAndForum.Core.Models.Order.DeliveryMethod.PersonalTake
+                           ? "Лично вземане от офис на Speedy"
+                           : "Доставка до адрес"; }
+
+            <p><strong>Метод на доставка:</strong>&nbsp;@deliveryMethodAsText</p>
+
+            @if (Model.Order.DeliveryMethod == AutoParts_ShopAndForum.Core.Models.Order.DeliveryMethod.DeliverToAddress)
+            {
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Населено място</label>
+                        <input type="text" class="form-control" value="@Model.Order.Town" readonly/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Адрес за доставка</label>
+                        <input type="text" class="form-control" value="@Model.Order.DeliveryStreet" readonly/>
+                    </div>
+                </div>
+            }
+            else if (Model.Order.DeliveryMethod == AutoParts_ShopAndForum.Core.Models.Order.DeliveryMethod.PersonalTake)
+            {
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Населено място</label>
+                        <input type="text" class="form-control" value="@Model.Order.Town" readonly/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Офис/Автомат</label>
+                        <input type="text" class="form-control" value="@Model.Order.CourierStationAddress" readonly/>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning mt-3">Няма информация за избран метод на доставка.</div>
+            }
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Данни за плащане
+        </div>
+        <div class="card-body">
+            @{
+                var payWayAsText = Model.Order.PayWay == AutoParts_ShopAndForum.Core.Models.Order.OrderPayWay.OnlinePayment 
+                    ? "Онлайн заплащане" 
+                    : "Наложен платеж";
+            }
+
+            <p><strong>Начин на плащане:</strong>&nbsp;@payWayAsText</p>
+
+            @if (Model.Order.PayWay == AutoParts_ShopAndForum.Core.Models.Order.OrderPayWay.OnlinePayment)
+            {
+                var onlinePaymentStatusAsText = "В изчакване";
+
+                if (Model.Order.OnlinePaymentStatus ==
+                    AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus.SuccessfullyPaid)
+                {
+                    onlinePaymentStatusAsText = "Успешно заплатено";
+                }
+                else if (Model.Order.OnlinePaymentStatus ==
+                         AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus.Cancelled)
+                {
+                    onlinePaymentStatusAsText = "Отказано";
+                }
+
+                <p><strong>Състояние на онлайн плащането:</strong>
+                    <span class="badge bg-@GetPaymentStatusColor(Model.Order.OnlinePaymentStatus)">
+                        onlinePaymentStatusAsText
+                    </span>
+                </p>
+            }
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <strong>Статус на поръчката:</strong>
+
+            @if (Model.Order.DateDelivered != null)
+            {
+                <span class="badge bg-success">Доставена</span>
+                <span class="ms-2 text-muted">(@Model.Order.DateDelivered.Value.ToString("dd.MM.yyyy"))</span>
+            }
+            else
+            {
+                <span class="badge bg-warning text-dark">Регистрирана</span>
+            }
+        </div>
+    </div>
+
+
+    <hr class="my-4"/>
 
     <div class="d-flex justify-content-end">
         <h5>Total: <span class="badge bg-success fs-5">@(Model.Order.OverallSum.ToString("C"))</span></h5>
     </div>
+}
+
+@functions {
+    private string GetPaymentStatusColor(AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus? paymentStatus)
+    {
+        return paymentStatus switch
+        {
+            AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus.Pending => "warning",
+            AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus.Cancelled => "danger",
+            AutoParts_ShopAndForum.Core.Models.Order.OnlinePaymentStatus.SuccessfullyPaid => "success",
+            _ => "secondary"
+        };
+    }
 }

@@ -165,6 +165,8 @@ namespace AutoParts_ShopAndForum.Core.Services
             var order = _context.Orders
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
+                .Include(o => o.Town)
+                .Include(o => o.CourierStation)
                 .FirstOrDefault(o => o.Id == orderId);
 
             if (order == null)
@@ -183,7 +185,17 @@ namespace AutoParts_ShopAndForum.Core.Services
                     Quantity = p.Quantity,
                     ImageUrl = p.Product.ImageUrl,
                 }).ToArray(),
-                OverallSum = order.OverallSum
+                OverallSum = order.OverallSum,
+                InvoiceFirstName = order.InvoicePersonFirstName,
+                InvoiceLastName = order.InvoicePersonLastName,
+                InvoiceAddress = order.InvoiceAddress,
+                DeliveryMethod = FromDbDeliveryMethod(order.DeliveryMethod),
+                DeliveryStreet = order.DeliveryStreet,
+                Town = order.Town.Name,
+                CourierStationAddress = order.CourierStation?.FullAddress,
+                DateDelivered = order.DateDelivered,
+                OnlinePaymentStatus = FromDbOnlinePaymentStatus(order.OnlinePaymentStatus),
+                
             };
         }
 
