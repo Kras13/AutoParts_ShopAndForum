@@ -1,9 +1,10 @@
-﻿@using AutoParts_ShopAndForum.Models.Cart
+﻿@using AutoParts_ShopAndForum.Localization
+@using AutoParts_ShopAndForum.Models.Cart
 
 @model CartListViewModel
 
 @{
-    ViewData["Title"] = "Shopping basket";
+    ViewData["Title"] = MainLocalization.Cart_PageTitle;
 
     decimal total = 0;
 }
@@ -16,9 +17,11 @@
     }
 }
 
-<h1 class="text-center">
-    @ViewData["Title"]
-</h1>
+<div class="text-center">
+    <h1>
+        @ViewData["Title"]
+    </h1>
+</div>
 
 @if (Model != null && Model.Products != null)
 {
@@ -45,7 +48,8 @@
                                     <div class="d-flex flex-column">
                                         <p class="text mb-1">Street</p>
                                         <label class="alert-danger" id="streetAlert"></label>
-                                        <input id="streetName" class="form-control mb-3" type="text" placeholder="Vasil Levski Str">
+                                        <input id="streetName" class="form-control mb-3" type="text"
+                                               placeholder="Vasil Levski Str">
                                     </div>
                                 </div>
 
@@ -56,7 +60,8 @@
                                             <select id="townSelection" asp-for="SelectedTownId" class="form-control">
                                                 @foreach (var town in Model.Towns)
                                                 {
-                                                    <option id="Town@(town.Id.ToString())" value="@town.Id">@town.Name</option>
+                                                    <option id="Town@(town.Id.ToString())"
+                                                            value="@town.Id">@town.Name</option>
                                                 }
                                             </select>
                                         </div>
@@ -80,41 +85,50 @@
                 <div class="col-md-8">
                     <div>
                         <div class="card-header py-3">
-                            <h5 class="mb-0">Cart - @Model.Products.Count items</h5>
+                            <h5 class="mb-0">
+                                @MainLocalization.Cart_CartItem - @Model.Products.Count @(Model.Products.Count > 1 ? MainLocalization.Cart_Items : MainLocalization.Cart_Item)
+                            </h5>
                         </div>
                         <div class="card-body">
                             @foreach (var item in Model.Products)
                             {
                                 <div class="row">
                                     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                                        <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                        <div class="bg-image hover-overlay hover-zoom ripple rounded"
+                                             data-mdb-ripple-color="light">
                                             <img src="@item.ImageUrl"
-                                                 class="w-100" alt="@item.Name" />
+                                                 class="w-100" alt="@item.Name"/>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                                         @*<a href="#" class="btn btn-danger" onclick="ChangeQuantity(@item.Id)">Remove item</a>*@
-                                        <input type="button" name="name" value="Remove item" class="btn btn-danger" onclick="RemoveProduct(@item.Id)" />
+                                        <input type="button" name="name" value="@MainLocalization.Cart_RemoveItem"
+                                               class="btn btn-danger"
+                                               onclick="RemoveProduct(@item.Id)"/>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
 
-                                        <label asp-for="@item.Quantity"></label>
+                                        <label asp-for="@item.Quantity">@MainLocalization.Cart_Quantity</label>
                                         <div class="d-flex mb-4" style="max-width: 300px">
-                                            <input asp-for="@item.Quantity" id="QuantityInput@(item.Id.ToString())" class="form-control" onclick="ChangeQuantity(@item.Id)" type="number" min="1" max="10" step="1">
+                                            <input asp-for="@item.Quantity" id="QuantityInput@(item.Id.ToString())"
+                                                   class="form-control" onclick="ChangeQuantity(@item.Id)" type="number"
+                                                   min="1" max="10" step="1">
                                             <span asp-validation-for="@item.Quantity" class="small text-danger"></span>
                                         </div>
 
                                         <p class="text-start text-md-center">
-                                            <strong>Single price: @item.Price leva</strong>
+                                            <strong>
+                                                @MainLocalization.Cart_SinglePrice: @item.Price @MainLocalization.Currency_Name
+                                            </strong>
                                             @{
                                                 total += item.Total;
                                             }
                                         </p>
                                     </div>
                                 </div>
-                                <hr class="my-4" />
+                                <hr class="my-4"/>
                             }
                         </div>
                     </div>
@@ -126,16 +140,18 @@
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                    Products
-                                    <span>$@total leva </span>
+                                    @MainLocalization.Cart_ProductsPrice
+                                    <span>@total @MainLocalization.Currency_Name</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                    Shipping
-                                    <span>Free shipping</span>
+                                    @MainLocalization.Cart_ShippingPrice
+                                    <span>@MainLocalization.Cart_FreeShipping</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                     <div>
-                                        <strong>Total amount: @total leva</strong>
+                                        <strong>
+                                            @MainLocalization.Cart_TotalAmount: @total @MainLocalization.Currency_Name
+                                        </strong>
                                     </div>
                                 </li>
                             </ul>
@@ -151,16 +167,19 @@
 
                             @if (!this.User.Identity.IsAuthenticated)
                             {
-                                <a class="btn btn-primary btn-lg btn-block" asp-area="Identity" asp-controller="Account" asp-action="Login">
-                                    Go to checkout
+                                <a class="btn btn-primary btn-lg btn-block" asp-area="Identity" asp-controller="Account"
+                                   asp-action="Login">
+                                    @MainLocalization.Cart_GoToCheckout
                                 </a>
                             }
                             else
                             {
-                                <a type="button" class="btn btn-primary @(Model.Products.Count == 0 ? "disabled" : "") btn-lg btn-block" asp-controller="Checkout" asp-action="Index">
-                                    Go to checkout
+                                <a type="button"
+                                   class="btn btn-primary @(Model.Products.Count == 0 ? "disabled" : "") btn-lg btn-block"
+                                   asp-controller="Checkout" asp-action="Index">
+                                    @MainLocalization.Cart_GoToCheckout
                                 </a>
-                                
+
                                 @* <button class="btn btn-primary btn-lg btn-block" onclick="OnCheckout() @btnEnabledText"> *@
                                 @*     Go to checkout *@
                                 @* </button> *@
@@ -183,7 +202,7 @@
             $.ajax({
                 type: "GET",
                 url: "/Cart/ChangeProduct",
-                data: { id: ItemId, quantity: itemQuantity },
+                data: {id: ItemId, quantity: itemQuantity},
                 success: function () {
                     location.reload();
                 }
@@ -194,7 +213,7 @@
             $.ajax({
                 type: "GET",
                 url: "/Cart/RemoveProduct",
-                data: { id: ItemId },
+                data: {id: ItemId},
                 success: function () {
                     location.reload();
                 }
@@ -218,13 +237,12 @@
                     $.ajax({
                         type: "POST",
                         url: "/Cart/Finalise",
-                        data: { __RequestVerificationToken: token, street: currentStreet, townId: currentTownId },
+                        data: {__RequestVerificationToken: token, street: currentStreet, townId: currentTownId},
                         success: function () {
                             location.reload();
                         }
                     });
-                }
-                else {
+                } else {
                     $('#streetAlert').html("Please enter street name");
                 }
 

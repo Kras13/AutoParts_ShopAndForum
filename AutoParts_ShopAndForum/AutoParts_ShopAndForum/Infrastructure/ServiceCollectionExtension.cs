@@ -53,7 +53,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 .AddTransient<IPostService, PostService>()
                 .AddTransient<ICommentService, CommentService>()
                 .AddTransient<IOrderService, OrderService>()
-                .AddTransient<ICourierStationService, CourierStationService>();
+                .AddTransient<ICourierStationService, CourierStationService>()
+                .AddTransient<IOrderNotification, OrderNotification>();
 
             return services;
         }

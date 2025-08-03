@@ -10,10 +10,12 @@ namespace AutoParts_ShopAndForum.Core.Services
     public class OrderService : IOrderService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IOrderNotification _orderNotification;
 
-        public OrderService(ApplicationDbContext context)
+        public OrderService(ApplicationDbContext context, IOrderNotification orderNotification)
         {
             _context = context;
+            _orderNotification = orderNotification;
         }
 
         public OrderPagedModel GetAllByUserId(string userId, int pageNumber, int pageSize)
@@ -101,7 +103,8 @@ namespace AutoParts_ShopAndForum.Core.Services
                             Quantity = product.Quantity
                         });
                     }
-
+                    
+                    _orderNotification.SendNotification();
                     _context.SaveChanges();
 
                     transaction.Commit();
@@ -195,7 +198,6 @@ namespace AutoParts_ShopAndForum.Core.Services
                 CourierStationAddress = order.CourierStation?.FullAddress,
                 DateDelivered = order.DateDelivered,
                 OnlinePaymentStatus = FromDbOnlinePaymentStatus(order.OnlinePaymentStatus),
-                
             };
         }
 

@@ -171,4 +171,58 @@
     <data name="Currency_Name" xml:space="preserve">
         <value>лева</value>
     </data>
+    <data name="ProductDetails_PageTitle" xml:space="preserve">
+        <value>Детайли за продукт</value>
+    </data>
+    <data name="ProductDetails_PreviousPage" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="ProductDetails_Quantity" xml:space="preserve">
+        <value>Количество</value>
+    </data>
+    <data name="ProductDetails_AddToCart" xml:space="preserve">
+        <value>Добави в количката</value>
+    </data>
+    <data name="ProductDetails_ProductSuccessfullyAddedToCart" xml:space="preserve">
+        <value>{0} е успешно добавен в количката</value>
+    </data>
+    <data name="Cart_PageTitle" xml:space="preserve">
+        <value>Количка</value>
+    </data>
+    <data name="Cart_CartItem" xml:space="preserve">
+        <value>Количка</value>
+    </data>
+    <data name="Cart_Items" xml:space="preserve">
+        <value>артикула</value>
+    </data>
+    <data name="Cart_Item" xml:space="preserve">
+        <value>артикул</value>
+    </data>
+    <data name="Cart_RemoveItem" xml:space="preserve">
+        <value>Изтрий</value>
+    </data>
+    <data name="Cart_GoToCheckout" xml:space="preserve">
+        <value>Финализиране на поръчката</value>
+    </data>
+    <data name="Cart_Quantity" xml:space="preserve">
+        <value>Количество</value>
+    </data>
+    <data name="Cart_SinglePrice" xml:space="preserve">
+        <value>Единична цена</value>
+    </data>
+    <data name="Cart_ProductsPrice" xml:space="preserve">
+        <value>Продукти</value>
+    </data>
+    <data name="Cart_ShippingPrice" xml:space="preserve">
+        <value>Доставка</value>
+    </data>
+    <data name="Cart_FreeShipping" xml:space="preserve">
+        <value>Безплатна доставка</value>
+    </data>
+    <data name="Cart_TotalAmount" xml:space="preserve">
+        <value>Крайна цена</value>
+    </data>
+    <data name="ForecastProduct_Navigation" xml:space="preserve">
+        <value>Продуктови прогнози</value>
+    </data>
 </root>

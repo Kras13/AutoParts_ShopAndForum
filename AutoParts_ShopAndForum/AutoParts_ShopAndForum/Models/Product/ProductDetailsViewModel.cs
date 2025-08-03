@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoParts_ShopAndForum.Localization;
 
 namespace AutoParts_ShopAndForum.Models.Product
 {
@@ -17,6 +18,7 @@ namespace AutoParts_ShopAndForum.Models.Product
         public string LastUrl { get; set; } = string.Empty;
 
         [Range(1, 10)]
+        [Display(Name = "ProductDetails_Quantity", ResourceType = typeof(MainLocalization))]
         public int Quantity { get; set; } = 1;
 
         public bool AddedToCart { get; set; }

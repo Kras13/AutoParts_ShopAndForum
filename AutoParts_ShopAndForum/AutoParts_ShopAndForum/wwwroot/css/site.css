@@ -24,3 +24,8 @@ body {
 body {
     background-color: #f4f4f4
 }
+
+footer {
+  bottom: 0;
+  position: absolute;
+}

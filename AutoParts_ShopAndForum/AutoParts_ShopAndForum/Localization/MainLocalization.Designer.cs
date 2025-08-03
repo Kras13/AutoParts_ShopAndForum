@@ -350,5 +350,113 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("Currency_Name", resourceCulture);
             }
         }
+        
+        public static string ProductDetails_PageTitle {
+            get {
+                return ResourceManager.GetString("ProductDetails_PageTitle", resourceCulture);
+            }
+        }
+        
+        public static string ProductDetails_PreviousPage {
+            get {
+                return ResourceManager.GetString("ProductDetails_PreviousPage", resourceCulture);
+            }
+        }
+        
+        public static string ProductDetails_Quantity {
+            get {
+                return ResourceManager.GetString("ProductDetails_Quantity", resourceCulture);
+            }
+        }
+        
+        public static string ProductDetails_AddToCart {
+            get {
+                return ResourceManager.GetString("ProductDetails_AddToCart", resourceCulture);
+            }
+        }
+        
+        public static string ProductDetails_ProductSuccessfullyAddedToCart {
+            get {
+                return ResourceManager.GetString("ProductDetails_ProductSuccessfullyAddedToCart", resourceCulture);
+            }
+        }
+        
+        public static string Cart_PageTitle {
+            get {
+                return ResourceManager.GetString("Cart_PageTitle", resourceCulture);
+            }
+        }
+        
+        public static string Cart_CartItem {
+            get {
+                return ResourceManager.GetString("Cart_CartItem", resourceCulture);
+            }
+        }
+        
+        public static string Cart_Items {
+            get {
+                return ResourceManager.GetString("Cart_Items", resourceCulture);
+            }
+        }
+        
+        public static string Cart_Item {
+            get {
+                return ResourceManager.GetString("Cart_Item", resourceCulture);
+            }
+        }
+        
+        public static string Cart_RemoveItem {
+            get {
+                return ResourceManager.GetString("Cart_RemoveItem", resourceCulture);
+            }
+        }
+        
+        public static string Cart_GoToCheckout {
+            get {
+                return ResourceManager.GetString("Cart_GoToCheckout", resourceCulture);
+            }
+        }
+        
+        public static string Cart_Quantity {
+            get {
+                return ResourceManager.GetString("Cart_Quantity", resourceCulture);
+            }
+        }
+        
+        public static string Cart_SinglePrice {
+            get {
+                return ResourceManager.GetString("Cart_SinglePrice", resourceCulture);
+            }
+        }
+        
+        public static string Cart_ProductsPrice {
+            get {
+                return ResourceManager.GetString("Cart_ProductsPrice", resourceCulture);
+            }
+        }
+        
+        public static string Cart_ShippingPrice {
+            get {
+                return ResourceManager.GetString("Cart_ShippingPrice", resourceCulture);
+            }
+        }
+        
+        public static string Cart_FreeShipping {
+            get {
+                return ResourceManager.GetString("Cart_FreeShipping", resourceCulture);
+            }
+        }
+        
+        public static string Cart_TotalAmount {
+            get {
+                return ResourceManager.GetString("Cart_TotalAmount", resourceCulture);
+            }
+        }
+        
+        public static string ForecastProduct_Navigation {
+            get {
+                return ResourceManager.GetString("ForecastProduct_Navigation", resourceCulture);
+            }
+        }
     }
 }
