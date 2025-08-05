@@ -6,6 +6,7 @@ import pandas as pd
 import pymssql
 from datetime import datetime
 import numpy as np
+import os
 
 DB_CONFIG = {
     'server': 'localhost',
@@ -13,6 +14,13 @@ DB_CONFIG = {
     'password': 'SQL_SERVER_12',
     'database': 'AutoParts_ShopAndForum',
 }
+
+# DB_CONFIG = {
+#     'server': os.getenv('DB_SERVER'),
+#     'user': os.getenv('DB_USER'),
+#     'password': os.getenv('DB_PASSWORD'),
+#     'database': os.getenv('DB_DATABASE'),
+# }
 
 def get_sales_data():
     conn = pymssql.connect(**DB_CONFIG)
