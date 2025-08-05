@@ -225,4 +225,7 @@
     <data name="ForecastProduct_Navigation" xml:space="preserve">
         <value>Продуктови прогнози</value>
     </data>
+    <data name="AdminPanel_Navigation" xml:space="preserve">
+        <value>Админ панел</value>
+    </data>
 </root>

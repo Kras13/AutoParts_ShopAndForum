@@ -458,5 +458,11 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("ForecastProduct_Navigation", resourceCulture);
             }
         }
+        
+        public static string AdminPanel_Navigation {
+            get {
+                return ResourceManager.GetString("AdminPanel_Navigation", resourceCulture);
+            }
+        }
     }
 }

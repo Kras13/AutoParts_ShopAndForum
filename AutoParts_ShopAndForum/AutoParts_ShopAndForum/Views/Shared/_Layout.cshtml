@@ -2,87 +2,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - AutoParts</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true"/>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AutoParts_ShopAndForum</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AutoParts_ShopAndForum</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="All">
-                                @MainLocalization.AllProducts_Navigation
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Forum" asp-controller="Category" asp-action="All">
-                                @MainLocalization.Forum_Navigation
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="All">
+                            @MainLocalization.AllProducts_Navigation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Forum" asp-controller="Category" asp-action="All">
+                            @MainLocalization.Forum_Navigation
+                        </a>
+                    </li>
 
-                        @if (this.User.IsAdmin() || this.User.IsSeller())
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Seller" asp-controller="Product" asp-action="Add">
-                                    @MainLocalization.AddProduct_Navigation
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Seller" asp-controller="Forecast" asp-action="Index">
-                                    @MainLocalization.ForecastProduct_Navigation
-                                </a>
-                            </li>
-                        }
-                        
-                        @if (this.User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">
-                                    @MainLocalization.Chat_Navigation
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
-                    <ul style="list-style: none">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Cart" asp-action="All">
-                                <img src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/shopping_cart.png" alt="Shopping cart" style="width:42px;height:42px;">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">
+                                @MainLocalization.Chat_Navigation
                             </a>
                         </li>
-                    </ul>
-                </div>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+                    @if (this.User.IsAdmin() || this.User.IsSeller())
+                    {
+                        <div class="dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                @MainLocalization.AdminPanel_Navigation
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Seller" asp-controller="Product"
+                                       asp-action="Add">
+                                        @MainLocalization.AddProduct_Navigation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Seller" asp-controller="Forecast"
+                                       asp-action="Index">
+                                        @MainLocalization.ForecastProduct_Navigation
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+
+                    <partial name="_LoginPartial"/>
+
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Cart" asp-action="All">
+                            <img
+                                src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/shopping_cart.png"
+                                alt="Shopping cart" style="width:42px;height:42px;">
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - AutoParts_ShopAndForum
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    @await RenderSectionAsync("css", required: false)
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2024 - AutoParts_ShopAndForum
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync("css", required: false)
 </body>
 </html>
