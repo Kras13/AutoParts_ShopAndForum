@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Order List";
 
-    int lastPage = 1;
+    var lastPage = 1;
 
     if (Model.TotalOrders > 0)
     {
@@ -40,11 +40,13 @@
             </div>
 
             <div class="col-sm-3 mb-2 mb-sm-0">
-                <select asp-for="StatusFilter" class="form-select" onchange="this.form.submit()">
+                <select asp-for="SelectedStatusFilter" class="form-select" onchange="this.form.submit()">
 
-                    @foreach (var statusOption in Html.GetEnumSelectList<OrderStatusFilter>())
+                    @foreach (var statusOption in Model.StatusFilters)
                     {
-                        <option value="@statusOption.Value">@statusOption.Text</option>
+                        <option value="@statusOption.Value" selected="@statusOption.Selected">
+                            @statusOption.Text
+                        </option>
                     }
                 </select>
             </div>
@@ -62,12 +64,12 @@
                             @MainLocalization.ProductAll_PreviousPage
                         </button>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
+                    <li class="page-item"><a class="page-link" href="#">@Model.CurrentPage</a></li>
                     <li class="page-item">
                         @{
-                            string enableNextButton = String.Empty;
+                            var enableNextButton = string.Empty;
 
-                            if (Model.TotalOrders == 0 || Model.CurrentPage == lastPage)
+                            if (Model.TotalOrders == Model.Orders.Length || Model.CurrentPage == lastPage)
                             {
                                 enableNextButton = "disabled";
                             }
@@ -97,14 +99,15 @@
                             <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Username)</th>
                             <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().DateCreated)</th>
                             <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().DateDelivered)</th>
-                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OnlinePaymentStatus)</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().StatusAsText)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().PayWayAsText)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OverallSum)</th>
                         </tr>
                         </thead>
                         <tbody>
                         @if (Model.Orders != null && Model.Orders.Any())
                         {
-                            @foreach (var item in Model.Orders)
+                            foreach (var item in Model.Orders)
                             {
                                 <tr>
                                     <td class="text-center">
@@ -119,19 +122,24 @@
                                             </svg>
                                         </a>
                                     </td>
+
                                     <td>@item.OrderId</td>
                                     <td>@item.Username</td>
                                     <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td>
-                                    <td>@(item.DateDelivered?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
-                                    <td>@(item.OnlinePaymentStatus?.ToString() ?? "N/A")</td>
-                                    <td>@item.Status</td>
+                                    <td>@(item.DateDelivered?.ToString("yyyy-MM-dd HH:mm") ?? "")</td>
+                                    <td>@(item.StatusAsText)</td>
+                                    <td>@(item.PayWayAsText)</td>
+                                    <td>@(item.OverallSum)</td>
                                 </tr>
                             }
                         }
                         else
                         {
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">No orders found.</td>
+                                <td colspan="7"
+                                    class="text-center text-muted py-4">
+                                    @MainLocalization.AdministrationOrders_NoOrdersFound
+                                </td>
                             </tr>
                         }
                         </tbody>

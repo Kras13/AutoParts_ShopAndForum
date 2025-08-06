@@ -10,8 +10,9 @@ public class OrderController(IOrderService orderService) : BaseAdminController
     public IActionResult Index(OrderQueryViewModel viewModel)
     {
         var queryModel = orderService.GetQueried(
-            viewModel.CurrentPage, viewModel.OrdersPerPage, viewModel.Sorting, viewModel.StatusFilter);
+            viewModel.CurrentPage, viewModel.OrdersPerPage, viewModel.Sorting, viewModel.SelectedStatusFilter);
 
+        viewModel.TotalOrders = queryModel.TotalOrdersWithoutPagination;
         viewModel.Orders = queryModel.Orders
             .Select(o => new OrderSummaryModel
             {
@@ -19,7 +20,8 @@ public class OrderController(IOrderService orderService) : BaseAdminController
                 Username = o.Username,
                 DateCreated = o.DateCreated,
                 DateDelivered = o.DateDelivered,
-                OnlinePaymentStatus = o.OnlinePaymentStatus,
+                PayWay = o.PayWay,
+                OverallSum = o.OverallSum,
             }).ToArray();
 
         return View(viewModel);

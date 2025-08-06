@@ -264,4 +264,22 @@
     <data name="AdminOrders_Navigation" xml:space="preserve">
         <value>Поръчки</value>
     </data>
+    <data name="OrderSummaryViewModel_OnlinePayWay" xml:space="preserve">
+        <value>Онлайн плащане</value>
+    </data>
+    <data name="OrderSummaryViewModel_CashOnDeliveryPayWay" xml:space="preserve">
+        <value>Наложен платеж</value>
+    </data>
+    <data name="AdministrationOrders_NoOrdersFound" xml:space="preserve">
+        <value>Не бяха открити поръчки.</value>
+    </data>
+    <data name="OrderQueryViewModel_StatusFilterAll" xml:space="preserve">
+        <value>Всички</value>
+    </data>
+    <data name="OrderQueryViewModel_StatusFilterDelivered" xml:space="preserve">
+        <value>Доставена</value>
+    </data>
+    <data name="OrderQueryViewModel_StatusFilterPending" xml:space="preserve">
+        <value>В процес на доставка</value>
+    </data>
 </root>

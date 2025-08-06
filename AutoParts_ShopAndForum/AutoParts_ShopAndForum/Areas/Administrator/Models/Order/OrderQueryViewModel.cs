@@ -2,12 +2,13 @@ using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Localization;
 using AutoParts_ShopAndForum.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AutoParts_ShopAndForum.Areas.Administrator.Models.Order;
 
 public class OrderQueryViewModel
 {
-    public int CurrentPage { get; set; }
+    public int CurrentPage { get; set; } = 1;
 
     public PageSizeViewModel[] Pages { get; set; } =
     [
@@ -27,11 +28,13 @@ public class OrderQueryViewModel
         new() { DisplayText = MainLocalization.OrderQueryViewModel_NoSorting, Sorting = OrdersSorting.NoSorting },
         new()
         {
-            DisplayText = MainLocalization.OrderQueryViewModel_TotalAscending, Sorting = OrdersSorting.OverallSumAscending
+            DisplayText = MainLocalization.OrderQueryViewModel_TotalAscending,
+            Sorting = OrdersSorting.OverallSumAscending
         },
         new()
         {
-            DisplayText = MainLocalization.OrderQueryViewModel_TotalDescending, Sorting = OrdersSorting.OverallSumDescending
+            DisplayText = MainLocalization.OrderQueryViewModel_TotalDescending,
+            Sorting = OrdersSorting.OverallSumDescending
         },
         new()
         {
@@ -55,7 +58,14 @@ public class OrderQueryViewModel
         },
     ];
 
-    public OrderStatusFilter StatusFilter { get; set; } = OrderStatusFilter.All;
+    public SelectListItem[] StatusFilters { get; set; } =
+    [
+        new() { Value = OrderStatusFilter.All.ToString(), Text = @MainLocalization.OrderQueryViewModel_StatusFilterAll, Selected = true },
+        new() { Value = OrderStatusFilter.Delivered.ToString(), Text = @MainLocalization.OrderQueryViewModel_StatusFilterDelivered },
+        new() { Value = OrderStatusFilter.Pending.ToString(), Text = @MainLocalization.OrderQueryViewModel_StatusFilterPending },
+    ];
+
+    public OrderStatusFilter SelectedStatusFilter { get; set; }
 
     public OrderSummaryModel[] Orders { get; set; }
 }
