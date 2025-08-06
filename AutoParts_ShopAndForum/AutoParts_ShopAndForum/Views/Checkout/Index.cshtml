@@ -22,13 +22,13 @@
 		</form>
 	</div>
 	<div class="col-md-4 order-md-2 mb-4">
-		@await Component.InvokeAsync("CheckoutItems")
+		@await Component.InvokeAsync("CheckoutItems", new { cart = Model.Products })
 	</div>
 </div>
 
 @section Scripts
 {
 	<script src="js/checkoutDelivery.js"></script>
-	
-	<partial name="_ValidationScriptsPartial" />
+
+	<partial name="_ValidationScriptsPartial"/>
 }

@@ -1,0 +1,37 @@
+@model AutoParts_ShopAndForum.Areas.Administrator.Models.Order.OrderInputViewModel
+
+@{
+    ViewData["Title"] = "Order update //EDITME";
+}
+
+<div class="row">
+    <div class="col-md-8 order-md-1">
+        <div class="card my-4">
+            <partial name="_CheckoutDeliveryPartial" model="@Model.ReadOnlyModel"/>
+        </div>
+        <div class="card my-4">
+            <partial name="_CheckoutInvoicePartial" model="@Model.ReadOnlyModel"/>
+        </div>
+        <div class="card my-4">
+            <partial name="_CheckoutPayWayPartial" model="@Model.ReadOnlyModel"/>
+        </div>
+        <form method="post">
+            <div class="card my-4">
+                <partial name="_OrderEditPartialPartial" model="@Model"/>
+            </div>
+            <input type="hidden" asp-for="OrderId"/>
+            <button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Запази</button>
+        </form>
+    </div>
+    <div class="col-md-4 order-md-2 mb-4">
+        @await Component.InvokeAsync("CheckoutItems", new { cart = Model.ReadOnlyModel.Products })
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/checkoutDelivery.js"></script>
+    <script src="~/js/orderUpdate.js"></script>
+
+    <partial name="_ValidationScriptsPartial"/>
+}

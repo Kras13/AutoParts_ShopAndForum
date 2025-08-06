@@ -26,7 +26,7 @@ public class CheckoutFormModel
 
     [Required]
     [Display(Name = "Офис/автомат")]
-    public int SelectedCourierStationId { get; set; }
+    public int? SelectedCourierStationId { get; set; }
 
     [Required]
     [Display(Name = "Име")]
@@ -45,4 +45,5 @@ public class CheckoutFormModel
 
     public IList<TownModel> Towns { get; set; }
     public ICollection<ProductCartModel> Products { get; set; }
+    public bool ReadOnlyMode { get; set; }
 }

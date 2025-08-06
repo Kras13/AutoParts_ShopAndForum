@@ -14,5 +14,6 @@ namespace AutoParts_ShopAndForum.Core.Contracts
         OrderDetailsModel GetOrderDetails(int orderId, string userId);
         OrderQueryModel GetQueried(
             int currentPage, int ordersPerPage, OrdersSorting sorting, OrderStatusFilter statusFilter);
+        OrderModel UpdateOrder(OrderEditModel orderEditModel);
     }
 }

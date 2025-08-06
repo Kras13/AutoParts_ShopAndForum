@@ -3,11 +3,15 @@ using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoParts_ShopAndForum.Core.Services
 {
-    public class OrderService(ApplicationDbContext context, IOrderNotification orderNotification)
+    public class OrderService(
+        ApplicationDbContext context,
+        IOrderNotification orderNotification,
+        UserManager<User> userManager)
         : IOrderService
     {
         public OrderPagedModel GetAllByUserId(string userId, int pageNumber, int pageSize)
@@ -169,7 +173,14 @@ namespace AutoParts_ShopAndForum.Core.Services
             if (order == null)
                 throw new ArgumentException("Order not found");
 
-            if (order.UserId != userId)
+            var user = context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+                throw new ArgumentException("User does not have access to this order.");
+
+            var roles = userManager.GetRolesAsync(user).Result;
+
+            if (order.UserId != userId && !roles.Contains(RoleType.Administrator))
                 throw new ArgumentException("User does not have access to this order.");
 
             return new OrderDetailsModel
@@ -181,6 +192,9 @@ namespace AutoParts_ShopAndForum.Core.Services
                     SinglePrice = p.SinglePrice,
                     Quantity = p.Quantity,
                     ImageUrl = p.Product.ImageUrl,
+                    Description = p.Product.Description,
+                    Price = p.Product.Price,
+                    Name = p.Product.Name,
                 }).ToArray(),
                 OverallSum = order.OverallSum,
                 InvoiceFirstName = order.InvoicePersonFirstName,
@@ -192,6 +206,9 @@ namespace AutoParts_ShopAndForum.Core.Services
                 CourierStationAddress = order.CourierStation?.FullAddress,
                 DateDelivered = order.DateDelivered,
                 OnlinePaymentStatus = FromDbOnlinePaymentStatus(order.OnlinePaymentStatus),
+                TownId = order.TownId,
+                CourierStationId = order.CourierStationId,
+                IsDelivered = order.IsDelivered,
             };
         }
 
@@ -225,7 +242,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                 OrdersSorting.DateDeliveredDescending => entities.OrderByDescending(o => o.DateDelivered),
                 _ => throw new ArgumentOutOfRangeException(nameof(sorting), sorting, null)
             };
-            
+
             entities = statusFilter switch
             {
                 OrderStatusFilter.All => entities,
@@ -242,6 +259,24 @@ namespace AutoParts_ShopAndForum.Core.Services
                     .Take(entitiesToTake)
                     .ToArray(),
             };
+        }
+
+        public OrderModel UpdateOrder(OrderEditModel orderEditModel)
+        {
+            var order = context.Orders
+                .Include(o => o.Town)
+                .Include(o => o.User)
+                .FirstOrDefault(o => o.Id == orderEditModel.OrderId);
+
+            if (order == null)
+                throw new ArgumentException("Order not found");
+
+            order.IsDelivered = orderEditModel.IsDelivered;
+            order.DateDelivered = orderEditModel.DateDelivered;
+            
+            context.SaveChanges();
+
+            return OrderModelProjection(order);
         }
 
         private OrderModel OrderModelProjection(Order order)

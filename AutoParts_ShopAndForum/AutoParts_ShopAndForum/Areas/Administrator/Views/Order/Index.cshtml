@@ -14,6 +14,12 @@
     }
 }
 
+@if ((bool)ViewBag.IsOrderUpdated)
+{
+    <p class="alert alert-success"
+       id="successMessage">Successfully updated order</p>
+}
+
 <h1 class="text-center my-4">Order Management</h1>
 
 <form method="get" id="orderForm">
@@ -111,7 +117,7 @@
                             {
                                 <tr>
                                     <td class="text-center">
-                                        <a asp-controller="Order" asp-action="EditOrder" asp-route-id="@item.OrderId"
+                                        <a asp-controller="Order" asp-action="Edit" asp-route-orderId="@item.OrderId"
                                            class="btn btn-sm btn-outline-primary" title="Edit Order">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

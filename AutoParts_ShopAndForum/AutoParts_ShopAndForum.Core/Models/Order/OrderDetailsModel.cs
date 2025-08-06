@@ -15,4 +15,7 @@ public class OrderDetailsModel
     public DateTime? DateDelivered { get; set; }
     public OrderPayWay PayWay { get; set; }
     public OnlinePaymentStatus? OnlinePaymentStatus { get; set; }
+    public int TownId { get; set; }
+    public int? CourierStationId { get; set; }
+    public bool IsDelivered { get; set; }
 }

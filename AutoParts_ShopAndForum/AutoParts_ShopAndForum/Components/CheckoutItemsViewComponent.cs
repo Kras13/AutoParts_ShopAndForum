@@ -7,10 +7,8 @@ namespace AutoParts_ShopAndForum.Components;
 
 public class CheckoutItemsViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    public IViewComponentResult Invoke(ICollection<ProductCartModel> cart)
     {
-        var cart = HttpContext.Session.GetObject<ICollection<ProductCartModel>>("Cart");
-
         if (cart == null || cart.Count == 0)
         {
             throw new ArgumentException("Cart is empty");
@@ -26,6 +24,6 @@ public class CheckoutItemsViewComponent : ViewComponent
             TransportValue = transportValue,
         };
 
-        return View("Default",model); 
+        return View("Default", model); 
     }
 }

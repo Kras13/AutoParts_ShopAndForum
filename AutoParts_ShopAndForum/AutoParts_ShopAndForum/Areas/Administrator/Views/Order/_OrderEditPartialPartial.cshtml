@@ -1,0 +1,24 @@
+@model AutoParts_ShopAndForum.Areas.Administrator.Models.Order.OrderInputViewModel
+
+<div class="card-header">
+    <h5 class="mb-0">Информация по доставяне</h5>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="form-group" id="DeliveryInformation">
+
+            <div class="form-check mb-3">
+                <input asp-for="IsDelivered" type="checkbox" id="isDeliveredCheckbox" class="form-check-input"
+                       readonly="readonly">
+                <label class="form-check-label" for="isDeliveredCheckbox">Поръчката е доставена</label>
+            </div>
+
+            <div id="dateDeliveryContainer" style="display: none;">
+                <div class="form-group">
+                    <label asp-for="DateDelivered"></label>
+                    <input asp-for="DateDelivered" type="date" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
