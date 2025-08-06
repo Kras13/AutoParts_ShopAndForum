@@ -282,4 +282,25 @@
     <data name="OrderQueryViewModel_StatusFilterPending" xml:space="preserve">
         <value>В процес на доставка</value>
     </data>
+    <data name="OrderSummary_OrderId" xml:space="preserve">
+        <value>Идентификатор</value>
+    </data>
+    <data name="OrderSummary_Username" xml:space="preserve">
+        <value>Потребителско име</value>
+    </data>
+    <data name="OrderSummary_DateCreated" xml:space="preserve">
+        <value>Дата на създаване</value>
+    </data>
+    <data name="OrderSummary_DateDelivered" xml:space="preserve">
+        <value>Дата на доставяне</value>
+    </data>
+    <data name="OrderSummary_PayWay" xml:space="preserve">
+        <value>Начин на плащане</value>
+    </data>
+    <data name="OrderSummary_OrderStatus" xml:space="preserve">
+        <value>Статус</value>
+    </data>
+    <data name="OrderSummary_OverallSum" xml:space="preserve">
+        <value>Тотал</value>
+    </data>
 </root>

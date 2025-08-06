@@ -572,5 +572,47 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("OrderQueryViewModel_StatusFilterPending", resourceCulture);
             }
         }
+        
+        public static string OrderSummary_OrderId {
+            get {
+                return ResourceManager.GetString("OrderSummary_OrderId", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_Username {
+            get {
+                return ResourceManager.GetString("OrderSummary_Username", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_DateCreated {
+            get {
+                return ResourceManager.GetString("OrderSummary_DateCreated", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_DateDelivered {
+            get {
+                return ResourceManager.GetString("OrderSummary_DateDelivered", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_PayWay {
+            get {
+                return ResourceManager.GetString("OrderSummary_PayWay", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_OrderStatus {
+            get {
+                return ResourceManager.GetString("OrderSummary_OrderStatus", resourceCulture);
+            }
+        }
+        
+        public static string OrderSummary_OverallSum {
+            get {
+                return ResourceManager.GetString("OrderSummary_OverallSum", resourceCulture);
+            }
+        }
     }
 }
