@@ -9,12 +9,12 @@ namespace AutoParts_ShopAndForum.Models.Product
     {
         public int CurrentPage { get; set; } = 1;
 
-        public PageViewModel[] Pages { get; set; } =
+        public PageSizeViewModel[] Pages { get; set; } =
         [
-            new() { DisplayText = "2", PageIndex = 2 },
-            new() { DisplayText = "3", PageIndex = 3 },
-            new() { DisplayText = "10", PageIndex = 10 },
-            new() { DisplayText = MainLocalization.ProductQueryViewModel_AllPages, PageIndex = ProductService.AllProducts }
+            new() { SizeDisplayText = "2", Size = 2 },
+            new() { SizeDisplayText = "3", Size = 3 },
+            new() { SizeDisplayText = "10", Size = 10 },
+            new() { SizeDisplayText = MainLocalization.ProductQueryViewModel_AllPages, Size = ProductService.AllProducts }
         ];
 
         public int ProductsPerPage { get; set; } = 2;

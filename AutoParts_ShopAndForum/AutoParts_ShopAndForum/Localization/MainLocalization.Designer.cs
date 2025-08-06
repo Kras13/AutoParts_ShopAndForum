@@ -464,5 +464,77 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("AdminPanel_Navigation", resourceCulture);
             }
         }
+        
+        public static string OrderStatus_Delivered {
+            get {
+                return ResourceManager.GetString("OrderStatus_Delivered", resourceCulture);
+            }
+        }
+        
+        public static string OrderStatus_Pending {
+            get {
+                return ResourceManager.GetString("OrderStatus_Pending", resourceCulture);
+            }
+        }
+        
+        public static string OrderStatus_FailedOnlinePayment {
+            get {
+                return ResourceManager.GetString("OrderStatus_FailedOnlinePayment", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_AllPages {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_AllPages", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_NoSorting {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_NoSorting", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_TotalAscending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_TotalAscending", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_TotalDescending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_TotalDescending", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_DateCreatedAscending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_DateCreatedAscending", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_DateCreatedDescending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_DateCreatedDescending", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_DateDeliveredAscending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_DateDeliveredAscending", resourceCulture);
+            }
+        }
+        
+        public static string OrderQueryViewModel_DateDeliveredDescending {
+            get {
+                return ResourceManager.GetString("OrderQueryViewModel_DateDeliveredDescending", resourceCulture);
+            }
+        }
+        
+        public static string AdminOrders_Navigation {
+            get {
+                return ResourceManager.GetString("AdminOrders_Navigation", resourceCulture);
+            }
+        }
     }
 }

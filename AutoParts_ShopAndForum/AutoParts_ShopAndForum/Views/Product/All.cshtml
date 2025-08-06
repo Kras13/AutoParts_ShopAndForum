@@ -45,7 +45,7 @@
                         onclick=" InvalidatePaging()">
                     @foreach (var page in Model.Pages)
                     {
-                        <option value="@(page.PageIndex)">@(page.DisplayText)</option>
+                        <option value="@(page.Size)">@(page.SizeDisplayText)</option>
                     }
                 </select>
             </div>

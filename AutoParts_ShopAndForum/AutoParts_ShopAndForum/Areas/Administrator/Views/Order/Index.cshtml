@@ -1,0 +1,160 @@
+@using AutoParts_ShopAndForum.Localization
+@using AutoParts_ShopAndForum.Core.Models.Order
+
+@model AutoParts_ShopAndForum.Areas.Administrator.Models.Order.OrderQueryViewModel
+
+@{
+    ViewData["Title"] = "Order List";
+
+    int lastPage = 1;
+
+    if (Model.TotalOrders > 0)
+    {
+        lastPage = (int)Math.Ceiling((double)Model.TotalOrders / Model.OrdersPerPage);
+    }
+}
+
+<h1 class="text-center my-4">Order Management</h1>
+
+<form method="get" id="orderForm">
+    <div class="container my-5">
+        <div class="row border border-primary align-items-center p-2" style="margin-top:45px">
+            <div class="col-sm-4 mb-2 mb-sm-0">
+                <select asp-for="Sorting" class="form-select" onchange="this.form.submit()">
+                    <option value="" hidden selected>@MainLocalization.OrderQueryViewModel_NoSorting</option>
+                    @foreach (var sortingOption in Model.Sortings)
+                    {
+                        <option value="@(sortingOption.Sorting)">@sortingOption.DisplayText</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-2 mb-2 mb-sm-0">
+                <select asp-for="OrdersPerPage" class="form-select" onchange="this.form.submit()"
+                        onclick="InvalidatePaging()">
+                    @foreach (var pageOption in Model.Pages)
+                    {
+                        <option value="@(pageOption.Size)">@(pageOption.SizeDisplayText)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-3 mb-2 mb-sm-0">
+                <select asp-for="StatusFilter" class="form-select" onchange="this.form.submit()">
+
+                    @foreach (var statusOption in Html.GetEnumSelectList<OrderStatusFilter>())
+                    {
+                        <option value="@statusOption.Value">@statusOption.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-3 d-flex justify-content-end">
+                <input type="hidden" asp-for="@Model.CurrentPage" id="CurrentPageComp"/>
+                <ul class="pagination mb-0">
+                    <li class="page-item">
+                        <button class="btn btn-primary" @(Model.CurrentPage == 1 ? "disabled" : string.Empty)
+                                name="Pagination"
+                                value="Previous"
+                                type="button"
+                                onclick="ChangePage(@(Model.CurrentPage > 1 ? Model.CurrentPage - 1 : 1))"
+                                id="btnPrevious">
+                            @MainLocalization.ProductAll_PreviousPage
+                        </button>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
+                    <li class="page-item">
+                        @{
+                            string enableNextButton = String.Empty;
+
+                            if (Model.TotalOrders == 0 || Model.CurrentPage == lastPage)
+                            {
+                                enableNextButton = "disabled";
+                            }
+                        }
+                        <button class="btn btn-primary" @(enableNextButton)
+                                name="Pagination" value="Next"
+                                type="button"
+                                onclick="ChangePage(@(Model.CurrentPage + 1))"
+                                id="btnNext">
+                            @MainLocalization.ProductAll_NextPage
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered align-middle">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="text-center"></th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OrderId)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Username)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().DateCreated)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().DateDelivered)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OnlinePaymentStatus)</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.Orders != null && Model.Orders.Any())
+                        {
+                            @foreach (var item in Model.Orders)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <a asp-controller="Order" asp-action="EditOrder" asp-route-id="@item.OrderId"
+                                           class="btn btn-sm btn-outline-primary" title="Edit Order">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.121l6.212-6.212zm-2.506 2.506-2 2L5.439 12.41a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.121l6.212-6.212zm-2.506 2.506-2 2L5.439 12.41a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.121l6.212-6.212z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M12.854 1.146a.5.5 0 0 0-.707 0L10.5 1.793 11.207 2.5l1.647-1.646a.5.5 0 0 0 0-.708l-.708-.707zm-.646 6.061-2.506-2.505L9.504 2.15 11.99 4.655l-2.504 2.506z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>@item.OrderId</td>
+                                    <td>@item.Username</td>
+                                    <td>@item.DateCreated.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@(item.DateDelivered?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
+                                    <td>@(item.OnlinePaymentStatus?.ToString() ?? "N/A")</td>
+                                    <td>@item.Status</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">No orders found.</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="submit" hidden/>
+</form>
+
+@section Scripts
+{
+    <script>
+        const ChangePage = function (currentPage) {
+            $("#CurrentPageComp").val(currentPage);
+            $("#orderForm").submit();
+        }
+
+        const InvalidatePaging = function () {
+            $("#btnNext").prop("disabled", true);
+            $("#btnPrevious").prop("disabled", true);
+            $("#CurrentPageComp").val(1);
+        }
+    </script>
+}

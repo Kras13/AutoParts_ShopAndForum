@@ -3,6 +3,8 @@ namespace AutoParts_ShopAndForum.Core.Models.Order;
 public class OrderModel
 {
     public int Id { get; set; }
+
+    public string Username { get; set; }
     
     public Guid PublicToken { get; set; }
 

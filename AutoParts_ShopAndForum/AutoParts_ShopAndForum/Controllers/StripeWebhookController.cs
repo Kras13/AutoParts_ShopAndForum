@@ -21,31 +21,36 @@ public class StripeWebhookController(IConfiguration config, IOrderService orderS
             var signatureHeader = Request.Headers["Stripe-Signature"];
             var stripeEvent = EventUtility.ConstructEvent(stripeContent, signatureHeader, endpointSecret);
             
-            if (stripeEvent.Type == EventTypes.CheckoutSessionCompleted)
+            switch (stripeEvent.Type)
             {
-                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
-                var orderToken = session?.Metadata["orderToken"];
+                case EventTypes.CheckoutSessionCompleted:
+                {
+                    var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                    var orderToken = session?.Metadata["orderToken"];
 
-                if (orderToken == null || Guid.TryParse(orderToken, out var orderTokenParsed))
-                    return BadRequest();
+                    if (orderToken == null || Guid.TryParse(orderToken, out var orderTokenParsed))
+                        return BadRequest();
 
-                _ = orderService.MarkOnlinePaymentAsSuccessful(orderTokenParsed);
-            }
-            else if (stripeEvent.Type == EventTypes.CheckoutSessionExpired ||
-                     stripeEvent.Type == EventTypes.CheckoutSessionAsyncPaymentFailed)
-            {
-                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
-                var orderToken = session?.Metadata["orderToken"];
+                    _ = orderService.MarkOnlinePaymentAsSuccessful(orderTokenParsed);
+                    break;
+                }
+                case EventTypes.CheckoutSessionExpired:
+                case EventTypes.CheckoutSessionAsyncPaymentFailed:
+                {
+                    var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                    var orderToken = session?.Metadata["orderToken"];
 
-                if (orderToken == null || Guid.TryParse(orderToken, out var orderTokenParsed))
-                    return BadRequest();
+                    if (orderToken == null || Guid.TryParse(orderToken, out var orderTokenParsed))
+                        return BadRequest();
 
-                _ = orderService.MarkOnlinePaymentAsCancelled(orderTokenParsed);
+                    _ = orderService.MarkOnlinePaymentAsCancelled(orderTokenParsed);
+                    break;
+                }
             }
 
             return Ok();
         }
-        catch (StripeException e)
+        catch (StripeException)
         {
             return BadRequest();
         }

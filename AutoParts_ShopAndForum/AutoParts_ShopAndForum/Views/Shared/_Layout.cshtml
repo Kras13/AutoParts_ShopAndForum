@@ -33,7 +33,7 @@
                         </a>
                     </li>
 
-                    @if (this.User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated == true)
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">
@@ -43,7 +43,7 @@
                     }
                 </ul>
                 <ul class="navbar-nav">
-                    @if (this.User.IsAdmin() || this.User.IsSeller())
+                    @if (User.IsAdmin() || User.IsSeller())
                     {
                         <div class="dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -64,6 +64,17 @@
                                         @MainLocalization.ForecastProduct_Navigation
                                     </a>
                                 </li>
+
+                                @if (User.IsAdmin())
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Administrator" asp-controller="Order"
+                                           asp-action="Index">
+                                            @MainLocalization.AdminOrders_Navigation
+                                        </a>
+                                    </li>
+                                }
+
                             </ul>
                         </div>
                     }

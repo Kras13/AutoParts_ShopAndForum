@@ -228,4 +228,40 @@
     <data name="AdminPanel_Navigation" xml:space="preserve">
         <value>Админ панел</value>
     </data>
+    <data name="OrderStatus_Delivered" xml:space="preserve">
+        <value>Доставена</value>
+    </data>
+    <data name="OrderStatus_Pending" xml:space="preserve">
+        <value>В процес на доставка</value>
+    </data>
+    <data name="OrderStatus_FailedOnlinePayment" xml:space="preserve">
+        <value>Неуспешно онлайн заплащане</value>
+    </data>
+    <data name="OrderQueryViewModel_AllPages" xml:space="preserve">
+        <value>Всички</value>
+    </data>
+    <data name="OrderQueryViewModel_NoSorting" xml:space="preserve">
+        <value>Без сортиране</value>
+    </data>
+    <data name="OrderQueryViewModel_TotalAscending" xml:space="preserve">
+        <value>Крайна цена - възходящ</value>
+    </data>
+    <data name="OrderQueryViewModel_TotalDescending" xml:space="preserve">
+        <value>Крайна цена - низходящ</value>
+    </data>
+    <data name="OrderQueryViewModel_DateCreatedAscending" xml:space="preserve">
+        <value>Дата на създаване - възходящ</value>
+    </data>
+    <data name="OrderQueryViewModel_DateCreatedDescending" xml:space="preserve">
+        <value>Дата на създаване - низходящ</value>
+    </data>
+    <data name="OrderQueryViewModel_DateDeliveredAscending" xml:space="preserve">
+        <value>Дата на доставяне - възходящ</value>
+    </data>
+    <data name="OrderQueryViewModel_DateDeliveredDescending" xml:space="preserve">
+        <value>Дата на доставяне - низходящ</value>
+    </data>
+    <data name="AdminOrders_Navigation" xml:space="preserve">
+        <value>Поръчки</value>
+    </data>
 </root>

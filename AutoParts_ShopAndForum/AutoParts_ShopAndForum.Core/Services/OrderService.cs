@@ -7,20 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoParts_ShopAndForum.Core.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService(ApplicationDbContext context, IOrderNotification orderNotification)
+        : IOrderService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IOrderNotification _orderNotification;
-
-        public OrderService(ApplicationDbContext context, IOrderNotification orderNotification)
-        {
-            _context = context;
-            _orderNotification = orderNotification;
-        }
-
         public OrderPagedModel GetAllByUserId(string userId, int pageNumber, int pageSize)
         {
-            var userOrders = _context.Orders
+            var userOrders = context.Orders
                 .Include(u => u.User)
                 .Include(t => t.Town)
                 .Include(o => o.OrderProducts)
@@ -28,14 +20,14 @@ namespace AutoParts_ShopAndForum.Core.Services
                 .OrderBy(x => x.Id)
                 .Where(u => u.UserId == userId)
                 .AsQueryable();
-            
+
             var totalOrders = userOrders.Count();
             var orders = userOrders
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize).ToList()
                 .Select(OrderModelProjection)
                 .ToArray();
-            
+
             return new OrderPagedModel
             {
                 TotalProductsWithoutPagination = totalOrders,
@@ -47,7 +39,7 @@ namespace AutoParts_ShopAndForum.Core.Services
             ref ICollection<ProductCartModel> cart, OrderInputModel inputModel)
         {
             var order = new Order();
-            
+
             Infrastructure.Data.Models.OnlinePaymentStatus? onlinePaymentStatus = null;
 
             if (inputModel.PayWay == Models.Order.OrderPayWay.OnlinePayment)
@@ -59,18 +51,18 @@ namespace AutoParts_ShopAndForum.Core.Services
 
             if (inputModel.DeliveryMethod == Models.Order.DeliveryMethod.PersonalTake)
                 courierStatioId = inputModel.CourierStationId;
-            
-            var town = _context.Towns.FirstOrDefault(t => t.Id == inputModel.TownId);
-            
+
+            var town = context.Towns.FirstOrDefault(t => t.Id == inputModel.TownId);
+
             if (town == null)
                 throw new ArgumentException("Invalid town");
-            
-            var user = _context.Users.FirstOrDefault(u => u.Id == inputModel.UserId);
+
+            var user = context.Users.FirstOrDefault(u => u.Id == inputModel.UserId);
 
             if (user == null)
                 throw new ArgumentException("Invalid user");
-            
-            using (var transaction = _context.Database.BeginTransaction())
+
+            using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
@@ -92,7 +84,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                         InvoiceAddress = inputModel.InvoiceAddress,
                     };
 
-                    order = _context.Orders.Add(order).Entity;
+                    order = context.Orders.Add(order).Entity;
 
                     foreach (var product in cart)
                     {
@@ -103,9 +95,9 @@ namespace AutoParts_ShopAndForum.Core.Services
                             Quantity = product.Quantity
                         });
                     }
-                    
-                    _orderNotification.SendNotification();
-                    _context.SaveChanges();
+
+                    orderNotification.SendNotification();
+                    context.SaveChanges();
 
                     transaction.Commit();
                 }
@@ -122,14 +114,16 @@ namespace AutoParts_ShopAndForum.Core.Services
 
         public OrderModel FindByPublicToken(Guid orderToken)
         {
-            return _context.Orders
+            return context.Orders
+                .Include(o => o.Town)
+                .Include(o => o.User)
                 .Select(OrderModelProjection)
                 .FirstOrDefault(o => o.PublicToken == orderToken);
         }
 
         public int MarkOnlinePaymentAsSuccessful(Guid orderToken)
         {
-            var order = _context.Orders
+            var order = context.Orders
                 .FirstOrDefault(o => o.PublicToken == orderToken);
 
             if (order == null)
@@ -139,15 +133,15 @@ namespace AutoParts_ShopAndForum.Core.Services
                 throw new InvalidOperationException("Selected order is not registered for online payment.");
 
             order.OnlinePaymentStatus = Infrastructure.Data.Models.OnlinePaymentStatus.SuccessfullyPaid;
-            
-            _context.SaveChanges();
-            
+
+            context.SaveChanges();
+
             return order.Id;
         }
 
         public int MarkOnlinePaymentAsCancelled(Guid orderToken)
         {
-            var order = _context.Orders
+            var order = context.Orders
                 .FirstOrDefault(o => o.PublicToken == orderToken);
 
             if (order == null)
@@ -157,15 +151,15 @@ namespace AutoParts_ShopAndForum.Core.Services
                 throw new InvalidOperationException("Selected order is not registered for online payment.");
 
             order.OnlinePaymentStatus = Infrastructure.Data.Models.OnlinePaymentStatus.Cancelled;
-            
-            _context.SaveChanges();
-            
+
+            context.SaveChanges();
+
             return order.Id;
         }
 
         public OrderDetailsModel GetOrderDetails(int orderId, string userId)
         {
-            var order = _context.Orders
+            var order = context.Orders
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
                 .Include(o => o.Town)
@@ -201,6 +195,55 @@ namespace AutoParts_ShopAndForum.Core.Services
             };
         }
 
+        public OrderQueryModel GetQueried(
+            int currentPage, int ordersPerPage, OrdersSorting sorting, OrderStatusFilter statusFilter)
+        {
+            var entities = context.Orders
+                .Include(t => t.Town)
+                .Include(t => t.User)
+                .Select(OrderModelProjection)
+                .AsQueryable();
+
+            var skipOrdersIndex = ordersPerPage;
+            var entitiesToTake = ordersPerPage;
+            var totalEntities = entities.Count();
+
+            if (ordersPerPage == IOrderService.AllOrders)
+            {
+                skipOrdersIndex = 0;
+                entitiesToTake = totalEntities;
+            }
+
+            entities = sorting switch
+            {
+                OrdersSorting.NoSorting => entities.OrderBy(o => o.Id),
+                OrdersSorting.OverallSumAscending => entities.OrderBy(o => o.OverallSum),
+                OrdersSorting.OverallSumDescending => entities.OrderByDescending(o => o.OverallSum),
+                OrdersSorting.DateCreatedAscending => entities.OrderBy(o => o.DateCreated),
+                OrdersSorting.DateCreatedDescending => entities.OrderByDescending(o => o.DateCreated),
+                OrdersSorting.DateDeliveredAscending => entities.OrderBy(o => o.DateDelivered),
+                OrdersSorting.DateDeliveredDescending => entities.OrderByDescending(o => o.DateDelivered),
+                _ => throw new ArgumentOutOfRangeException(nameof(sorting), sorting, null)
+            };
+            
+            entities = statusFilter switch
+            {
+                OrderStatusFilter.All => entities,
+                OrderStatusFilter.Pending => entities.Where(e => !e.DateDelivered.HasValue),
+                OrderStatusFilter.Delivered => entities.Where(e => e.DateDelivered.HasValue),
+                _ => throw new ArgumentOutOfRangeException(nameof(statusFilter), statusFilter, null)
+            };
+
+            return new OrderQueryModel
+            {
+                TotalOrdersWithoutPagination = totalEntities,
+                Orders = entities
+                    .Skip((currentPage - 1) * skipOrdersIndex)
+                    .Take(entitiesToTake)
+                    .ToArray(),
+            };
+        }
+
         private OrderModel OrderModelProjection(Order order)
         {
             return new OrderModel
@@ -216,6 +259,7 @@ namespace AutoParts_ShopAndForum.Core.Services
                 DateDelivered = order.DateDelivered,
                 DeliveryStreet = order.DeliveryStreet,
                 Town = order.Town?.Name,
+                Username = order.User?.UserName
             };
         }
 
@@ -224,72 +268,60 @@ namespace AutoParts_ShopAndForum.Core.Services
         {
             if (!onlinePaymentStatus.HasValue)
                 return null;
-            
-            switch (onlinePaymentStatus)
+
+            return onlinePaymentStatus switch
             {
-                case Infrastructure.Data.Models.OnlinePaymentStatus.Pending:
-                    return Models.Order.OnlinePaymentStatus.Pending;
-                case Infrastructure.Data.Models.OnlinePaymentStatus.Cancelled:
-                    return Models.Order.OnlinePaymentStatus.Cancelled;
-                case Infrastructure.Data.Models.OnlinePaymentStatus.SuccessfullyPaid:
-                    return Models.Order.OnlinePaymentStatus.SuccessfullyPaid;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(onlinePaymentStatus), onlinePaymentStatus, null);
-            }
+                Infrastructure.Data.Models.OnlinePaymentStatus.Pending => Models.Order.OnlinePaymentStatus.Pending,
+                Infrastructure.Data.Models.OnlinePaymentStatus.Cancelled => Models.Order.OnlinePaymentStatus.Cancelled,
+                Infrastructure.Data.Models.OnlinePaymentStatus.SuccessfullyPaid => Models.Order.OnlinePaymentStatus
+                    .SuccessfullyPaid,
+                _ => throw new ArgumentOutOfRangeException(nameof(onlinePaymentStatus), onlinePaymentStatus, null)
+            };
         }
-        
+
         private Core.Models.Order.DeliveryMethod FromDbDeliveryMethod(
             Infrastructure.Data.Models.DeliveryMethod deliveryMethod)
         {
-            switch (deliveryMethod)
+            return deliveryMethod switch
             {
-                case Infrastructure.Data.Models.DeliveryMethod.DeliverToAddress:
-                    return Models.Order.DeliveryMethod.DeliverToAddress;
-                case Infrastructure.Data.Models.DeliveryMethod.PersonalTake:
-                    return Models.Order.DeliveryMethod.PersonalTake;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(deliveryMethod), deliveryMethod, null);
-            }
+                Infrastructure.Data.Models.DeliveryMethod.DeliverToAddress => Models.Order.DeliveryMethod
+                    .DeliverToAddress,
+                Infrastructure.Data.Models.DeliveryMethod.PersonalTake => Models.Order.DeliveryMethod.PersonalTake,
+                _ => throw new ArgumentOutOfRangeException(nameof(deliveryMethod), deliveryMethod, null)
+            };
         }
 
         private Core.Models.Order.OrderPayWay FromDbPayWay(Infrastructure.Data.Models.OrderPayWay payWay)
         {
-            switch (payWay)
+            return payWay switch
             {
-                case Infrastructure.Data.Models.OrderPayWay.CashOnDelivery:
-                    return Models.Order.OrderPayWay.CashOnDelivery;
-                case Infrastructure.Data.Models.OrderPayWay.OnlinePayment:
-                    return Models.Order.OrderPayWay.OnlinePayment;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(payWay), payWay, null);
-            }
+                Infrastructure.Data.Models.OrderPayWay.CashOnDelivery => Models.Order.OrderPayWay.CashOnDelivery,
+                Infrastructure.Data.Models.OrderPayWay.OnlinePayment => Models.Order.OrderPayWay.OnlinePayment,
+                _ => throw new ArgumentOutOfRangeException(nameof(payWay), payWay, null)
+            };
         }
 
         private Infrastructure.Data.Models.OrderPayWay PayWayToDb(Models.Order.OrderPayWay inputModelPayWay)
         {
-            switch (inputModelPayWay)
+            return inputModelPayWay switch
             {
-                case Models.Order.OrderPayWay.CashOnDelivery:
-                    return Infrastructure.Data.Models.OrderPayWay.CashOnDelivery;
-                case Models.Order.OrderPayWay.OnlinePayment:
-                    return Infrastructure.Data.Models.OrderPayWay.OnlinePayment;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(inputModelPayWay), inputModelPayWay, null);
-            }
+                Models.Order.OrderPayWay.CashOnDelivery => Infrastructure.Data.Models.OrderPayWay.CashOnDelivery,
+                Models.Order.OrderPayWay.OnlinePayment => Infrastructure.Data.Models.OrderPayWay.OnlinePayment,
+                _ => throw new ArgumentOutOfRangeException(nameof(inputModelPayWay), inputModelPayWay, null)
+            };
         }
 
         private Infrastructure.Data.Models.DeliveryMethod DeliveryMethodToDb(
             Models.Order.DeliveryMethod inputModelDeliveryMethod)
         {
-            switch (inputModelDeliveryMethod)
+            return inputModelDeliveryMethod switch
             {
-                case Models.Order.DeliveryMethod.DeliverToAddress:
-                    return Infrastructure.Data.Models.DeliveryMethod.DeliverToAddress;
-                case Models.Order.DeliveryMethod.PersonalTake:
-                    return Infrastructure.Data.Models.DeliveryMethod.PersonalTake;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(inputModelDeliveryMethod), inputModelDeliveryMethod, null);
-            }
+                Models.Order.DeliveryMethod.DeliverToAddress => Infrastructure.Data.Models.DeliveryMethod
+                    .DeliverToAddress,
+                Models.Order.DeliveryMethod.PersonalTake => Infrastructure.Data.Models.DeliveryMethod.PersonalTake,
+                _ => throw new ArgumentOutOfRangeException(nameof(inputModelDeliveryMethod), inputModelDeliveryMethod,
+                    null)
+            };
         }
     }
 }
