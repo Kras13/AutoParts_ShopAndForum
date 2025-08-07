@@ -146,6 +146,10 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Core
                 .Entity<Order>()
                 .Property(o => o.OverallSum)
                 .HasPrecision(14, 2);
+            
+            builder.Entity<Order>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CC_Orders_DeliveryDate", "([IsDelivered] = 0 OR [DateDelivered] IS NOT NULL)"));
 
             //builder
             //    .Entity<Order>()
