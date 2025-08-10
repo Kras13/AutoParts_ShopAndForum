@@ -52,12 +52,13 @@
 			container.empty();
 
 			availableSellers.forEach(user => {
-				if (user.id === currentUserId) return;
+				if (user.id === currentUserId) 
+					return;
 
-				const userDiv = $(`<div class="staff-entry" tabindex="0">${user.name}</div>`);
+				const userDiv = $(`<div class="staff-entry" tabindex="0">${user.email}</div>`);
 
 				userDiv.on("dblclick", function () {
-					startChat(user.id, user.name);
+					startChat(user.id, user.email);
 				});
 
 				container.append(userDiv);

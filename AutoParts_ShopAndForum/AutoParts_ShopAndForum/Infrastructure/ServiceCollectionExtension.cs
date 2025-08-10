@@ -1,5 +1,6 @@
 ﻿using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Services;
+using AutoParts_ShopAndForum.Hub;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -54,7 +55,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 .AddTransient<ICommentService, CommentService>()
                 .AddTransient<IOrderService, OrderService>()
                 .AddTransient<ICourierStationService, CourierStationService>()
-                .AddTransient<IOrderNotification, OrderNotification>();
+                .AddTransient<IOrderNotification, OrderNotification>()
+                .AddTransient<IChatService, ChatService>();
 
             return services;
         }
