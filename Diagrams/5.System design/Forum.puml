@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+title Поток на данни във форума
+
+actor "Регистриран\nпотребител" as User
+participant "Браузър" as Browser
+participant "Уеб Приложение\n(.NET MVC)" as WebApp
+participant "База данни\n(SQL Server)" as DB
+
+User -> Browser : Отваря страница на форум
+Browser -> WebApp : HTTP GET /Forum
+activate WebApp
+WebApp -> DB : Извличане на категории и постове
+activate DB
+DB --> WebApp : Връща данни
+deactivate DB
+WebApp --> Browser : Показва страницата
+deactivate WebApp
+
+alt Създаване на нов пост
+    User -> Browser : Натиска "Създай пост"
+    Browser -> WebApp : HTTP POST /Forum/CreatePost (с данни)
+    activate WebApp
+    WebApp -> DB : Запис на нов пост
+    activate DB
+    DB --> WebApp : Успешен запис
+    deactivate DB
+    WebApp --> Browser : Връща към форумната страница
+    deactivate WebApp
+else Създаване на коментар
+    User -> Browser : Избира пост
+    Browser -> WebApp : HTTP GET /Forum/PostDetails/{id}
+    activate WebApp
+    WebApp -> DB : Извличане на пост и коментари
+    activate DB
+    DB --> WebApp : Връща данни
+    deactivate DB
+    WebApp --> Browser : Показва детайли на поста
+    deactivate WebApp
+
+    User -> Browser : Натиска "Коментирай" (на пост или друг коментар)
+    Browser -> WebApp : HTTP POST /Forum/AddComment (с данни)
+    activate WebApp
+    note right
+    Ако е коментар към друг коментар,
+    ще има и ParentId.
+    end note
+    WebApp -> DB : Запис на коментар
+    activate DB
+    DB --> WebApp : Успешен запис
+    deactivate DB
+    WebApp --> Browser : Връща към страницата на поста
+    deactivate WebApp
+end
+@enduml
