@@ -116,7 +116,7 @@
 			appendMyMessage(message);
 			messageBox.scrollTop(messageBox[0].scrollHeight);
 
-			connection.invoke("SendPrivateMessage", currentUserId, currentChatUserId, message)
+			connection.invoke("SendPrivateMessage", currentChatUserId, message)
 				.catch(err => console.error(err.toString()));
 			
 			messageInput.val('');
