@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+title Поток на данни при прогнозиране на продажби
+
+actor "Администратор/Продавач" as AdminOrSeller
+participant "Браузър" as Browser
+participant "Уеб Приложение\n(.NET MVC)" as WebApp
+participant "API за Прогнозиране\n(Python FastAPI)" as PredictionAPI
+
+AdminOrSeller -> Browser : Натиска бутон "Прогнозиране"
+Browser -> WebApp : HTTP POST /Forecast (с данни за продукт и година)
+activate WebApp
+
+WebApp -> PredictionAPI : HTTP POST /predict/yearly
+note right
+Изпраща JSON с:
+- product_id
+- year
+end note
+activate PredictionAPI
+
+PredictionAPI -> PredictionAPI : Извличане и зареждане на модел
+PredictionAPI -> PredictionAPI : Извършване на прогноза
+PredictionAPI --> WebApp : Връща JSON с прогнози
+deactivate PredictionAPI
+
+WebApp --> Browser : Връща страница с прогноза
+deactivate WebApp
+
+Browser -> AdminOrSeller : Показва резултата
+@enduml

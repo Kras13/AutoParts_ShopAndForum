@@ -1,0 +1,38 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Нерегистриран\nпотребител" as Anonymous
+actor "Регистриран\nпотребител" as User
+actor "Продавач" as Seller
+actor "Администратор" as Admin
+
+rectangle "Система за електронна търговия" {
+    usecase "Разглеждане на каталог" as UC1
+    usecase "Разглеждане на форум" as UC2
+    usecase "Закупуване на продукт" as UC3
+    usecase "Участие във форум" as UC4
+    usecase "Използване на онлайн чат" as UC5
+    usecase "Управление на каталог" as UC6
+    usecase "Преглед на прогнози" as UC7
+    usecase "Управление на доставки" as UC8
+    usecase "Управление на потребителски роли" as UC9
+}
+
+Anonymous --> UC1
+Anonymous --> UC2
+
+User --|> Anonymous
+User --> UC3
+User --> UC4
+User --> UC5
+
+Seller --|> User
+Seller --> UC6
+Seller --> UC7
+
+Admin --|> Seller
+Admin --> UC8
+Admin --> UC9
+@enduml

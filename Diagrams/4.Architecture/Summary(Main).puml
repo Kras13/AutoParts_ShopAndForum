@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+!pragma layout smetana
+
+cloud "Потребител" as User
+
+rectangle "Docker Стек" {
+  [Уеб Приложение\n(.NET MVC)] as WebApp_Container
+  [API за Прогнозиране\n(Python FastAPI)] as Python_Container
+  [База Данни\n(SQL Server)] as DB_Container
+
+  WebApp_Container -- DB_Container : EF Core
+  WebApp_Container --> Python_Container : HTTP POST (за прогнозиране)
+  Python_Container -- DB_Container : pymssql
+}
+
+User -left-> WebApp_Container : HTTP/HTTPS заявки
+
+footer "Диаграма на общата архитектура на системата"
+@enduml

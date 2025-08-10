@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+title Поток на данни при закупуване на продукт
+
+actor "Регистриран\nпотребител" as User
+participant "Браузър" as Browser
+participant "Уеб Приложение\n(.NET MVC)" as WebApp
+participant "База данни\n(SQL Server)" as DB
+participant "Stripe API" as Stripe
+
+User -> Browser : Преглед на количка и данни за поръчка
+Browser -> WebApp : HTTP POST /Checkout (финализиране на поръчка)
+WebApp -> DB : Създаване на поръчка
+    activate DB
+    DB --> WebApp : Поръчката е запазена
+    deactivate DB
+activate WebApp
+
+alt Онлайн плащане (Stripe)
+    WebApp -> Stripe : Създаване на сесия за плащане
+    activate Stripe
+    Stripe --> WebApp : Връща сесия за плащане
+    deactivate Stripe
+    WebApp -> Browser : Редирект към Stripe
+    Browser -> Stripe : Потребителят извършва плащане
+    Stripe --> Browser : Успешно плащане
+    Browser -> WebApp : Редирект с успех
+    WebApp -> DB : Създаване на поръчка и актуализация на статуса
+    activate DB
+    DB --> WebApp : Поръчката е запазена
+    deactivate DB
+end
+
+WebApp -> Browser : Връща страница за успех
+deactivate WebApp
+Browser -> User : Показва потвърждение
+@enduml

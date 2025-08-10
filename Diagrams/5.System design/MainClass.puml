@@ -1,0 +1,125 @@
+@startuml
+!theme plain
+hide circle
+left to right direction
+
+' Classes
+class User {
+    - Id : string
+    - FirstName : string
+    - LastName : string
+    - UserName : string
+    - Email : string
+    - TownId : int
+}
+
+class Town {
+    - Id : int
+    - Name : string
+    - PostCode : string
+    - IsCity : bool
+}
+
+class Product {
+    - Id : int
+    - Name : string
+    - ImageUrl : string
+    - Price : decimal
+    - Description : string
+    - SubcategoryId : int
+    - CreatorId : string
+}
+
+class ProductCategory {
+    - Id : int
+    - Name : string
+    - ImageUrl : string
+}
+
+class ProductSubcategory {
+    - Id : int
+    - Name : string
+    - CategoryId : int
+}
+
+class Order {
+    - Id : int
+    - PublicToken : Guid
+    - OverallSum : decimal
+    - DateCreated : DateTime
+    - DateDelivered : DateTime?
+    - IsDelivered : bool
+    - DeliveryMethod : DeliveryMethod
+    - PayWay : OrderPayWay
+    - OnlinePaymentStatus : OnlinePaymentStatus?
+    - DeliveryStreet : string
+    - TownId : int
+    - CourierStationId : int?
+    - InvoicePersonFirstName : string
+    - InvoicePersonLastName : string
+    - InvoiceAddress : string
+    - UserId : string
+}
+
+class OrderProduct {
+    - Id : int
+    - OrderId : int
+    - ProductId : int
+    - Quantity : int
+    - SinglePrice : decimal
+}
+
+class Post {
+    - Id : int
+    - Title : string
+    - Content : string
+    - CreatorId : string
+    - PostCategoryId : int
+    - CreatedOn : DateTime
+}
+
+class PostCategory {
+    - Id : int
+    - Name : string
+    - Description : string
+    - ImageUrl : string
+}
+
+class Comment {
+    - Id : int
+    - Content : string
+    - CreatedOn : DateTime
+    - PostId : int
+    - ParentId : int?
+    - UserId : string
+}
+
+class CourierStation {
+    - Id : int
+    - Title : string
+    - FullAddress : string
+    - TownId : int
+    - Type : CourierStationType
+    - Firm : CourierStationFirm
+}
+
+' Relationships
+User "1" -- "0..*" Order : has
+User "1" -- "0..*" Post : creates
+User "1" -- "0..*" Comment : creates
+User "1" -- "0..*" Product : creates
+User "1" -- "0..*" Town : lives_in
+Town "1" -- "0..*" User : has
+Town "1" -- "0..*" Order : has
+Town "1" -- "0..*" CourierStation : has
+ProductCategory "1" -- "0..*" ProductSubcategory : has
+ProductSubcategory "1" -- "0..*" Product : has
+Product "1" -- "0..*" OrderProduct : *
+Order "1" -- "0..*" OrderProduct : *
+PostCategory "1" -- "0..*" Post : has
+Post "1" -- "0..*" Comment : has
+Comment "1" -- "0..*" Comment : has_parent
+Order "1" -- "1" Town : is_in
+Order "1" -- "0..1" CourierStation : uses
+CourierStation "1" -- "1" Town : is_in
+@enduml

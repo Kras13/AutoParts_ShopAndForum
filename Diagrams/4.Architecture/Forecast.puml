@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+title Поток на данни при прогнозиране на продажби
+
+actor "Администратор/Продавач" as Admin
+participant "Уеб Приложение\n(.NET MVC)" as WebApp
+participant "API за Прогнозиране\n(Python FastAPI)" as PredictionAPI
+database "База данни\n(SQL Server)" as DB
+
+Admin -> WebApp : Иска прогноза за продукт (GET /Forecast)
+activate WebApp
+
+WebApp -> PredictionAPI : HTTP POST /predict
+note right
+Изпраща данни:
+- product_id
+- month
+- year
+end note
+activate PredictionAPI
+
+PredictionAPI -> PredictionAPI : Зарежда обучен модел
+PredictionAPI -> PredictionAPI : Извършва прогноза
+note right
+Използва модела
+и подадените данни
+end note
+
+PredictionAPI --> WebApp : Връща JSON с прогноза
+deactivate PredictionAPI
+
+WebApp --> Admin : Показва резултата
+deactivate WebApp
+@enduml

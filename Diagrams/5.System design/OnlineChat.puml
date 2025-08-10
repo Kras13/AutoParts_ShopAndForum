@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+title Поток на данни при онлайн чат (SignalR)
+
+actor "Регистриран\nпотребител" as User
+participant "Браузър" as Browser
+participant "SignalR Hub\n(ChatHub)" as Hub
+participant "Уеб Приложение\n(.NET MVC)" as WebApp
+participant "Администратор/Продавач" as AdminOrSeller
+
+User -> Browser : Отваря "Онлайн поддръжка"
+Browser -> Hub : Установява SignalR връзка
+activate Hub
+
+Hub -> Browser : Изпраща списък с налични Admin/Seller
+note right
+Списъкът се обновява
+автоматично при промяна.
+end note
+
+User -> Browser : Избира Admin/Seller (двоен клик)
+Browser -> Hub : Изпраща заявка за стартиране на чат
+activate WebApp
+
+Hub -> WebApp : Обработка на заявка за чат
+WebApp -> WebApp : Създава чат сесия и я заключва
+WebApp -> Hub : Изпраща съобщение за зает Admin/Seller
+Hub -> Browser : Обновява списъка за всички потребители
+
+WebApp -> Hub : Изпраща известие за чат
+Hub -> AdminOrSeller : Известие за нов чат
+
+AdminOrSeller -> AdminOrSeller : Отваря се чата
+AdminOrSeller -> Hub : Изпраща съобщение
+Hub -> Browser : Изпраща съобщение към User
+Browser -> User : Показва съобщението
+@enduml

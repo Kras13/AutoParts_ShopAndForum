@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+title Поток на данни при MVC заявка
+
+actor "Потребител" as User
+participant "Браузър" as Browser
+participant "Контролер\n(ProductsController)" as Controller
+participant "Модел\n(ProductService)" as Model
+database "База данни\n(SQL Server)" as DB
+
+User -> Browser : Заявка за страница с продукти
+Browser -> Controller : HTTP GET /Products/Index
+activate Controller
+
+Controller -> Model : Извличане на списък с продукти
+activate Model
+Model -> DB : SELECT * FROM Products
+activate DB
+DB --> Model : Връща данни за продукти
+deactivate DB
+
+Model --> Controller : Връща списък с продукти
+deactivate Model
+
+Controller -> Browser : Връща "View" с продукти
+deactivate Controller
+Browser -> User : Показва страницата с продукти
+@enduml
