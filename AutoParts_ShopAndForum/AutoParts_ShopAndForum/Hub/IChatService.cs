@@ -10,7 +10,7 @@ public interface IChatService
     bool TryDeclineChatRequest(string initiatorId, out string sellerId);
     
     bool TryStartPrivateChat(string initiatorId, string sellerId);
-    bool TryEndPrivateChat(string sellerId);
+    bool TryEndPrivateChat(string sellerId, out string initiatorId);
     string TryEndPrivateChatBySeller(string sellerConnectionId);
     
     IEnumerable<ChatUser> GetAvailableSellers();

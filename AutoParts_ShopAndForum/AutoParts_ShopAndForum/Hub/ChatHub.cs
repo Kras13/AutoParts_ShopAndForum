@@ -126,14 +126,19 @@ public class ChatHub : Hub
         return result;
     }
 
-    public bool EndPrivateChat(string sellerId)
+    public async Task<bool> EndPrivateChat(string sellerId)
     {
-        var result = _chatService.TryEndPrivateChat(sellerId);
+        var result = _chatService.TryEndPrivateChat(sellerId, out var initiatorId);
 
         if (result)
         {
-            _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
+            var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
+            
+            await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
+            
+            await _hubContext.Clients.Clients(sellerConnections)
+                .SendAsync("ReceiveSystemMessage", "Клиентът напусна стаята.");
         }
 
         return result;

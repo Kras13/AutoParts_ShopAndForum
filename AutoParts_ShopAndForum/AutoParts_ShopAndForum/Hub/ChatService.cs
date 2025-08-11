@@ -97,11 +97,11 @@ public class ChatService : IChatService
         }
     }
 
-    public bool TryEndPrivateChat(string sellerId)
+    public bool TryEndPrivateChat(string sellerId, out string initiatorId)
     {
         lock (StateLock)
         {
-            return ReservedSellers.Remove(sellerId);
+            return ReservedSellers.TryGetValue(sellerId, out initiatorId) && ReservedSellers.Remove(sellerId);
         }
     }
 
