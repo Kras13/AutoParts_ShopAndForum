@@ -138,7 +138,7 @@ public class ChatHub : Hub
                 _chatService.GetAvailableSellers());
             
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ReceiveSystemMessage", "Клиентът напусна стаята.");
+                .SendAsync("ChatDeclined", "Клиентът напусна стаята.");
         }
 
         return result;
@@ -153,7 +153,7 @@ public class ChatHub : Hub
             var customerConnections = _chatService.GetConnectionsByUserId(customerId);
 
             await _hubContext.Clients.Clients(customerConnections)
-                .SendAsync("ReceiveSystemMessage", "Продавачът напусна стаята.");
+                .SendAsync("ChatDeclined", "Продавачът напусна стаята.");
 
             await _hubContext.Clients.All.SendAsync("UpdateSellersList", _chatService.GetAvailableSellers());
         }
@@ -167,9 +167,12 @@ public class ChatHub : Hub
         foreach (var expired in expiredRequests)
         {
             var initiatorConnections = _chatService.GetConnectionsByUserId(expired.initiatorId);
+            var sellerConnections = _chatService.GetConnectionsByUserId(expired.sellerId);
             
             await _hubContext.Clients.Clients(initiatorConnections)
                 .SendAsync("ChatDeclined", "Времето за отговор на заявката ви изтече.");
+            await _hubContext.Clients.Clients(sellerConnections)
+                .SendAsync("ChatDeclined", "Времето за отговор изтече.");
 
             hasExpiredRequest = true;
         }

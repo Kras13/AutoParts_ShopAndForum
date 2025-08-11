@@ -80,6 +80,7 @@ connection.on("ChatAccepted", function (otherUserId) {
 });
 
 connection.on("ChatDeclined", function (message) {
+    console.log("Chat declined called");
     clearInterval(timeoutHandle);
     
     $("#chatMessages").empty();
