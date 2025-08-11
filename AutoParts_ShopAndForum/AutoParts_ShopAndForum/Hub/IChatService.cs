@@ -7,7 +7,7 @@ public interface IChatService
     
     bool TryStartChatRequest(string initiatorId, string sellerId);
     bool TryAcceptChatRequest(string initiatorId, string sellerId, out string initiatorEmail);
-    bool TryDeclineChatRequest(string initiatorId);
+    bool TryDeclineChatRequest(string initiatorId, out string sellerId);
     
     bool TryStartPrivateChat(string initiatorId, string sellerId);
     bool TryEndPrivateChat(string sellerId);

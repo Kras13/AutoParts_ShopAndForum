@@ -19,7 +19,13 @@
 
         <div class="card-body chat-messages" id="chatMessages"></div>
 
-        <div class="p-3">
+        <div class="p-3 chat-request-buttons" style="display: none;">
+            <div class="d-flex justify-content-between">
+                <button id="declineBtn" class="btn btn-danger">Откажи</button>
+                <button id="acceptBtn" class="btn btn-success">Приеми</button>
+            </div>
+        </div>
+        <div class="p-3 chat-input-area" style="display: none;">
             <div class="mb-2">
                 <textarea class="form-control bg-body-tertiary" id="messageInput" rows="3"
                           style="resize: none;"></textarea>

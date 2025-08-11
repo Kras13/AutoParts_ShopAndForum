@@ -2,6 +2,7 @@ const currentUserId = document.querySelector("#currentUserId").value;
 const isCurrentUserSeller = document.querySelector("#currentUserSeller").value;
 
 let currentCompanyUserId = null;
+let currentCompanyUsername = null;
 let timeoutHandle = null;
 
 const connection = new signalR.HubConnectionBuilder()
@@ -13,20 +14,88 @@ const connection = new signalR.HubConnectionBuilder()
     })
     .build();
 
+$("#acceptBtn").on("click", function() {
+    connection.invoke("AcceptPrivateChat", currentCompanyUserId).catch(err => console.error(err.toString()));
+});
+
+$("#declineBtn").on("click", function() {
+    connection.invoke("DeclinePrivateChat", currentCompanyUserId).catch(err => console.error(err.toString()));
+});
+
 function startChat(userId, userName) {
     currentCompanyUserId = userId;
+    currentCompanyUsername = userName;
+
     const chatMessages = $("#chatMessages");
+
+    $(".chat-request-buttons").hide();
+    $(".chat-input-area").hide();
 
     $("#liveChat").text(`Live chat with ${userName}`);
     chatMessages.empty();
     $("#chatPopup").fadeIn();
 
     appendSystemMessage(`Моля, изчакайте докато ${userName} приеме вашата заявка...`);
+    startRequestTimer();
+    
+    connection.invoke("RequestPrivateChat", userId).catch(err => console.error(err.toString()));
+}
 
+connection.on("ReceiveChatRequest", function (initiatorId, initiatorUsername) {
+    currentCompanyUserId = initiatorId;
+    currentCompanyUsername = initiatorUsername;
+
+    $(".chat-request-buttons").show();
+    $(".chat-input-area").hide();
+
+    $("#liveChat").text(`Нова заявка от ${initiatorUsername}`);
+    $("#chatMessages").empty();
+    $("#chatPopup").fadeIn();
+
+    appendSystemMessage(`Моля, приемете или откажете заявката...`);
+    startRequestTimer();
+});
+
+connection.on("ChatAccepted", function (otherUserId) {
+    clearInterval(timeoutHandle);
+    
+    const chatMessages = $("#chatMessages");
+
+    $(".chat-request-buttons").hide();
+    $(".chat-input-area").show();
+    
+    if (otherUserId === currentUserId) { // accepted from myself -> admin
+        $("#liveChat").text(`Live chat with ${currentCompanyUsername}`);
+        
+        appendSystemMessage("Заявката е приета. Можете да започнете разговор.");
+    }
+    else {
+        $("#liveChat").text(`Live chat with ${currentCompanyUsername}`);
+        
+        appendSystemMessage("Вашата заявка беше приета. Започвате разговор.");
+    }
+});
+
+connection.on("ChatDeclined", function (message) {
+    clearInterval(timeoutHandle);
+    
+    $("#chatMessages").empty();
+
+    appendSystemMessage(message);
+
+    setTimeout(() => {
+        $("#chatPopup").fadeOut();
+        
+        currentCompanyUserId = null;
+        currentCompanyUsername = null;
+    }, 3000);
+});
+
+function startRequestTimer() {
     let secondsLeft = 10;
 
     const counterElement = $("<div class='text-secondary text-center my-2'>Оставащо време: <span id='timeout-counter'>10</span>s</div>");
-    chatMessages.append(counterElement);
+    $("#chatMessages").append(counterElement);
 
     const updateCounter = () => {
         secondsLeft--;
@@ -37,8 +106,6 @@ function startChat(userId, userName) {
     };
 
     timeoutHandle = setInterval(updateCounter, 1000);
-
-    connection.invoke("RequestPrivateChat", userId).catch(err => console.error(err.toString()));
 }
 
 connection.on("UpdateSellersList", function (availableSellers) {
@@ -61,34 +128,6 @@ connection.on("UpdateSellersList", function (availableSellers) {
 
         container.append(userDiv);
     });
-});
-
-connection.on("ReceiveChatRequest", function (initiatorId, initiatorEmail) {
-    currentCompanyUserId = initiatorId;
-    
-    if (confirm(`Нова заявка за чат от ${initiatorEmail}. Искаш ли да приемеш?`)) {
-        connection.invoke("AcceptPrivateChat", initiatorId).catch(err => console.error(err.toString()));
-    } else {
-        connection.invoke("DeclinePrivateChat", initiatorId).catch(err => console.error(err.toString()));
-    }
-});
-
-connection.on("ChatAccepted", function (sellerEmail) {
-    clearInterval(timeoutHandle);
-
-    $("#chatMessages").empty();
-    $("#chatPopup").fadeIn();    
-    $("#liveChat").text(`Live chat with ${sellerEmail}`);
-});
-
-connection.on("ChatDeclined", function (message) {
-    clearInterval(timeoutHandle);
-    appendSystemMessage(message);
-
-    setTimeout(() => {
-        $("#chatPopup").fadeOut();
-        currentChatUserId = null;
-    }, 3000);
 });
 
 function appendMyMessage(text) {

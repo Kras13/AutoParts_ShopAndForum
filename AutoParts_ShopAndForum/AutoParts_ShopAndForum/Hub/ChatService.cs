@@ -79,11 +79,11 @@ public class ChatService : IChatService
         }
     }
 
-    public bool TryDeclineChatRequest(string initiatorId)
+    public bool TryDeclineChatRequest(string initiatorId, out string sellerId)
     {
         lock (StateLock)
         {
-            var sellerId = PendingChatRequests.FirstOrDefault(kvp => kvp.Value.initiatorId == initiatorId).Key;
+            sellerId = PendingChatRequests.FirstOrDefault(kvp => kvp.Value.initiatorId == initiatorId).Key;
             
             return sellerId != null && PendingChatRequests.Remove(sellerId);
         }

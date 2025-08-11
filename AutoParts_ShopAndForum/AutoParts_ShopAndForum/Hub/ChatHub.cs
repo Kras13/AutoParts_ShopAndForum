@@ -68,19 +68,18 @@ public class ChatHub : Hub
     public async Task AcceptPrivateChat(string initiatorId)
     {
         var sellerId = Context.User.GetId();
-        var sellerEmail = Context.User.GetEmail();
 
-        if (_chatService.TryAcceptChatRequest(initiatorId, sellerId, out var initiatorEmail))
+        if (_chatService.TryAcceptChatRequest(initiatorId, sellerId, out _)) // todo -> might be without out parameter
         {
             var initiatorConnections = _chatService.GetConnectionsByUserId(initiatorId);
 
             await _hubContext.Clients.Clients(initiatorConnections)
-                .SendAsync("ChatAccepted", sellerEmail);
+                .SendAsync("ChatAccepted", sellerId);
 
             var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
 
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ChatAccepted", initiatorEmail);
+                .SendAsync("ChatAccepted", initiatorId);
 
             await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
@@ -89,11 +88,16 @@ public class ChatHub : Hub
 
     public async Task DeclinePrivateChat(string initiatorId)
     {
-        if (_chatService.TryDeclineChatRequest(initiatorId))
+        if (_chatService.TryDeclineChatRequest(initiatorId, out var sellerId))
         {
             var initiatorConnections = _chatService.GetConnectionsByUserId(initiatorId);
+            var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
+            
             await _hubContext.Clients.Clients(initiatorConnections)
                 .SendAsync("ChatDeclined", "Продавачът отказа вашата заявка.");
+            
+            await _hubContext.Clients.Clients(sellerConnections)
+                .SendAsync("ChatDeclined", "Успешно отказана заявка.");
 
             await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
