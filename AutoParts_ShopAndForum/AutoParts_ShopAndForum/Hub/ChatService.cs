@@ -3,11 +3,13 @@ namespace AutoParts_ShopAndForum.Hub;
 public class ChatService : IChatService
 {
     private static readonly Dictionary<string, ChatUser> UserConnections = new();
-    private static readonly Dictionary<string, string> ReservedSellers = new();
-    private static readonly Dictionary<string, string> PendingChatRequests = new();
+    private static readonly Dictionary<string, string> ReservedSellers = new();    
+    private static readonly Dictionary<string, (string initiatorId, DateTime requestTime)> PendingChatRequests = new();
 
     private static readonly object StateLock = new();
-
+    
+    private static readonly TimeSpan ChatRequestTimeout = TimeSpan.FromSeconds(10);
+    
     public void OnUserConnectedAsync(
         string connectionId, string userId, string userEmail, bool isSeller)
     {
@@ -54,7 +56,7 @@ public class ChatService : IChatService
                 return false;
             }
 
-            return PendingChatRequests.TryAdd(sellerId, initiatorId);
+            return PendingChatRequests.TryAdd(sellerId, (initiatorId, DateTime.UtcNow));
         }
     }
 
@@ -64,8 +66,7 @@ public class ChatService : IChatService
         
         lock (StateLock)
         {
-            if (!PendingChatRequests.TryGetValue(sellerId, out var pendingInitiatorId) ||
-                pendingInitiatorId != initiatorId)
+            if (!PendingChatRequests.TryGetValue(sellerId, out var requestData) || requestData.initiatorId != initiatorId)
             {
                 return false;
             }
@@ -82,7 +83,7 @@ public class ChatService : IChatService
     {
         lock (StateLock)
         {
-            var sellerId = PendingChatRequests.FirstOrDefault(kvp => kvp.Value == initiatorId).Key;
+            var sellerId = PendingChatRequests.FirstOrDefault(kvp => kvp.Value.initiatorId == initiatorId).Key;
             
             return sellerId != null && PendingChatRequests.Remove(sellerId);
         }
@@ -136,6 +137,23 @@ public class ChatService : IChatService
         }
 
         return onMessageSend(sender, receiverConnections);
+    }
+
+    public IEnumerable<(string initiatorId, string sellerId)> GetExpiredChatRequests()
+    {
+        lock (StateLock)
+        {
+            var expiredRequests = PendingChatRequests
+                .Where(kvp => DateTime.UtcNow - kvp.Value.requestTime > ChatRequestTimeout)
+                .ToList();
+
+            foreach (var expired in expiredRequests)
+            {
+                PendingChatRequests.Remove(expired.Key);
+            }
+            
+            return expiredRequests.Select(kvp => (kvp.Value.initiatorId, kvp.Key)).ToList();
+        }
     }
 
     public string TryEndPrivateChatBySeller(string sellerConnectionId)

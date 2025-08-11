@@ -2,10 +2,44 @@ const currentUserId = document.querySelector("#currentUserId").value;
 const isCurrentUserSeller = document.querySelector("#currentUserSeller").value;
 
 let currentCompanyUserId = null;
+let timeoutHandle = null;
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
+    .withAutomaticReconnect({
+        nextRetryDelayInMilliseconds: retryContext => {
+            return 2000;
+        }
+    })
     .build();
+
+function startChat(userId, userName) {
+    currentCompanyUserId = userId;
+    const chatMessages = $("#chatMessages");
+
+    $("#liveChat").text(`Live chat with ${userName}`);
+    chatMessages.empty();
+    $("#chatPopup").fadeIn();
+
+    appendSystemMessage(`Моля, изчакайте докато ${userName} приеме вашата заявка...`);
+
+    let secondsLeft = 10;
+
+    const counterElement = $("<div class='text-secondary text-center my-2'>Оставащо време: <span id='timeout-counter'>10</span>s</div>");
+    chatMessages.append(counterElement);
+
+    const updateCounter = () => {
+        secondsLeft--;
+        $("#timeout-counter").text(secondsLeft);
+        if (secondsLeft <= 0) {
+            clearInterval(timeoutHandle);
+        }
+    };
+
+    timeoutHandle = setInterval(updateCounter, 1000);
+
+    connection.invoke("RequestPrivateChat", userId).catch(err => console.error(err.toString()));
+}
 
 connection.on("UpdateSellersList", function (availableSellers) {
     const container = $("#availableSellers");
@@ -22,20 +56,16 @@ connection.on("UpdateSellersList", function (availableSellers) {
         const userDiv = $(`<div class="staff-entry" tabindex="0">${user.email}</div>`);
 
         userDiv.on("dblclick", function () {
-            startChat(user.id);
+            startChat(user.id, user.email);
         });
 
         container.append(userDiv);
     });
 });
 
-function startChat(userId) {
-    currentCompanyUserId = userId;
-
-    connection.invoke("RequestPrivateChat", userId).catch(err => console.error(err.toString()));
-}
-
 connection.on("ReceiveChatRequest", function (initiatorId, initiatorEmail) {
+    currentCompanyUserId = initiatorId;
+    
     if (confirm(`Нова заявка за чат от ${initiatorEmail}. Искаш ли да приемеш?`)) {
         connection.invoke("AcceptPrivateChat", initiatorId).catch(err => console.error(err.toString()));
     } else {
@@ -44,13 +74,21 @@ connection.on("ReceiveChatRequest", function (initiatorId, initiatorEmail) {
 });
 
 connection.on("ChatAccepted", function (sellerEmail) {
-    $("#liveChat").text(`Live chat with ${sellerEmail}`);
+    clearInterval(timeoutHandle);
+
     $("#chatMessages").empty();
-    $("#chatPopup").fadeIn();
+    $("#chatPopup").fadeIn();    
+    $("#liveChat").text(`Live chat with ${sellerEmail}`);
 });
 
 connection.on("ChatDeclined", function (message) {
-    alert(message);
+    clearInterval(timeoutHandle);
+    appendSystemMessage(message);
+
+    setTimeout(() => {
+        $("#chatPopup").fadeOut();
+        currentChatUserId = null;
+    }, 3000);
 });
 
 function appendMyMessage(text) {

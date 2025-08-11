@@ -19,4 +19,5 @@ public interface IChatService
     Task HandleMessageSend(
         string senderConnectionId, string receiverId, Func<ChatUser, IEnumerable<string>, Task> onMessageSend);
 
+    IEnumerable<(string initiatorId, string sellerId)> GetExpiredChatRequests();
 }
