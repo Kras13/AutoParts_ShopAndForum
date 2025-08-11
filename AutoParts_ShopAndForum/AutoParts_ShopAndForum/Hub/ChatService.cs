@@ -1,39 +1,35 @@
-using Microsoft.AspNetCore.SignalR;
-
 namespace AutoParts_ShopAndForum.Hub;
 
-public class ChatService: IChatService
+public class ChatService : IChatService
 {
     private static readonly Dictionary<string, ChatUser> UserConnections = new();
     private static readonly Dictionary<string, string> ReservedSellers = new();
+    private static readonly Dictionary<string, string> PendingChatRequests = new();
 
-    private static readonly object ReservedSellersLock = new();
-    private static readonly object UserConnectionsLock = new();
+    private static readonly object StateLock = new();
 
-    public Task OnUserConnectedAsync(
+    public void OnUserConnectedAsync(
         string connectionId, string userId, string userEmail, bool isSeller)
     {
-        lock (UserConnectionsLock)
+        lock (StateLock)
         {
             UserConnections[connectionId] = new ChatUser(userId, userEmail, isSeller);
         }
-
-        return Task.CompletedTask;
     }
 
-    public Task OnUserDisconnectedAsync(string connectionId)
+    public void OnUserDisconnectedAsync(string connectionId)
     {
         ChatUser chatUser;
 
-        lock (UserConnectionsLock)
+        lock (StateLock)
         {
             UserConnections.Remove(connectionId, out chatUser);
         }
 
         if (chatUser == null)
-            return Task.CompletedTask;
+            return;
 
-        lock (ReservedSellersLock)
+        lock (StateLock)
         {
             if (chatUser.IsSeller)
             {
@@ -47,13 +43,54 @@ public class ChatService: IChatService
                     ReservedSellers.Remove(sellerId);
             }
         }
+    }
 
-        return Task.CompletedTask;
+    public bool TryStartChatRequest(string initiatorId, string sellerId)
+    {
+        lock (StateLock)
+        {
+            if (ReservedSellers.ContainsKey(sellerId) || PendingChatRequests.ContainsKey(sellerId))
+            {
+                return false;
+            }
+
+            return PendingChatRequests.TryAdd(sellerId, initiatorId);
+        }
+    }
+
+    public bool TryAcceptChatRequest(string initiatorId, string sellerId, out string initiatorEmail)
+    {
+        initiatorEmail = string.Empty;
+        
+        lock (StateLock)
+        {
+            if (!PendingChatRequests.TryGetValue(sellerId, out var pendingInitiatorId) ||
+                pendingInitiatorId != initiatorId)
+            {
+                return false;
+            }
+            
+            initiatorEmail = UserConnections.FirstOrDefault(x => x.Value.Id == initiatorId).Value.Email;
+
+            PendingChatRequests.Remove(sellerId);
+
+            return ReservedSellers.TryAdd(sellerId, initiatorId);
+        }
+    }
+
+    public bool TryDeclineChatRequest(string initiatorId)
+    {
+        lock (StateLock)
+        {
+            var sellerId = PendingChatRequests.FirstOrDefault(kvp => kvp.Value == initiatorId).Key;
+            
+            return sellerId != null && PendingChatRequests.Remove(sellerId);
+        }
     }
 
     public bool TryStartPrivateChat(string initiatorId, string sellerId)
     {
-        lock (ReservedSellersLock)
+        lock (StateLock)
         {
             return ReservedSellers.TryAdd(sellerId, initiatorId);
         }
@@ -61,7 +98,7 @@ public class ChatService: IChatService
 
     public bool TryEndPrivateChat(string sellerId)
     {
-        lock (ReservedSellersLock)
+        lock (StateLock)
         {
             return ReservedSellers.Remove(sellerId);
         }
@@ -69,16 +106,15 @@ public class ChatService: IChatService
 
     public IEnumerable<ChatUser> GetAvailableSellers()
     {
-        lock (UserConnectionsLock)
+        lock (StateLock)
         {
-            lock (ReservedSellersLock)
-            {
-                return UserConnections
-                    .Where(user => user.Value.IsSeller && !ReservedSellers.ContainsKey(user.Value.Id))
-                    .Select(x => new ChatUser(x.Value.Id, x.Value.Email, x.Value.IsSeller))
-                    .DistinctBy(x => x.Id)
-                    .ToList();
-            }
+            return UserConnections
+                .Where(user => user.Value.IsSeller && 
+                               !ReservedSellers.ContainsKey(user.Value.Id) && 
+                               !PendingChatRequests.ContainsKey(user.Value.Id))
+                .Select(x => new ChatUser(x.Value.Id, x.Value.Email, x.Value.IsSeller))
+                .DistinctBy(x => x.Id)
+                .ToList();
         }
     }
 
@@ -88,7 +124,7 @@ public class ChatService: IChatService
         IEnumerable<string> receiverConnections;
         ChatUser sender;
 
-        lock (UserConnectionsLock)
+        lock (StateLock)
         {
             receiverConnections = UserConnections
                 .Where(x => x.Value.Id == receiverId)
@@ -98,7 +134,36 @@ public class ChatService: IChatService
             if (!UserConnections.TryGetValue(senderConnectionId, out sender))
                 return Task.CompletedTask;
         }
-        
+
         return onMessageSend(sender, receiverConnections);
+    }
+
+    public string TryEndPrivateChatBySeller(string sellerConnectionId)
+    {
+        ChatUser seller;
+        string customerId = null;
+
+        lock (StateLock)
+        {
+            if (!UserConnections.TryGetValue(sellerConnectionId, out seller) || !seller.IsSeller)
+            {
+                return string.Empty;
+            }
+        
+            ReservedSellers.Remove(seller.Id, out customerId);
+        }
+
+        return customerId;
+    }
+
+    public IEnumerable<string> GetConnectionsByUserId(string userId)
+    {
+        lock (StateLock)
+        {
+            return UserConnections
+                .Where(x => x.Value.Id == userId)
+                .Select(x => x.Key)
+                .ToList();
+        }
     }
 }

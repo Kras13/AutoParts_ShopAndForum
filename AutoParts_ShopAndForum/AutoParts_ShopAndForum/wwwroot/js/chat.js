@@ -1,5 +1,7 @@
 const currentUserId = document.querySelector("#currentUserId").value;
-let currentChatUserId = null;
+const isCurrentUserSeller = document.querySelector("#currentUserSeller").value;
+
+let currentCompanyUserId = null;
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
@@ -20,23 +22,36 @@ connection.on("UpdateSellersList", function (availableSellers) {
         const userDiv = $(`<div class="staff-entry" tabindex="0">${user.email}</div>`);
 
         userDiv.on("dblclick", function () {
-            startChat(user.id, user.email);
+            startChat(user.id);
         });
 
         container.append(userDiv);
     });
 });
 
-function startChat(userId, userName) {
-    currentChatUserId = userId;
+function startChat(userId) {
+    currentCompanyUserId = userId;
 
-    $("#liveChat").text(`Live chat with ${userName}`);
-    $("#chatMessages").empty();
-
-    $("#chatPopup").fadeIn();
-
-    connection.invoke("StartPrivateChat", currentUserId, userId).catch(err => console.error(err.toString()));
+    connection.invoke("RequestPrivateChat", userId).catch(err => console.error(err.toString()));
 }
+
+connection.on("ReceiveChatRequest", function (initiatorId, initiatorEmail) {
+    if (confirm(`Нова заявка за чат от ${initiatorEmail}. Искаш ли да приемеш?`)) {
+        connection.invoke("AcceptPrivateChat", initiatorId).catch(err => console.error(err.toString()));
+    } else {
+        connection.invoke("DeclinePrivateChat", initiatorId).catch(err => console.error(err.toString()));
+    }
+});
+
+connection.on("ChatAccepted", function (sellerEmail) {
+    $("#liveChat").text(`Live chat with ${sellerEmail}`);
+    $("#chatMessages").empty();
+    $("#chatPopup").fadeIn();
+});
+
+connection.on("ChatDeclined", function (message) {
+    alert(message);
+});
 
 function appendMyMessage(text) {
     const msgHtml = `
@@ -68,8 +83,9 @@ $("#sendBtn").on("click", function () {
     const message = messageInput.val().trim();
 
     console.log("message: " + message);
+    console.log("chatting with" + currentCompanyUserId)
 
-    if (!message || !currentChatUserId) return;
+    if (!message || !currentCompanyUserId) return;
 
     console.log("test passed");
 
@@ -78,7 +94,7 @@ $("#sendBtn").on("click", function () {
     appendMyMessage(message);
     messageBox.scrollTop(messageBox[0].scrollHeight);
 
-    connection.invoke("SendPrivateMessage", currentChatUserId, message)
+    connection.invoke("SendPrivateMessage", currentCompanyUserId, message)
         .catch(err => console.error(err.toString()));
 
     messageInput.val('');
@@ -87,19 +103,32 @@ $("#sendBtn").on("click", function () {
 $("#closeBtn").on("click", function () {
     console.log("Livechat close called");
 
-    connection.invoke("EndPrivateChat", currentChatUserId)
-        .catch(err => console.error(err.toString()));
+    if (isCurrentUserSeller) {
+        connection.invoke("EndPrivateChatBySeller").catch(err => console.error(err.toString()));
+    } else {
+        connection.invoke("EndPrivateChat", currentCompanyUserId).catch(err => console.error(err.toString()));
+    }
 
     $("#chatPopup").fadeOut();
+});
+
+function appendSystemMessage(text) {
+    const msgHtml = `
+ <div class="text-danger">
+     <p>${text}</p>
+ </div>
+`;
+    $("#chatMessages").append(msgHtml);
+}
+
+connection.on("ReceiveSystemMessage", function(message) {
+    appendSystemMessage(message);
 });
 
 connection.on("ReceivePrivateMessage", function (fromUserId, fromUserEmail, message) {
     console.log("Message received: " + message + " | From " + fromUserId);
 
-    currentChatUserId = fromUserId;
-
-    $("#chatPopup").fadeIn();
-    $("#liveChat").text(`Live chat with ${fromUserEmail}`);
+    currentCompanyUserId = fromUserId;
 
     const messageBox = $("#chatMessages");
 

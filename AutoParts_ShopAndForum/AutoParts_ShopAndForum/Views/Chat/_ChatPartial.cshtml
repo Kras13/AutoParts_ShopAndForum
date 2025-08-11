@@ -35,5 +35,7 @@
 @if (User.Identity != null)
 {
     <input type="hidden" id="currentUserId" value="@(User.Identity.IsAuthenticated ? User.GetId() : "-1")"/>
+    <input type="hidden" id="currentUserSeller"
+           value="@(User.Identity.IsAuthenticated && (User.IsSeller() || User.IsAdmin()))"/>
 }
 
