@@ -1,11 +1,9 @@
-@startuml
-!theme plain
+@startuml OnlineChat
 title Поток на данни при онлайн чат (SignalR)
 
 actor "Регистриран\nпотребител" as User
 participant "Браузър" as Browser
 participant "SignalR Hub\n(ChatHub)" as Hub
-participant "Уеб Приложение\n(.NET MVC)" as WebApp
 participant "Администратор/Продавач" as AdminOrSeller
 
 User -> Browser : Отваря "Онлайн поддръжка"
@@ -19,19 +17,39 @@ note right
 end note
 
 User -> Browser : Избира Admin/Seller (двоен клик)
-Browser -> Hub : Изпраща заявка за стартиране на чат
-activate WebApp
+Browser -> Hub : Изпраща заявка за чат (SendChatRequest)
 
-Hub -> WebApp : Обработка на заявка за чат
-WebApp -> WebApp : Създава чат сесия и я заключва
-WebApp -> Hub : Изпраща съобщение за зает Admin/Seller
-Hub -> Browser : Обновява списъка за всички потребители
+activate AdminOrSeller
+AdminOrSeller -> Hub : Получава известие за заявка за чат
+deactivate AdminOrSeller
 
-WebApp -> Hub : Изпраща известие за чат
-Hub -> AdminOrSeller : Известие за нов чат
+alt Заявката е приета в рамките на 10 сек.
+    AdminOrSeller -> Hub : Изпраща приемане на заявката (AcceptChatRequest)
+    Hub -> User : Уведомява, че заявката е приета (ReceiveChatSession)
+    Hub -> AdminOrSeller : Уведомява, че чатът започва (ReceiveChatSession)
+    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
+else Заявката не е приета в рамките на 10 сек.
+    AdminOrSeller -> Hub : Заявката е изтекла
+    Hub -> User : Уведомява, че заявката е отказана (ReceiveChatRequestDenied)
+    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
+end
 
-AdminOrSeller -> AdminOrSeller : Отваря се чата
-AdminOrSeller -> Hub : Изпраща съобщение
-Hub -> Browser : Изпраща съобщение към User
-Browser -> User : Показва съобщението
+alt Комуникация по време на чата
+    User -> Hub : Изпраща съобщение (SendPrivateMessage)
+    Hub -> AdminOrSeller : Препраща съобщението
+    AdminOrSeller -> Hub : Изпраща съобщение
+    Hub -> User : Препраща съобщението
+end
+
+alt Напускане на чата
+    User -> Hub : Напуска чата (LeaveChat)
+    Hub -> AdminOrSeller : Уведомява, че User е напуснал (NotifyChatLeft)
+    Hub -> Hub : Чата се затваря автоматично след 3 секунди
+    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
+    
+    AdminOrSeller -> Hub : Напуска чата
+    Hub -> User : Уведомява, че AdminOrSeller е напуснал
+    Hub -> Hub : Чата се затваря автоматично след 3 секунди
+    Hub -> Browser : Обновява списъка за всички потребители
+end
 @enduml
