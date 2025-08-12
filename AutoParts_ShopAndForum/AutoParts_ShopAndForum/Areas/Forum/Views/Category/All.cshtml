@@ -1,9 +1,10 @@
 ﻿@using AutoParts_ShopAndForum.Core.Models.Forum
+@using AutoParts_ShopAndForum.Localization
 
 @model ForumCategoryModel[]
 
 @{
-    ViewData["Title"] = "Forum categories";
+    ViewData["Title"] = @MainLocalization.ForumCategories_Title;
 }
 
 <div class="text-center">
@@ -14,7 +15,8 @@
     @if (Model.Length > 0)
     {
         <div style="margin:36px;">
-            <a asp-controller="Post" asp-action="Create" class="btn btn-primary btn-blue">Create new post</a>
+            <a asp-controller="Post" asp-action="Create"
+               class="btn btn-primary btn-blue">@MainLocalization.ForumCategories_CreateNewPost</a>
         </div>
     }
 
@@ -29,12 +31,13 @@
 
             <div class="col-sm-4">
                 <div class="box box-1">
-                    <img src="@category.ImageUrl" alt="@category.Name" style="width: 120px; height:90px; object-fit:cover;">
+                    <img src="@category.ImageUrl" alt="@category.Name"
+                         style="width: 120px; height:90px; object-fit:cover;">
                 </div>
 
                 <div class="box box-2">
                     <a asp-controller="Post" asp-action="List" asp-route-categoryId="@(category.Id)">
-                        @category.Name (@category.PostsCount) - @category.Description.Substring(0, substringLength)
+                        @category.Name (@category.PostsCount)
                     </a>
                 </div>
             </div>
@@ -54,8 +57,8 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-        .box-2 a:hover {
-            background-color: #007bff;
-            color: white;
-        }
+    .box-2 a:hover {
+        background-color: #007bff;
+        color: white;
+    }
 </style>

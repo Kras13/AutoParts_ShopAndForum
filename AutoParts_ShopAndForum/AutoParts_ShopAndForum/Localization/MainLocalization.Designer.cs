@@ -614,5 +614,47 @@ namespace AutoParts_ShopAndForum.Localization {
                 return ResourceManager.GetString("OrderSummary_OverallSum", resourceCulture);
             }
         }
+        
+        public static string ForumCategories_CreateNewPost {
+            get {
+                return ResourceManager.GetString("ForumCategories_CreateNewPost", resourceCulture);
+            }
+        }
+        
+        public static string ForumCategories_Title {
+            get {
+                return ResourceManager.GetString("ForumCategories_Title", resourceCulture);
+            }
+        }
+        
+        public static string PostList_Title {
+            get {
+                return ResourceManager.GetString("PostList_Title", resourceCulture);
+            }
+        }
+        
+        public static string PostListViewModel_Title {
+            get {
+                return ResourceManager.GetString("PostListViewModel_Title", resourceCulture);
+            }
+        }
+        
+        public static string PostListViewModel_Author {
+            get {
+                return ResourceManager.GetString("PostListViewModel_Author", resourceCulture);
+            }
+        }
+        
+        public static string PostListViewModel_DateCreate {
+            get {
+                return ResourceManager.GetString("PostListViewModel_DateCreate", resourceCulture);
+            }
+        }
+        
+        public static string PostListViewModel_CommentsCount {
+            get {
+                return ResourceManager.GetString("PostListViewModel_CommentsCount", resourceCulture);
+            }
+        }
     }
 }

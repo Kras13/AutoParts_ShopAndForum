@@ -303,4 +303,25 @@
     <data name="OrderSummary_OverallSum" xml:space="preserve">
         <value>Тотал</value>
     </data>
+    <data name="ForumCategories_CreateNewPost" xml:space="preserve">
+        <value>Създаване на нов пост</value>
+    </data>
+    <data name="ForumCategories_Title" xml:space="preserve">
+        <value>Категории</value>
+    </data>
+    <data name="PostList_Title" xml:space="preserve">
+        <value>Списък с постове</value>
+    </data>
+    <data name="PostListViewModel_Title" xml:space="preserve">
+        <value>Заглавие</value>
+    </data>
+    <data name="PostListViewModel_Author" xml:space="preserve">
+        <value>Автор</value>
+    </data>
+    <data name="PostListViewModel_DateCreate" xml:space="preserve">
+        <value>Дата на създаване</value>
+    </data>
+    <data name="PostListViewModel_CommentsCount" xml:space="preserve">
+        <value>Брой коментари</value>
+    </data>
 </root>

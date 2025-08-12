@@ -1,9 +1,10 @@
 ﻿@using AutoParts_ShopAndForum.Areas.Forum.Models
+@using AutoParts_ShopAndForum.Localization
 
 @model PostListViewModel[]
 
 @{
-    ViewData["Title"] = "List of Posts";
+    ViewData["Title"] = @MainLocalization.PostList_Title;
 }
 
 <div class="text-center">
@@ -12,46 +13,34 @@
     </h1>
 </div>
 
-<div class="container-fluid mt-100">
+<div class="container-fluid my-5">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <div class="row no-gutters w-100">
-                        <div class="col-3">
-                            Title
-                        </div>
-                        <div class="col-3">
-                            Author
-                        </div>
-                        <div class="col-3">
-                            Created on
-                        </div>
-                        <div class="col-3">
-                            Comments
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body py-3">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Author)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().DateCreate)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().CommentsCount)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach (var post in Model)
-                    {
-                        <div class="row w-93 mb-3">
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Post" asp-action="ById" asp-route-id="@post.Id">@post.Title</a>
+                                </td>
 
-                            <div class="col-3">
-                                <a asp-controller="Post" asp-action="ById" asp-route-id="@post.Id" class="text-big font-weight-semibold" data-abc="true">@post.Title</a>
-                            </div>
-                            <div class="col-3">
-                                @post.Author
-                            </div>
-                            <div class="col-3">
-                                @post.DateCreate
-                            </div>
-                            <div class="col-3">
-                                @post.CommentsCount
-                            </div>
-                        </div>
-                    }
-                </div>
+                                <td>@(post.Author)</td>
+                                <td>@(post.DateCreate)</td>
+                                <td>@(post.CommentsCount)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -59,52 +48,9 @@
 
 
 <style>
-    .mt-100 {
-        margin-top: 100px
-    }
-
-    .card {
-        box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
-        border-width: 0;
-        transition: all .2s
-    }
-
-    .card-header:first-child {
-        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
-    }
-
-    .card-header {
-        display: flex;
-        border-bottom-width: 1px;
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-right: .625rem;
-        height: 3.5rem;
-        background-color: #fff;
-        border-bottom: 1px solid rgba(26,54,126,0.125)
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-        padding: 1.25rem
-    }
-
-    .flex-truncate {
-        min-width: 0 !important
-    }
-
-    .d-block {
-        display: block !important
-    }
-
     a {
         color: #E91E63;
         text-decoration: none !important;
-        background-color: transparent
-    }
-
-    .media img {
-        width: 40px;
-        height: auto
+        background-color: transparent;
     }
 </style>
