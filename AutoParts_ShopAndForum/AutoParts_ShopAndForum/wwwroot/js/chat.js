@@ -68,12 +68,12 @@ connection.on("ChatAccepted", function (otherUserId) {
     console.log("current user id - " + currentUserId);
     
     if (isCurrentUserSeller) { // accepted from myself -> admin
-        $("#liveChat").text(`Live chat with ${currentCompanyUsername}`);
+        $("#liveChat").text(`Онлайн чат с ${currentCompanyUsername}`);
         
         appendSystemMessage("Заявката е приета. Можете да започнете разговор.");
     }
     else {
-        $("#liveChat").text(`Live chat with ${currentCompanyUsername}`);
+        $("#liveChat").text(`Онлайн чат с ${currentCompanyUsername}`);
         
         appendSystemMessage("Вашата заявка беше приета. Започвате разговор.");
     }

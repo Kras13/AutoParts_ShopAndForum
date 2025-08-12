@@ -16,7 +16,7 @@ public class ChatHub : Hub
         _hubContext = hubContext;
 
         _chatRequestTimer = new Timer(
-            async (_) => { await HandleExpiredRequests(); }, 
+            async (_) => { await HandleExpiredRequests(); },
             null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
     }
 
@@ -74,12 +74,12 @@ public class ChatHub : Hub
             var initiatorConnections = _chatService.GetConnectionsByUserId(initiatorId);
 
             await _hubContext.Clients.Clients(initiatorConnections)
-                .SendAsync("ChatAccepted", sellerId);
+                .SendAsync(HubConstants.ChatAcceptedHubMethod, sellerId);
 
             var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
 
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ChatAccepted", initiatorId);
+                .SendAsync(HubConstants.ChatAcceptedHubMethod, initiatorId);
 
             await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
@@ -92,12 +92,12 @@ public class ChatHub : Hub
         {
             var initiatorConnections = _chatService.GetConnectionsByUserId(initiatorId);
             var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
-            
+
             await _hubContext.Clients.Clients(initiatorConnections)
-                .SendAsync("ChatDeclined", "Продавачът отказа вашата заявка.");
-            
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Вашата заявка не беше приета. Моля опитайте по-късно.");
+
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ChatDeclined", "Успешно отказана заявка.");
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Успешно отказана заявка.");
 
             await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
@@ -113,19 +113,6 @@ public class ChatHub : Hub
         });
     }
 
-    public bool StartPrivateChat(string initiatorId, string sellerId)
-    {
-        var result = _chatService.TryStartPrivateChat(initiatorId, sellerId);
-
-        if (result)
-        {
-            _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
-                _chatService.GetAvailableSellers());
-        }
-
-        return result;
-    }
-
     public async Task<bool> EndPrivateChat(string sellerId)
     {
         var result = _chatService.TryEndPrivateChat(sellerId, out var initiatorId);
@@ -133,12 +120,12 @@ public class ChatHub : Hub
         if (result)
         {
             var sellerConnections = _chatService.GetConnectionsByUserId(sellerId);
-            
+
             await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
                 _chatService.GetAvailableSellers());
-            
+
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ChatDeclined", "Клиентът напусна стаята.");
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Клиентът напусна стаята.");
         }
 
         return result;
@@ -153,9 +140,10 @@ public class ChatHub : Hub
             var customerConnections = _chatService.GetConnectionsByUserId(customerId);
 
             await _hubContext.Clients.Clients(customerConnections)
-                .SendAsync("ChatDeclined", "Продавачът напусна стаята.");
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Продавачът напусна стаята.");
 
-            await _hubContext.Clients.All.SendAsync("UpdateSellersList", _chatService.GetAvailableSellers());
+            await _hubContext.Clients.All.SendAsync(
+                HubConstants.UpdateSellersListHubMethod, _chatService.GetAvailableSellers());
         }
     }
 
@@ -168,19 +156,19 @@ public class ChatHub : Hub
         {
             var initiatorConnections = _chatService.GetConnectionsByUserId(expired.initiatorId);
             var sellerConnections = _chatService.GetConnectionsByUserId(expired.sellerId);
-            
+
             await _hubContext.Clients.Clients(initiatorConnections)
-                .SendAsync("ChatDeclined", "Времето за отговор на заявката ви изтече.");
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Вашата заявка не беше приета. Моля опитайте по-късно.");
             await _hubContext.Clients.Clients(sellerConnections)
-                .SendAsync("ChatDeclined", "Времето за отговор изтече.");
+                .SendAsync(HubConstants.ChatDeclinedHubMethod, "Времето за отговор изтече.");
 
             hasExpiredRequest = true;
         }
 
         if (hasExpiredRequest)
         {
-            await _hubContext.Clients.All.SendAsync(HubConstants.UpdateSellersListHubMethod,
-                _chatService.GetAvailableSellers());
+            await _hubContext.Clients.All.SendAsync(
+                HubConstants.UpdateSellersListHubMethod, _chatService.GetAvailableSellers());
         }
     }
 }
