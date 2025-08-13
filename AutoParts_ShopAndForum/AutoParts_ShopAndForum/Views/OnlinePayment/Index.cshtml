@@ -1,7 +1,7 @@
 @model Guid
 
-<p>Redirecting to Stripe Checkout... Please wait.</p>
-<div id="spinner">Loading...</div>
+<p>Редиректване към Stripe... Моля изчакайте.</p>
+<div id="spinner">Зареждане...</div>
 
 <form id="stripeForm" method="post" asp-action="CreateStripeSession">
     <input type="hidden" name="orderToken" asp-for="@Model" value="@Model"/>
