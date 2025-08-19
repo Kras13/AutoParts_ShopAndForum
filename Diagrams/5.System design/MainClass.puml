@@ -1,5 +1,4 @@
-@startuml
-!theme plain
+@startuml MainClass
 hide circle
 left to right direction
 

@@ -1,0 +1,26 @@
+@startuml ChatHubClass
+
+hide circle
+
+class Hub {
+}
+
+class ChatHub {
+  - chatService : IChatService
+  - hubContext : IHubContext<ChatHub>
+  - chatRequestTimer : Timer
+  
+  -- Methods --
+  + OnConnectedAsync() : Task
+  + OnDisconnectedAsync(Exception exception) : Task
+  + RequestPrivateChat(string sellerId) : Task
+  + AcceptPrivateChat(string initiatorId) : Task
+  + DeclinePrivateChat(string initiatorId) : Task
+  + SendPrivateMessage(string receiverId, string message) : Task
+  + EndPrivateChat(string sellerId) : Task<bool>
+  + EndPrivateChatBySeller() : Task
+  - HandleExpiredRequests() : Task
+}
+
+Hub <|-- ChatHub
+@enduml

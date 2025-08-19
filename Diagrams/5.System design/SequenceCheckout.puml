@@ -1,37 +1,36 @@
-@startuml
-!theme plain
-title Поток на данни при закупуване на продукт
+@startuml SequenceCheckout
+title Data Flow for Product Checkout
 
-actor "Регистриран\nпотребител" as User
-participant "Браузър" as Browser
-participant "Уеб Приложение\n(.NET MVC)" as WebApp
-participant "База данни\n(SQL Server)" as DB
+actor "Registered\nUser" as User
+participant "Browser" as Browser
+participant "Web Application\n(.NET MVC)" as WebApp
+participant "Database\n(SQL Server)" as DB
 participant "Stripe API" as Stripe
 
-User -> Browser : Преглед на количка и данни за поръчка
-Browser -> WebApp : HTTP POST /Checkout (финализиране на поръчка)
-WebApp -> DB : Създаване на поръчка
+User -> Browser : View cart and order details
+Browser -> WebApp : HTTP POST /Checkout (finalize order)
+WebApp -> DB : Create new order
     activate DB
-    DB --> WebApp : Поръчката е запазена
+    DB --> WebApp : Order saved
     deactivate DB
 activate WebApp
 
-alt Онлайн плащане (Stripe)
-    WebApp -> Stripe : Създаване на сесия за плащане
+alt Online Payment (Stripe)
+    WebApp -> Stripe : Create payment session
     activate Stripe
-    Stripe --> WebApp : Връща сесия за плащане
+    Stripe --> WebApp : Returns payment session
     deactivate Stripe
-    WebApp -> Browser : Редирект към Stripe
-    Browser -> Stripe : Потребителят извършва плащане
-    Stripe --> Browser : Успешно плащане
-    Browser -> WebApp : Редирект с успех
-    WebApp -> DB : Създаване на поръчка и актуализация на статуса
+    WebApp -> Browser : Redirect to Stripe
+    Browser -> Stripe : User completes payment
+    Stripe --> Browser : Successful payment
+    Browser -> WebApp : Redirect with success
+    WebApp -> DB : Update order payment status
     activate DB
-    DB --> WebApp : Поръчката е запазена
+    DB --> WebApp : Order saved
     deactivate DB
 end
 
-WebApp -> Browser : Връща страница за успех
+WebApp -> Browser : Return success page
 deactivate WebApp
-Browser -> User : Показва потвърждение
+Browser -> User : Display confirmation
 @enduml

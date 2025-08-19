@@ -1,23 +1,22 @@
-@startuml
-!theme plain
+@startuml MainUseCase
 left to right direction
 skinparam packageStyle rectangle
 
-actor "Нерегистриран\nпотребител" as Anonymous
-actor "Регистриран\nпотребител" as User
-actor "Продавач" as Seller
-actor "Администратор" as Admin
+actor "Anonymous\nUser" as Anonymous
+actor "Registered\nUser" as User
+actor "Seller" as Seller
+actor "Administrator" as Admin
 
-rectangle "Система за електронна търговия" {
-    usecase "Разглеждане на каталог" as UC1
-    usecase "Разглеждане на форум" as UC2
-    usecase "Закупуване на продукт" as UC3
-    usecase "Участие във форум" as UC4
-    usecase "Използване на онлайн чат" as UC5
-    usecase "Управление на каталог" as UC6
-    usecase "Преглед на прогнози" as UC7
-    usecase "Управление на доставки" as UC8
-    usecase "Управление на потребителски роли" as UC9
+rectangle "AutoParts_ShopAndForum" {
+    usecase "Browse Catalog" as UC1
+    usecase "Browse Forum" as UC2
+    usecase "Purchase Product" as UC3
+    usecase "Participate in Forum" as UC4
+    usecase "Use Online Chat" as UC5
+    usecase "Manage Catalog" as UC6
+    usecase "View Forecasts" as UC7
+    usecase "Manage Shipments" as UC8
+    usecase "Manage User Roles" as UC9
 }
 
 Anonymous --> UC1

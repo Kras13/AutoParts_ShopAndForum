@@ -1,31 +1,30 @@
-@startuml
-!theme plain
-title Поток на данни при прогнозиране на продажби
+@startuml Forecast
+title Data Flow for Sales Forecasting
 
-actor "Администратор/Продавач" as AdminOrSeller
-participant "Браузър" as Browser
-participant "Уеб Приложение\n(.NET MVC)" as WebApp
-participant "API за Прогнозиране\n(Python FastAPI)" as PredictionAPI
+actor "Administrator/Seller" as AdminOrSeller
+participant "Browser" as Browser
+participant "Web Application\n(.NET MVC)" as WebApp
+participant "Prediction API\n(Python FastAPI)" as PredictionAPI
 
-AdminOrSeller -> Browser : Натиска бутон "Прогнозиране"
-Browser -> WebApp : HTTP POST /Forecast (с данни за продукт и година)
+AdminOrSeller -> Browser : Clicks "Forecast" button
+Browser -> WebApp : HTTP POST /Forecast (with product and year data)
 activate WebApp
 
 WebApp -> PredictionAPI : HTTP POST /predict/yearly
 note right
-Изпраща JSON с:
+Sends JSON with:
 - product_id
 - year
 end note
 activate PredictionAPI
 
-PredictionAPI -> PredictionAPI : Извличане и зареждане на модел
-PredictionAPI -> PredictionAPI : Извършване на прогноза
-PredictionAPI --> WebApp : Връща JSON с прогнози
+PredictionAPI -> PredictionAPI : Retrieve and load model
+PredictionAPI -> PredictionAPI : Perform prediction
+PredictionAPI --> WebApp : Returns JSON with forecasts
 deactivate PredictionAPI
 
-WebApp --> Browser : Връща страница с прогноза
+WebApp --> Browser : Returns page with forecast
 deactivate WebApp
 
-Browser -> AdminOrSeller : Показва резултата
+Browser -> AdminOrSeller : Displays the result
 @enduml

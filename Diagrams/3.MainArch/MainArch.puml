@@ -1,0 +1,30 @@
+@startuml MainArch
+
+rectangle "Потребителски модул\n(ASP.NET Core)" as UserModule {
+    rectangle "UI Layer" as UILayer
+    rectangle "Business Logic Layer" as BLL
+    rectangle "Data Access Layer" as DAL
+}
+
+rectangle "Модул за прогнозиране\n(Python)" as ForecastingModule {
+    rectangle "API Layer" as API
+    rectangle "Machine Learning Layer" as ML
+}
+
+database "Релационна база данни" as DB
+
+actor "Потребител" as User
+
+User -> UILayer : HTTP Request
+UILayer --> BLL
+BLL --> DAL
+DAL --> DB : Read/Write
+DB --> DAL
+
+BLL --> API : HTTP Request/Response (REST API)
+API --> ML
+ML --> DB : Read Historical Data
+
+API --> BLL
+
+@enduml

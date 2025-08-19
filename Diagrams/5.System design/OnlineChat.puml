@@ -1,55 +1,55 @@
 @startuml OnlineChat
-title Поток на данни при онлайн чат (SignalR)
+title Online Chat Data Flow (SignalR)
 
-actor "Регистриран\nпотребител" as User
-participant "Браузър" as Browser
+actor "Registered\nUser" as User
+participant "Browser" as Browser
 participant "SignalR Hub\n(ChatHub)" as Hub
-participant "Администратор/Продавач" as AdminOrSeller
+participant "Administrator/Seller" as AdminOrSeller
 
-User -> Browser : Отваря "Онлайн поддръжка"
-Browser -> Hub : Установява SignalR връзка
+User -> Browser : Opens "Online Support"
+Browser -> Hub : Establishes SignalR connection
 activate Hub
 
-Hub -> Browser : Изпраща списък с налични Admin/Seller
+Hub -> Browser : Sends list of available Admin/Sellers
 note right
-Списъкът се обновява
-автоматично при промяна.
+The list is automatically
+updated on change.
 end note
 
-User -> Browser : Избира Admin/Seller (двоен клик)
-Browser -> Hub : Изпраща заявка за чат (SendChatRequest)
+User -> Browser : Selects Admin/Seller (double-click)
+Browser -> Hub : Sends chat request (SendChatRequest)
 
 activate AdminOrSeller
-AdminOrSeller -> Hub : Получава известие за заявка за чат
+AdminOrSeller -> Hub : Receives chat request notification
 deactivate AdminOrSeller
 
-alt Заявката е приета в рамките на 10 сек.
-    AdminOrSeller -> Hub : Изпраща приемане на заявката (AcceptChatRequest)
-    Hub -> User : Уведомява, че заявката е приета (ReceiveChatSession)
-    Hub -> AdminOrSeller : Уведомява, че чатът започва (ReceiveChatSession)
-    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
-else Заявката не е приета в рамките на 10 сек.
-    AdminOrSeller -> Hub : Заявката е изтекла
-    Hub -> User : Уведомява, че заявката е отказана (ReceiveChatRequestDenied)
-    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
+alt Request is accepted within 10 sec.
+    AdminOrSeller -> Hub : Sends request acceptance (AcceptChatRequest)
+    Hub -> User : Notifies that the request is accepted (ReceiveChatSession)
+    Hub -> AdminOrSeller : Notifies that the chat is starting (ReceiveChatSession)
+    Hub -> Browser : Updates the list for all users (UpdateSellersList)
+else Request is not accepted within 10 sec.
+    AdminOrSeller -> Hub : Request expired
+    Hub -> User : Notifies that the request is denied (ReceiveChatRequestDenied)
+    Hub -> Browser : Updates the list for all users (UpdateSellersList)
 end
 
-alt Комуникация по време на чата
-    User -> Hub : Изпраща съобщение (SendPrivateMessage)
-    Hub -> AdminOrSeller : Препраща съобщението
-    AdminOrSeller -> Hub : Изпраща съобщение
-    Hub -> User : Препраща съобщението
+alt Communication during chat
+    User -> Hub : Sends message (SendPrivateMessage)
+    Hub -> AdminOrSeller : Forwards the message
+    AdminOrSeller -> Hub : Sends message
+    Hub -> User : Forwards the message
 end
 
-alt Напускане на чата
-    User -> Hub : Напуска чата (LeaveChat)
-    Hub -> AdminOrSeller : Уведомява, че User е напуснал (NotifyChatLeft)
-    Hub -> Hub : Чата се затваря автоматично след 3 секунди
-    Hub -> Browser : Обновява списъка за всички потребители (UpdateSellersList)
+alt Leaving the chat
+    User -> Hub : Leaves the chat (LeaveChat)
+    Hub -> AdminOrSeller : Notifies that User has left (NotifyChatLeft)
+    Hub -> Hub : Chat closes automatically after 3 seconds
+    Hub -> Browser : Updates the list for all users (UpdateSellersList)
     
-    AdminOrSeller -> Hub : Напуска чата
-    Hub -> User : Уведомява, че AdminOrSeller е напуснал
-    Hub -> Hub : Чата се затваря автоматично след 3 секунди
-    Hub -> Browser : Обновява списъка за всички потребители
+    AdminOrSeller -> Hub : Leaves the chat
+    Hub -> User : Notifies that AdminOrSeller has left
+    Hub -> Hub : Chat closes automatically after 3 seconds
+    Hub -> Browser : Updates the list for all users
 end
 @enduml

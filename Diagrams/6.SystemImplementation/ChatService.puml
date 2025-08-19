@@ -1,0 +1,43 @@
+@startuml ChayService
+
+hide circle
+
+interface IChatService {
+    + OnUserConnectedAsync(...)
+    + OnUserDisconnectedAsync(...)
+    + TryStartChatRequest(...)
+    + TryAcceptChatRequest(...)
+    + TryDeclineChatRequest(...)
+    + TryStartPrivateChat(...)
+    + TryEndPrivateChat(...)
+    + GetAvailableSellers()
+    + HandleMessageSend(...)
+    + GetExpiredChatRequests()
+    + TryEndPrivateChatBySeller(...)
+    + GetConnectionsByUserId(...)
+}
+
+class ChatService {
+    - UserConnections : Dictionary
+    - ReservedSellers : Dictionary
+    - PendingChatRequests : Dictionary
+    - StateLock : object
+    - ChatRequestTimeout : TimeSpan
+    
+    -- Methods --
+    + OnUserConnectedAsync(...) : void
+    + OnUserDisconnectedAsync(...) : void
+    + TryStartChatRequest(...) : bool
+    + TryAcceptChatRequest(...) : bool
+    + TryDeclineChatRequest(...) : bool
+    + TryStartPrivateChat(...) : bool
+    + TryEndPrivateChat(...) : bool
+    + GetAvailableSellers() : IEnumerable
+    + HandleMessageSend(...) : Task
+    + GetExpiredChatRequests() : IEnumerable
+    + TryEndPrivateChatBySeller(...) : string
+    + GetConnectionsByUserId(...) : IEnumerable
+}
+
+IChatService <|.. ChatService
+@enduml

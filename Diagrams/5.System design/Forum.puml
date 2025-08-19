@@ -1,55 +1,54 @@
-@startuml
-!theme plain
-title Поток на данни във форума
+@startuml Forum
+title Data Flow in the Forum
 
-actor "Регистриран\nпотребител" as User
-participant "Браузър" as Browser
-participant "Уеб Приложение\n(.NET MVC)" as WebApp
-participant "База данни\n(SQL Server)" as DB
+actor "Registered\nUser" as User
+participant "Browser" as Browser
+participant "Web Application\n(.NET MVC)" as WebApp
+participant "Database\n(SQL Server)" as DB
 
-User -> Browser : Отваря страница на форум
+User -> Browser : Opens forum page
 Browser -> WebApp : HTTP GET /Forum
 activate WebApp
-WebApp -> DB : Извличане на категории и постове
+WebApp -> DB : Retrieve categories and posts
 activate DB
-DB --> WebApp : Връща данни
+DB --> WebApp : Returns data
 deactivate DB
-WebApp --> Browser : Показва страницата
+WebApp --> Browser : Displays the page
 deactivate WebApp
 
-alt Създаване на нов пост
-    User -> Browser : Натиска "Създай пост"
-    Browser -> WebApp : HTTP POST /Forum/CreatePost (с данни)
+alt Creating a new post
+    User -> Browser : Clicks "Create Post"
+    Browser -> WebApp : HTTP POST /Forum/CreatePost (with data)
     activate WebApp
-    WebApp -> DB : Запис на нов пост
+    WebApp -> DB : Save new post
     activate DB
-    DB --> WebApp : Успешен запис
+    DB --> WebApp : Successful save
     deactivate DB
-    WebApp --> Browser : Връща към форумната страница
+    WebApp --> Browser : Redirects to the forum page
     deactivate WebApp
-else Създаване на коментар
-    User -> Browser : Избира пост
+else Creating a comment
+    User -> Browser : Selects a post
     Browser -> WebApp : HTTP GET /Forum/PostDetails/{id}
     activate WebApp
-    WebApp -> DB : Извличане на пост и коментари
+    WebApp -> DB : Retrieve post and comments
     activate DB
-    DB --> WebApp : Връща данни
+    DB --> WebApp : Returns data
     deactivate DB
-    WebApp --> Browser : Показва детайли на поста
+    WebApp --> Browser : Displays post details
     deactivate WebApp
 
-    User -> Browser : Натиска "Коментирай" (на пост или друг коментар)
-    Browser -> WebApp : HTTP POST /Forum/AddComment (с данни)
+    User -> Browser : Clicks "Comment" (on a post or another comment)
+    Browser -> WebApp : HTTP POST /Forum/AddComment (with data)
     activate WebApp
     note right
-    Ако е коментар към друг коментар,
-    ще има и ParentId.
+    If it's a reply to another comment,
+    it will also have a ParentId.
     end note
-    WebApp -> DB : Запис на коментар
+    WebApp -> DB : Save comment
     activate DB
-    DB --> WebApp : Успешен запис
+    DB --> WebApp : Successful save
     deactivate DB
-    WebApp --> Browser : Връща към страницата на поста
+    WebApp --> Browser : Redirects to the post page
     deactivate WebApp
 end
 @enduml
