@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlSanitizer" Version="8.1.870" />
+    <PackageReference Include="Stripe.net" Version="48.2.0" />
   </ItemGroup>
 
   <ItemGroup>

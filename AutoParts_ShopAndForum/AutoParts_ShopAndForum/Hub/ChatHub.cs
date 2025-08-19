@@ -25,7 +25,7 @@ public class ChatHub : Hub
         var userId = Context.User.GetId();
         var isSeller = Context.User.IsSeller() || Context.User.IsAdmin();
 
-        _chatService.OnUserConnectedAsync(Context.ConnectionId, userId, Context.User.GetEmail(), isSeller);
+        _chatService.OnUserConnected(Context.ConnectionId, userId, Context.User.GetEmail(), isSeller);
 
         await _hubContext.Clients.All.SendAsync(
             HubConstants.UpdateSellersListHubMethod, _chatService.GetAvailableSellers());
@@ -35,7 +35,7 @@ public class ChatHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        _chatService.OnUserDisconnectedAsync(Context.ConnectionId);
+        _chatService.OnUserDisconnected(Context.ConnectionId);
 
         await _hubContext.Clients.All.SendAsync(
             HubConstants.UpdateSellersListHubMethod, _chatService.GetAvailableSellers());

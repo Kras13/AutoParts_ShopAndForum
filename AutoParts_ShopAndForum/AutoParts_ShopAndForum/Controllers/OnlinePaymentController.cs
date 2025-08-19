@@ -16,42 +16,9 @@ public class OnlinePaymentController(IOrderService orderService) : Controller
     [HttpPost]
     public IActionResult CreateStripeSession(Guid orderToken)
     {
-        var order = orderService.FindByPublicToken(orderToken);
-
-        if (order == null)
-            throw new ArgumentException("Order not found");
-
-        var successUrl = Url.Action("Success", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
-        var cancelUrl = Url.Action("Cancel", "OnlinePayment", new { orderToken = order.PublicToken }, Request.Scheme);
-        var moneyInStots = (long)order.OverallSum * 100;
-
-        var options = new SessionCreateOptions
-        {
-            Metadata = new()
-            {
-                { "orderToken", order.PublicToken.ToString() }
-            },
-            LineItems = new()
-            {
-                new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        Currency = "bgn",
-                        UnitAmount = moneyInStots,
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = "Онлайн авточасти",
-                            Description = "Онлайн авточасти"
-                        }
-                    },
-                    Quantity = 1,
-                },
-            },
-            Mode = "payment",
-            SuccessUrl = successUrl,
-            CancelUrl = cancelUrl,
-        };
+        var successUrl = Url.Action("Success", "OnlinePayment", new { orderToken = orderToken }, Request.Scheme);
+        var cancelUrl = Url.Action("Cancel", "OnlinePayment", new { orderToken = orderToken }, Request.Scheme);
+        var options = orderService.CreateStripeSession(successUrl, cancelUrl, orderToken);
 
         var service = new SessionService();
         var session = service.Create(options);

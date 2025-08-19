@@ -1,10 +1,13 @@
-﻿using AutoParts_ShopAndForum.Core.Contracts;
+﻿
+using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe.Checkout;
+
 
 namespace AutoParts_ShopAndForum.Core.Services
 {
@@ -273,7 +276,7 @@ namespace AutoParts_ShopAndForum.Core.Services
 
             order.IsDelivered = orderEditModel.IsDelivered;
             order.DateDelivered = orderEditModel.DateDelivered;
-            
+
             context.SaveChanges();
 
             return OrderModelProjection(order);
@@ -357,6 +360,47 @@ namespace AutoParts_ShopAndForum.Core.Services
                 _ => throw new ArgumentOutOfRangeException(nameof(inputModelDeliveryMethod), inputModelDeliveryMethod,
                     null)
             };
+        }
+
+        public SessionCreateOptions CreateStripeSession(string successUrl, string cancelUrl, Guid orderPublicToken)
+        {
+            var order = context.Orders
+                .FirstOrDefault(x => x.PublicToken == orderPublicToken);
+
+            if (order == null)
+                throw new ArgumentException("Order not found");
+
+            var moneyInStots = (long)order.OverallSum * 100;
+
+            var options = new SessionCreateOptions
+            {
+                Metadata = new()
+            {
+                { "orderToken", order.PublicToken.ToString() }
+            },
+                LineItems = new()
+            {
+                new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "bgn",
+                        UnitAmount = moneyInStots,
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = "Онлайн авточасти",
+                            Description = "Онлайн авточасти"
+                        }
+                    },
+                    Quantity = 1,
+                },
+            },
+                Mode = "payment",
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
+            };
+
+            return options;
         }
     }
 }

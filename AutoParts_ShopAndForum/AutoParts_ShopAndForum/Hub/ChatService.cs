@@ -10,7 +10,7 @@ public class ChatService : IChatService
     
     private static readonly TimeSpan ChatRequestTimeout = TimeSpan.FromSeconds(10);
     
-    public void OnUserConnectedAsync(
+    public void OnUserConnected(
         string connectionId, string userId, string userEmail, bool isSeller)
     {
         lock (StateLock)
@@ -19,7 +19,7 @@ public class ChatService : IChatService
         }
     }
 
-    public void OnUserDisconnectedAsync(string connectionId)
+    public void OnUserDisconnected(string connectionId)
     {
         ChatUser chatUser;
 

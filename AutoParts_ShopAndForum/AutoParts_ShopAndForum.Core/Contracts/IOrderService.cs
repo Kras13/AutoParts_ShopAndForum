@@ -1,5 +1,6 @@
 ﻿using AutoParts_ShopAndForum.Core.Models.Cart;
 using AutoParts_ShopAndForum.Core.Models.Order;
+using Stripe.Checkout;
 
 namespace AutoParts_ShopAndForum.Core.Contracts
 {
@@ -15,5 +16,6 @@ namespace AutoParts_ShopAndForum.Core.Contracts
         OrderQueryModel GetQueried(
             int currentPage, int ordersPerPage, OrdersSorting sorting, OrderStatusFilter statusFilter);
         OrderModel UpdateOrder(OrderEditModel orderEditModel);
+        SessionCreateOptions CreateStripeSession(string successUrl, string cancelUrl, Guid orderPublicToken);
     }
 }

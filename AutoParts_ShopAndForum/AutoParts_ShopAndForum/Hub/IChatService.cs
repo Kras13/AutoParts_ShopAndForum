@@ -2,8 +2,8 @@ namespace AutoParts_ShopAndForum.Hub;
 
 public interface IChatService
 {
-    void OnUserConnectedAsync(string connectionId, string userId, string userEmail, bool isSeller);
-    void OnUserDisconnectedAsync(string connectionId);
+    void OnUserConnected(string connectionId, string userId, string userEmail, bool isSeller);
+    void OnUserDisconnected(string connectionId);
     
     bool TryStartChatRequest(string initiatorId, string sellerId);
     bool TryAcceptChatRequest(string initiatorId, string sellerId, out string initiatorEmail);
