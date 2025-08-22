@@ -1,0 +1,21 @@
+@startuml MainUseCase
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Registered\nUser" as User
+
+rectangle "AutoParts_ShopAndForum" {
+    usecase "Browse Catalog" as BrowseCatalog
+    usecase "Complete Checkout" as CompleteCheckout
+    usecase "Make purchase" as MakePurchase
+
+    
+    (MakePurchase) .> (CompleteCheckout) : include
+    (MakePurchase) .> (BrowseCatalog) : include
+}
+
+User -- BrowseCatalog
+User -- MakePurchase
+User -- CompleteCheckout
+
+@enduml

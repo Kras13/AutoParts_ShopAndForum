@@ -1,0 +1,31 @@
+@startuml
+!theme toy
+
+node "Server/Cloud Environment" as Server {
+
+  component "User Module (Docker Container)" as Frontend {
+    [ASP.NET Core Runtime] as ASPNet
+    [APSF.Web] as Web
+    Web -- ASPNet
+    cloud "Internet" as Internet
+    Internet --> Web
+  }
+
+  component "Forecasting Module (Docker Container)" as Forecasting {
+    ' Python Runtime'
+    [Python Runtime] as Python
+    [APSF.Forecast] as Forecast
+    Forecast -- Python
+    Web -right-> Forecast
+    Forecast --> Web
+  }
+
+  database "Relational Database" as DB {
+    [SQL Server]
+  }
+
+  Frontend -down-> DB
+  Forecasting -down-> DB
+}
+
+@enduml
