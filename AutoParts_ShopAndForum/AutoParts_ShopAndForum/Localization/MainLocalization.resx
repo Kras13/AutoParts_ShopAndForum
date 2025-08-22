@@ -1,327 +1,429 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="Account_Email" xml:space="preserve">
-        <value>Имейл</value>
-    </data>
-    <data name="Account_LoginWithLocalAccount" xml:space="preserve">
-        <value>Или използвай локален акаунт за вход</value>
-    </data>
-    <data name="Account_Password" xml:space="preserve">
-        <value>Парола</value>
-    </data>
-    <data name="Account_RegisterAsNewUser" xml:space="preserve">
-        <value>Регистрирай се като нов потребител</value>
-    </data>
-    <data name="AddProduct_Navigation" xml:space="preserve">
-        <value>Добави продукт</value>
-    </data>
-    <data name="AllProducts_Navigation" xml:space="preserve">
-        <value>Продукти</value>
-    </data>
-    <data name="Chat_Navigation" xml:space="preserve">
-        <value>Онлайн поддръжка</value>
-    </data>
-    <data name="Forum_Navigation" xml:space="preserve">
-        <value>Форум</value>
-    </data>
-    <data name="LoginNavigation" xml:space="preserve">
-        <value>Вход</value>
-    </data>
-    <data name="PostCategory_BestAdditives" xml:space="preserve">
-        <value>Най-добрите добавки</value>
-    </data>
-    <data name="PostCategory_BestFilters" xml:space="preserve">
-        <value>Най-добрите филтри</value>
-    </data>
-    <data name="PostCategory_BestOils" xml:space="preserve">
-        <value>Най-добрите масла</value>
-    </data>
-    <data name="ProductCategory_Filters" xml:space="preserve">
-        <value>Филтри</value>
-    </data>
-    <data name="ProductCategory_OilsAndLiquids" xml:space="preserve">
-        <value>Масла и течности</value>
-    </data>
-    <data name="ProductCategory_WindowsCleaning" xml:space="preserve">
-        <value>Почистване на стъкла</value>
-    </data>
-    <data name="ProductsCategory_Additives" xml:space="preserve">
-        <value>Добавки</value>
-    </data>
-    <data name="ProductSubcategory_AirFilters" xml:space="preserve">
-        <value>Въздушни филтри</value>
-    </data>
-    <data name="ProductSubcategory_Antifreeze" xml:space="preserve">
-        <value>Антифриз</value>
-    </data>
-    <data name="ProductSubcategory_BackWindow" xml:space="preserve">
-        <value>Почистване на задно стъкло</value>
-    </data>
-    <data name="ProductSubcategory_CoolantAdditives" xml:space="preserve">
-        <value>Добавки за охладителна течност</value>
-    </data>
-    <data name="ProductSubcategory_FrontWindow" xml:space="preserve">
-        <value>Почистване на предно стъкло</value>
-    </data>
-    <data name="ProductSubcategory_OilAdditives" xml:space="preserve">
-        <value>Добавки за маслена система</value>
-    </data>
-    <data name="ProductSubcategory_OilFilters" xml:space="preserve">
-        <value>Маслени филтри</value>
-    </data>
-    <data name="ProductSubcategory_Oils" xml:space="preserve">
-        <value>Масла</value>
-    </data>
-    <data name="Register_Navigation" xml:space="preserve">
-        <value>Регистрация</value>
-    </data>
-    <data name="ProductAdd_Name" xml:space="preserve">
-        <value>Име</value>
-    </data>
-    <data name="InputFieldRequired" xml:space="preserve">
-        <value>Полето "{0}" трябва да има стойност</value>
-    </data>
-    <data name="InputFieldAtLeastLength" xml:space="preserve">
-        <value>Моля въведете поне {1} символа за полето "{0}"</value>
-    </data>
-    <data name="ProductAdd_ImageUrl" xml:space="preserve">
-        <value>Публичен URL до снимка</value>
-    </data>
-    <data name="ProductAdd_Price" xml:space="preserve">
-        <value>Цена</value>
-    </data>
-    <data name="ProductAdd_PriceRange" xml:space="preserve">
-        <value>Моля въведете стойност между {1} и {2} за полето "{0}"</value>
-    </data>
-    <data name="ProductAdd_Description" xml:space="preserve">
-        <value>Описание</value>
-    </data>
-    <data name="ProductAdd_SelectedSubcategory" xml:space="preserve">
-        <value>Подкатегория</value>
-    </data>
-    <data name="ProductAdd_PageTitle" xml:space="preserve">
-        <value>Добавяне на продукт</value>
-    </data>
-    <data name="Home_PageTitle" xml:space="preserve">
-        <value>Онлайн авточасти</value>
-    </data>
-    <data name="ProductQueryViewModel_NoSorting" xml:space="preserve">
-        <value>Без сортиране</value>
-    </data>
-    <data name="ProductQueryViewModel_PriceAscending" xml:space="preserve">
-        <value>Цена - възходящ</value>
-    </data>
-    <data name="ProductQueryViewModel_PriceDescending" xml:space="preserve">
-        <value>Цена - низходящ</value>
-    </data>
-    <data name="ProductQueryViewModel_NameAscending" xml:space="preserve">
-        <value>Име - възходящ</value>
-    </data>
-    <data name="ProductQueryViewModel_NameDescending" xml:space="preserve">
-        <value>Име - низходящ</value>
-    </data>
-    <data name="ProductQueryViewModel_DateAddedAscending" xml:space="preserve">
-        <value>Дата на добавяне - възходяш</value>
-    </data>
-    <data name="ProductQueryViewModel_DateAddedDescending" xml:space="preserve">
-        <value>Дата на добавяне - низходящ</value>
-    </data>
-    <data name="ProductQueryViewModel_AllPages" xml:space="preserve">
-        <value>Всички</value>
-    </data>
-    <data name="ProductAll_NextPage" xml:space="preserve">
-        <value>Напред</value>
-    </data>
-    <data name="ProductAll_PreviousPage" xml:space="preserve">
-        <value>Назад</value>
-    </data>
-    <data name="ProductAll_Apply" xml:space="preserve">
-        <value>Приложи</value>
-    </data>
-    <data name="ProductAll_Reset" xml:space="preserve">
-        <value>Нулирай</value>
-    </data>
-    <data name="ProductAll_Subcategories" xml:space="preserve">
-        <value>Подкатегории</value>
-    </data>
-    <data name="ProductAll_Buy" xml:space="preserve">
-        <value>Купи</value>
-    </data>
-    <data name="ProductAll_Edit" xml:space="preserve">
-        <value>Редактирай</value>
-    </data>
-    <data name="Currency_Name" xml:space="preserve">
-        <value>лева</value>
-    </data>
-    <data name="ProductDetails_PageTitle" xml:space="preserve">
-        <value>Детайли за продукт</value>
-    </data>
-    <data name="ProductDetails_PreviousPage" xml:space="preserve">
-        <value>Назад</value>
-    </data>
-    <data name="ProductDetails_Quantity" xml:space="preserve">
-        <value>Количество</value>
-    </data>
-    <data name="ProductDetails_AddToCart" xml:space="preserve">
-        <value>Добави в количката</value>
-    </data>
-    <data name="ProductDetails_ProductSuccessfullyAddedToCart" xml:space="preserve">
-        <value>{0} е успешно добавен в количката</value>
-    </data>
-    <data name="Cart_PageTitle" xml:space="preserve">
-        <value>Количка</value>
-    </data>
-    <data name="Cart_CartItem" xml:space="preserve">
-        <value>Количка</value>
-    </data>
-    <data name="Cart_Items" xml:space="preserve">
-        <value>артикула</value>
-    </data>
-    <data name="Cart_Item" xml:space="preserve">
-        <value>артикул</value>
-    </data>
-    <data name="Cart_RemoveItem" xml:space="preserve">
-        <value>Изтрий</value>
-    </data>
-    <data name="Cart_GoToCheckout" xml:space="preserve">
-        <value>Финализиране на поръчката</value>
-    </data>
-    <data name="Cart_Quantity" xml:space="preserve">
-        <value>Количество</value>
-    </data>
-    <data name="Cart_SinglePrice" xml:space="preserve">
-        <value>Единична цена</value>
-    </data>
-    <data name="Cart_ProductsPrice" xml:space="preserve">
-        <value>Продукти</value>
-    </data>
-    <data name="Cart_ShippingPrice" xml:space="preserve">
-        <value>Доставка</value>
-    </data>
-    <data name="Cart_FreeShipping" xml:space="preserve">
-        <value>Безплатна доставка</value>
-    </data>
-    <data name="Cart_TotalAmount" xml:space="preserve">
-        <value>Крайна цена</value>
-    </data>
-    <data name="ForecastProduct_Navigation" xml:space="preserve">
-        <value>Продуктови прогнози</value>
-    </data>
-    <data name="AdminPanel_Navigation" xml:space="preserve">
-        <value>Админ панел</value>
-    </data>
-    <data name="OrderStatus_Delivered" xml:space="preserve">
-        <value>Доставена</value>
-    </data>
-    <data name="OrderStatus_Pending" xml:space="preserve">
-        <value>В процес на доставка</value>
-    </data>
-    <data name="OrderStatus_FailedOnlinePayment" xml:space="preserve">
-        <value>Неуспешно онлайн заплащане</value>
-    </data>
-    <data name="OrderQueryViewModel_AllPages" xml:space="preserve">
-        <value>Всички</value>
-    </data>
-    <data name="OrderQueryViewModel_NoSorting" xml:space="preserve">
-        <value>Без сортиране</value>
-    </data>
-    <data name="OrderQueryViewModel_TotalAscending" xml:space="preserve">
-        <value>Крайна цена - възходящ</value>
-    </data>
-    <data name="OrderQueryViewModel_TotalDescending" xml:space="preserve">
-        <value>Крайна цена - низходящ</value>
-    </data>
-    <data name="OrderQueryViewModel_DateCreatedAscending" xml:space="preserve">
-        <value>Дата на създаване - възходящ</value>
-    </data>
-    <data name="OrderQueryViewModel_DateCreatedDescending" xml:space="preserve">
-        <value>Дата на създаване - низходящ</value>
-    </data>
-    <data name="OrderQueryViewModel_DateDeliveredAscending" xml:space="preserve">
-        <value>Дата на доставяне - възходящ</value>
-    </data>
-    <data name="OrderQueryViewModel_DateDeliveredDescending" xml:space="preserve">
-        <value>Дата на доставяне - низходящ</value>
-    </data>
-    <data name="AdminOrders_Navigation" xml:space="preserve">
-        <value>Поръчки</value>
-    </data>
-    <data name="OrderSummaryViewModel_OnlinePayWay" xml:space="preserve">
-        <value>Онлайн плащане</value>
-    </data>
-    <data name="OrderSummaryViewModel_CashOnDeliveryPayWay" xml:space="preserve">
-        <value>Наложен платеж</value>
-    </data>
-    <data name="AdministrationOrders_NoOrdersFound" xml:space="preserve">
-        <value>Не бяха открити поръчки.</value>
-    </data>
-    <data name="OrderQueryViewModel_StatusFilterAll" xml:space="preserve">
-        <value>Всички</value>
-    </data>
-    <data name="OrderQueryViewModel_StatusFilterDelivered" xml:space="preserve">
-        <value>Доставена</value>
-    </data>
-    <data name="OrderQueryViewModel_StatusFilterPending" xml:space="preserve">
-        <value>В процес на доставка</value>
-    </data>
-    <data name="OrderSummary_OrderId" xml:space="preserve">
-        <value>Идентификатор</value>
-    </data>
-    <data name="OrderSummary_Username" xml:space="preserve">
-        <value>Потребителско име</value>
-    </data>
-    <data name="OrderSummary_DateCreated" xml:space="preserve">
-        <value>Дата на създаване</value>
-    </data>
-    <data name="OrderSummary_DateDelivered" xml:space="preserve">
-        <value>Дата на доставяне</value>
-    </data>
-    <data name="OrderSummary_PayWay" xml:space="preserve">
-        <value>Начин на плащане</value>
-    </data>
-    <data name="OrderSummary_OrderStatus" xml:space="preserve">
-        <value>Статус</value>
-    </data>
-    <data name="OrderSummary_OverallSum" xml:space="preserve">
-        <value>Тотал</value>
-    </data>
-    <data name="ForumCategories_CreateNewPost" xml:space="preserve">
-        <value>Създаване на нов пост</value>
-    </data>
-    <data name="ForumCategories_Title" xml:space="preserve">
-        <value>Категории</value>
-    </data>
-    <data name="PostList_Title" xml:space="preserve">
-        <value>Списък с постове</value>
-    </data>
-    <data name="PostListViewModel_Title" xml:space="preserve">
-        <value>Заглавие</value>
-    </data>
-    <data name="PostListViewModel_Author" xml:space="preserve">
-        <value>Автор</value>
-    </data>
-    <data name="PostListViewModel_DateCreate" xml:space="preserve">
-        <value>Дата на създаване</value>
-    </data>
-    <data name="PostListViewModel_CommentsCount" xml:space="preserve">
-        <value>Брой коментари</value>
-    </data>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account_Email" xml:space="preserve">
+    <value>Имейл</value>
+  </data>
+  <data name="Account_LoginWithLocalAccount" xml:space="preserve">
+    <value>Или използвай локален акаунт за вход</value>
+  </data>
+  <data name="Account_Password" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="Account_RegisterAsNewUser" xml:space="preserve">
+    <value>Регистрирай се като нов потребител</value>
+  </data>
+  <data name="AddProduct_Navigation" xml:space="preserve">
+    <value>Добави продукт</value>
+  </data>
+  <data name="AllProducts_Navigation" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="Chat_Navigation" xml:space="preserve">
+    <value>Онлайн поддръжка</value>
+  </data>
+  <data name="Forum_Navigation" xml:space="preserve">
+    <value>Форум</value>
+  </data>
+  <data name="LoginNavigation" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="PostCategory_BestAdditives" xml:space="preserve">
+    <value>Най-добрите добавки</value>
+  </data>
+  <data name="PostCategory_BestFilters" xml:space="preserve">
+    <value>Най-добрите филтри</value>
+  </data>
+  <data name="PostCategory_BestOils" xml:space="preserve">
+    <value>Най-добрите масла</value>
+  </data>
+  <data name="ProductCategory_Filters" xml:space="preserve">
+    <value>Филтри</value>
+  </data>
+  <data name="ProductCategory_OilsAndLiquids" xml:space="preserve">
+    <value>Масла и течности</value>
+  </data>
+  <data name="ProductCategory_WindowsCleaning" xml:space="preserve">
+    <value>Почистване на стъкла</value>
+  </data>
+  <data name="ProductsCategory_Additives" xml:space="preserve">
+    <value>Добавки</value>
+  </data>
+  <data name="ProductSubcategory_AirFilters" xml:space="preserve">
+    <value>Въздушни филтри</value>
+  </data>
+  <data name="ProductSubcategory_Antifreeze" xml:space="preserve">
+    <value>Антифриз</value>
+  </data>
+  <data name="ProductSubcategory_BackWindow" xml:space="preserve">
+    <value>Почистване на задно стъкло</value>
+  </data>
+  <data name="ProductSubcategory_CoolantAdditives" xml:space="preserve">
+    <value>Добавки за охладителна течност</value>
+  </data>
+  <data name="ProductSubcategory_FrontWindow" xml:space="preserve">
+    <value>Почистване на предно стъкло</value>
+  </data>
+  <data name="ProductSubcategory_OilAdditives" xml:space="preserve">
+    <value>Добавки за маслена система</value>
+  </data>
+  <data name="ProductSubcategory_OilFilters" xml:space="preserve">
+    <value>Маслени филтри</value>
+  </data>
+  <data name="ProductSubcategory_Oils" xml:space="preserve">
+    <value>Масла</value>
+  </data>
+  <data name="Register_Navigation" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="ProductAdd_Name" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="InputFieldRequired" xml:space="preserve">
+    <value>Полето "{0}" трябва да има стойност</value>
+  </data>
+  <data name="InputFieldAtLeastLength" xml:space="preserve">
+    <value>Моля въведете поне {1} символа за полето "{0}"</value>
+  </data>
+  <data name="ProductAdd_ImageUrl" xml:space="preserve">
+    <value>Публичен URL до снимка</value>
+  </data>
+  <data name="ProductAdd_Price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="ProductAdd_PriceRange" xml:space="preserve">
+    <value>Моля въведете стойност между {1} и {2} за полето "{0}"</value>
+  </data>
+  <data name="ProductAdd_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="ProductAdd_SelectedSubcategory" xml:space="preserve">
+    <value>Подкатегория</value>
+  </data>
+  <data name="ProductAdd_PageTitle" xml:space="preserve">
+    <value>Добавяне на продукт</value>
+  </data>
+  <data name="Home_PageTitle" xml:space="preserve">
+    <value>Онлайн авточасти</value>
+  </data>
+  <data name="ProductQueryViewModel_NoSorting" xml:space="preserve">
+    <value>Без сортиране</value>
+  </data>
+  <data name="ProductQueryViewModel_PriceAscending" xml:space="preserve">
+    <value>Цена - възходящ</value>
+  </data>
+  <data name="ProductQueryViewModel_PriceDescending" xml:space="preserve">
+    <value>Цена - низходящ</value>
+  </data>
+  <data name="ProductQueryViewModel_NameAscending" xml:space="preserve">
+    <value>Име - възходящ</value>
+  </data>
+  <data name="ProductQueryViewModel_NameDescending" xml:space="preserve">
+    <value>Име - низходящ</value>
+  </data>
+  <data name="ProductQueryViewModel_DateAddedAscending" xml:space="preserve">
+    <value>Дата на добавяне - възходяш</value>
+  </data>
+  <data name="ProductQueryViewModel_DateAddedDescending" xml:space="preserve">
+    <value>Дата на добавяне - низходящ</value>
+  </data>
+  <data name="ProductQueryViewModel_AllPages" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="ProductAll_NextPage" xml:space="preserve">
+    <value>Напред</value>
+  </data>
+  <data name="ProductAll_PreviousPage" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="ProductAll_Apply" xml:space="preserve">
+    <value>Приложи</value>
+  </data>
+  <data name="ProductAll_Reset" xml:space="preserve">
+    <value>Нулирай</value>
+  </data>
+  <data name="ProductAll_Subcategories" xml:space="preserve">
+    <value>Подкатегории</value>
+  </data>
+  <data name="ProductAll_Buy" xml:space="preserve">
+    <value>Купи</value>
+  </data>
+  <data name="ProductAll_Edit" xml:space="preserve">
+    <value>Редактирай</value>
+  </data>
+  <data name="Currency_Name" xml:space="preserve">
+    <value>лева</value>
+  </data>
+  <data name="ProductDetails_PageTitle" xml:space="preserve">
+    <value>Детайли за продукт</value>
+  </data>
+  <data name="ProductDetails_PreviousPage" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="ProductDetails_Quantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="ProductDetails_AddToCart" xml:space="preserve">
+    <value>Добави в количката</value>
+  </data>
+  <data name="ProductDetails_ProductSuccessfullyAddedToCart" xml:space="preserve">
+    <value>{0} е успешно добавен в количката</value>
+  </data>
+  <data name="Cart_PageTitle" xml:space="preserve">
+    <value>Количка</value>
+  </data>
+  <data name="Cart_CartItem" xml:space="preserve">
+    <value>Количка</value>
+  </data>
+  <data name="Cart_Items" xml:space="preserve">
+    <value>артикула</value>
+  </data>
+  <data name="Cart_Item" xml:space="preserve">
+    <value>артикул</value>
+  </data>
+  <data name="Cart_RemoveItem" xml:space="preserve">
+    <value>Изтрий</value>
+  </data>
+  <data name="Cart_GoToCheckout" xml:space="preserve">
+    <value>Финализиране на поръчката</value>
+  </data>
+  <data name="Cart_Quantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="Cart_SinglePrice" xml:space="preserve">
+    <value>Единична цена</value>
+  </data>
+  <data name="Cart_ProductsPrice" xml:space="preserve">
+    <value>Продукти</value>
+  </data>
+  <data name="Cart_ShippingPrice" xml:space="preserve">
+    <value>Доставка</value>
+  </data>
+  <data name="Cart_FreeShipping" xml:space="preserve">
+    <value>Безплатна доставка</value>
+  </data>
+  <data name="Cart_TotalAmount" xml:space="preserve">
+    <value>Крайна цена</value>
+  </data>
+  <data name="ForecastProduct_Navigation" xml:space="preserve">
+    <value>Продуктови прогнози</value>
+  </data>
+  <data name="AdminPanel_Navigation" xml:space="preserve">
+    <value>Админ панел</value>
+  </data>
+  <data name="OrderStatus_Delivered" xml:space="preserve">
+    <value>Доставена</value>
+  </data>
+  <data name="OrderStatus_Pending" xml:space="preserve">
+    <value>В процес на доставка</value>
+  </data>
+  <data name="OrderStatus_FailedOnlinePayment" xml:space="preserve">
+    <value>Неуспешно онлайн заплащане</value>
+  </data>
+  <data name="OrderQueryViewModel_AllPages" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="OrderQueryViewModel_NoSorting" xml:space="preserve">
+    <value>Без сортиране</value>
+  </data>
+  <data name="OrderQueryViewModel_TotalAscending" xml:space="preserve">
+    <value>Крайна цена - възходящ</value>
+  </data>
+  <data name="OrderQueryViewModel_TotalDescending" xml:space="preserve">
+    <value>Крайна цена - низходящ</value>
+  </data>
+  <data name="OrderQueryViewModel_DateCreatedAscending" xml:space="preserve">
+    <value>Дата на създаване - възходящ</value>
+  </data>
+  <data name="OrderQueryViewModel_DateCreatedDescending" xml:space="preserve">
+    <value>Дата на създаване - низходящ</value>
+  </data>
+  <data name="OrderQueryViewModel_DateDeliveredAscending" xml:space="preserve">
+    <value>Дата на доставяне - възходящ</value>
+  </data>
+  <data name="OrderQueryViewModel_DateDeliveredDescending" xml:space="preserve">
+    <value>Дата на доставяне - низходящ</value>
+  </data>
+  <data name="AdminOrders_Navigation" xml:space="preserve">
+    <value>Поръчки</value>
+  </data>
+  <data name="OrderSummaryViewModel_OnlinePayWay" xml:space="preserve">
+    <value>Онлайн плащане</value>
+  </data>
+  <data name="OrderSummaryViewModel_CashOnDeliveryPayWay" xml:space="preserve">
+    <value>Наложен платеж</value>
+  </data>
+  <data name="AdministrationOrders_NoOrdersFound" xml:space="preserve">
+    <value>Не бяха открити поръчки.</value>
+  </data>
+  <data name="OrderQueryViewModel_StatusFilterAll" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="OrderQueryViewModel_StatusFilterDelivered" xml:space="preserve">
+    <value>Доставена</value>
+  </data>
+  <data name="OrderQueryViewModel_StatusFilterPending" xml:space="preserve">
+    <value>В процес на доставка</value>
+  </data>
+  <data name="OrderSummary_OrderId" xml:space="preserve">
+    <value>Идентификатор</value>
+  </data>
+  <data name="OrderSummary_Username" xml:space="preserve">
+    <value>Потребителско име</value>
+  </data>
+  <data name="OrderSummary_DateCreated" xml:space="preserve">
+    <value>Дата на създаване</value>
+  </data>
+  <data name="OrderSummary_DateDelivered" xml:space="preserve">
+    <value>Дата на доставяне</value>
+  </data>
+  <data name="OrderSummary_PayWay" xml:space="preserve">
+    <value>Начин на плащане</value>
+  </data>
+  <data name="OrderSummary_OrderStatus" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="OrderSummary_OverallSum" xml:space="preserve">
+    <value>Тотал</value>
+  </data>
+  <data name="ForumCategories_CreateNewPost" xml:space="preserve">
+    <value>Създаване на нов пост</value>
+  </data>
+  <data name="ForumCategories_Title" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="PostList_Title" xml:space="preserve">
+    <value>Списък с постове</value>
+  </data>
+  <data name="PostListViewModel_Title" xml:space="preserve">
+    <value>Заглавие</value>
+  </data>
+  <data name="PostListViewModel_Author" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="PostListViewModel_DateCreate" xml:space="preserve">
+    <value>Дата на създаване</value>
+  </data>
+  <data name="PostListViewModel_CommentsCount" xml:space="preserve">
+    <value>Брой коментари</value>
+  </data>
+  <data name="Checkout_Title" xml:space="preserve">
+    <value>Финализиране на поръчка</value>
+  </data>
 </root>
