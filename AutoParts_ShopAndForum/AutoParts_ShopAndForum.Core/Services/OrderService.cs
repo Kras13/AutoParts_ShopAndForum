@@ -13,7 +13,7 @@ namespace AutoParts_ShopAndForum.Core.Services
 {
     public class OrderService(
         ApplicationDbContext context,
-        IOrderNotification orderNotification,
+        IOrderNotificationService orderNotificationService,
         UserManager<User> userManager)
         : IOrderService
     {
@@ -103,7 +103,10 @@ namespace AutoParts_ShopAndForum.Core.Services
                         });
                     }
 
-                    orderNotification.SendNotification();
+                    var receiverEmail = user.UserName;
+                    var receiverFirstName = user.FirstName;
+                    
+                    orderNotificationService.SendNotification(receiverEmail, receiverFirstName);
                     context.SaveChanges();
 
                     transaction.Commit();

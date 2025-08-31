@@ -200,6 +200,4 @@ connection.on("ReceivePrivateMessage", function (fromUserId, fromUserEmail, mess
     messageBox.scrollTop(messageBox[0].scrollHeight);
 });
 
-console.log("Connection start called");
-
 connection.start().catch(err => console.error(err.toString()));
