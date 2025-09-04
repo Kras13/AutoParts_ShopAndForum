@@ -3,12 +3,10 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Вход";
 }
 
 <h1>@ViewData["Title"]</h1>
-
-
 
 <section class="vh-100" style="margin-top: 60px">
     <div class="container-fluid">
@@ -27,7 +25,7 @@
                                             if (provider.Name == "Google")
                                             {
                                                 <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-3">
-                                                    <p class="lead fw-normal mb-0 me-3" style="letter-spacing: 1px;">Sign in with</p>
+                                                    <p class="lead fw-normal mb-0 me-3" style="letter-spacing: 1px;">Регистрирай се с</p>
 
                                                     <button type="submit" name="provider" value="@provider.Name">
                                                         <img src="/img/gmail.png" alt="Gmail" width="32" height="32">
@@ -65,7 +63,7 @@
                             </div>
 
                             <div class="pt-1 mb-4">
-                                <button id="login" class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                                <button id="login" class="btn btn-info btn-lg btn-block" type="submit">Вход</button>
                             </div>
 
                             <div>
@@ -74,7 +72,7 @@
 
                             <div asp-validation-summary="ModelOnly" class="text-danger" id="summaryValidationId"></div>
 
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Регистрация</a>
                         </form>
                     </div>
                 </div>

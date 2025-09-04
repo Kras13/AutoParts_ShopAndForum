@@ -22,7 +22,8 @@ namespace AutoParts_ShopAndForum
             builder.Services
                 .AddApplicationDbContext(builder.Configuration)
                 .ConfigureContextIdentity()
-                .ConfigureBusinessServices();
+                .ConfigureBusinessServices()
+                .ConfigureGoogleAuth(builder.Configuration);
 
             builder.Services.AddSignalR();
 

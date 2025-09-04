@@ -113,6 +113,13 @@ connection.on("UpdateSellersList", function (availableSellers) {
 
     container.empty();
 
+    console.log("is current seller");
+    console.log(isCurrentUserSeller);
+
+    if (isCurrentUserSeller) {
+        return;
+    }
+
     availableSellers.forEach(user => {
         if (user.id === currentUserId)
             return;

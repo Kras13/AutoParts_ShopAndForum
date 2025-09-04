@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
+using System.ComponentModel;
 
 namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account
 {
@@ -68,6 +69,7 @@ namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
+            [Display(Name = "Потребителско име")]
             public string Email { get; set; }
 
             /// <summary>
@@ -76,6 +78,7 @@ namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Парола")]
             public string Password { get; set; }
 
             /// <summary>
