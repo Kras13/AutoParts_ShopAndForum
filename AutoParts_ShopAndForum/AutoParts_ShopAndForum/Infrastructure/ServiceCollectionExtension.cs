@@ -4,6 +4,8 @@ using AutoParts_ShopAndForum.Core.Services;
 using AutoParts_ShopAndForum.Hub;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
+using AutoParts_ShopAndForum.Infrastructure.Options;
+using AutoParts_ShopAndForum.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +26,16 @@ namespace AutoParts_ShopAndForum.Infrastructure
             return services;
         }
 
+        public static IServiceCollection ConfigureCustomOptions(
+            this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<StripeOptions>(config.GetSection(StripeOptions.Section));
+            services.Configure<GoogleOptions>(config.GetSection(GoogleOptions.Section));
+            services.Configure<SmtpOptions>(config.GetSection(SmtpOptions.Section));
+            
+            return services;
+        }
+        
         public static IServiceCollection ConfigureContextIdentity(this IServiceCollection services)
         {
             services

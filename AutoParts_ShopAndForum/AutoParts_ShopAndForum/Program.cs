@@ -19,6 +19,7 @@ namespace AutoParts_ShopAndForum
             Stripe.StripeConfiguration.ApiKey = stripeKey;
 
             builder.Services
+                .ConfigureCustomOptions(builder.Configuration)
                 .AddApplicationDbContext(builder.Configuration)
                 .ConfigureContextIdentity()
                 .ConfigureBusinessServices()
