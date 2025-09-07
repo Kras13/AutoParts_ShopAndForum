@@ -1,7 +1,6 @@
 using AutoParts_ShopAndForum.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using AutoParts_ShopAndForum.Areas.Forecasting;
 using AutoParts_ShopAndForum.Hub;
 
 namespace AutoParts_ShopAndForum
@@ -23,14 +22,10 @@ namespace AutoParts_ShopAndForum
                 .AddApplicationDbContext(builder.Configuration)
                 .ConfigureContextIdentity()
                 .ConfigureBusinessServices()
-                .ConfigureGoogleAuth(builder.Configuration);
+                .ConfigureGoogleAuth(builder.Configuration)
+                .ConfigureForecastClient(builder.Configuration);
 
             builder.Services.AddSignalR();
-
-            builder.Services.AddHttpClient<ISalesForecastClient, SalesForecastClient>(client =>
-            {
-                client.BaseAddress = new Uri(builder.Configuration["ForecastApiUrl"]);
-            });
 
             builder.Services.AddControllersWithViews()
                 .AddMvcOptions(options =>

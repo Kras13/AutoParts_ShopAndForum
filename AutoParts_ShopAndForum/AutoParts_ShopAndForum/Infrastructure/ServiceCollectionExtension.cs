@@ -1,4 +1,5 @@
-﻿using AutoParts_ShopAndForum.Core.Contracts;
+﻿using AutoParts_ShopAndForum.Areas.Forecasting;
+using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Services;
 using AutoParts_ShopAndForum.Hub;
 using AutoParts_ShopAndForum.Infrastructure.Data;
@@ -55,9 +56,32 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 .AddTransient<ICommentService, CommentService>()
                 .AddTransient<IOrderService, OrderService>()
                 .AddTransient<ICourierStationService, CourierStationService>()
-                .AddTransient<IOrderNotification, OrderNotification>()
+                .AddTransient<IOrderNotificationService, OrderNotificationService>()
                 .AddTransient<IChatService, ChatService>();
 
+            return services;
+        }
+
+        public static IServiceCollection ConfigureGoogleAuth(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = config["Google:ClientId"];
+                    options.ClientSecret = config["Google:ClientSecret"];
+                });
+            
+            return services;
+        }
+
+        public static IServiceCollection ConfigureForecastClient(
+            this IServiceCollection services, IConfiguration config)
+        {
+            services.AddHttpClient<ISalesForecastClient, SalesForecastClient>(client =>
+            {
+                client.BaseAddress = new Uri(config["ForecastApiUrl"]);
+            });
+            
             return services;
         }
     }
