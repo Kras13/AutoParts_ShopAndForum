@@ -25,9 +25,6 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
                     dbContext.Database.Migrate();
 
-                    //await SeedTowns(dbContext);
-                    //await dbContext.SaveChangesAsync();
-
                     await SeedAdministrator(serviceScope.ServiceProvider, dbContext);
                     await dbContext.SaveChangesAsync();
 
@@ -168,6 +165,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             var sellerRoleExists = await roleManager
                 .RoleExistsAsync(RoleType.Seller);
@@ -181,8 +179,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
             if (result.Succeeded)
             {
-                string sellerEmail = "seller@abv.bg";
-                string sellerPassword = "123456";
+                var sellerEmail = configuration["Seller:Email"];
+                var sellerPassword = configuration["Seller:Password"];
 
                 var user = new User()
                 {
@@ -202,6 +200,7 @@ namespace AutoParts_ShopAndForum.Infrastructure
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             var adminRoleExists = await roleManager
                 .RoleExistsAsync(RoleType.Administrator);
@@ -215,8 +214,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
 
             if (roleCreated.Succeeded)
             {
-                var adminEmail = "admin@abv.bg";
-                var adminPassword = "admin123";
+                var adminEmail = configuration["Admin:Email"];
+                var adminPassword = configuration["Admin:Password"];
 
                 var user = new User()
                 {
@@ -230,22 +229,6 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 await userManager.CreateAsync(user, adminPassword);
 
                 await userManager.AddToRoleAsync(user, RoleType.Administrator);
-            }
-        }
-
-        private static async Task SeedTowns(ApplicationDbContext context)
-        {
-            var towns = new string[] { "Stara Zagora", "Sofia", "Varna", "Plovdiv", "Burgas", "Pleven" };
-            var savedTowns = await context.Towns.ToArrayAsync();
-
-            foreach (var town in towns)
-            {
-                if (savedTowns.Any(t => t.Name == town))
-                {
-                    continue;
-                }
-
-                await context.Towns.AddAsync(new Town() { Name = town });
             }
         }
     }

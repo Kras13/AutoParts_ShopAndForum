@@ -4,13 +4,13 @@
 <div class="container mt-5">
     <div class="text-center">
         <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
-        <h2 class="mt-3">Thank you for your order!</h2>
-        <p>Your order <strong>#@Model.OrderId</strong> has been placed successfully.</p>
-        <p>We’ve sent a confirmation email to <strong>@Model.UserEmailAddress</strong>.</p>
+        <h2 class="mt-3">Благодарим, че избрахте нас!</h2>
+        <p>Вашата поръчка с код  <strong>#@Model.OrderId</strong> беше успешно създадена.</p>
+        <p>Изпратихме известително писмо до <strong>@Model.UserEmailAddress</strong>.</p>
 
         <div class="mt-4">
-            <a href="/Identity/Account/Manage/OrderDetails/@(Model.OrderId)" class="btn btn-primary">View Order</a>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Continue Shopping</a>
+            <a href="/Identity/Account/Manage/OrderDetails/@(Model.OrderId)" class="btn btn-primary">Вижте поръчката</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Продължете да пазарувате</a>
         </div>
     </div>
 </div>
