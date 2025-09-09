@@ -69,7 +69,8 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 .AddTransient<IOrderService, OrderService>()
                 .AddTransient<ICourierStationService, CourierStationService>()
                 .AddTransient<IOrderNotificationService, OrderNotificationService>()
-                .AddTransient<IChatService, ChatService>();
+                .AddTransient<IChatService, ChatService>()
+                .AddTransient<RazorViewToStringRenderer>();
 
             return services;
         }

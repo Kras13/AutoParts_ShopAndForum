@@ -1,0 +1,43 @@
+﻿@model AutoParts_ShopAndForum.Core.Models.EmailNotification.OrderEmailModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .header { background: #0044cc; color: white; padding: 10px; }
+        .order-items { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .order-items th, .order-items td { border: 1px solid #ddd; padding: 8px; }
+        .total { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Благодарим за вашата поръчка, @Model.CustomerName!</h2>
+    </div>
+
+    <p>Вашата поръчка с номер <strong>#@Model.OrderId</strong> беше приета на @Model.OrderDate.ToString("dd.MMM.yyyy").</p>
+
+    <table class="order-items">
+        <thead>
+            <tr>
+                <th>Име</th>
+                <th>Количесто</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="total">Общо: @Model.TotalPrice.ToString("C") лева</p>
+</body>
+</html>

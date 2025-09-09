@@ -1,6 +1,7 @@
 ﻿
 using AutoParts_ShopAndForum.Core.Contracts;
 using AutoParts_ShopAndForum.Core.Models.Cart;
+using AutoParts_ShopAndForum.Core.Models.EmailNotification;
 using AutoParts_ShopAndForum.Core.Models.Order;
 using AutoParts_ShopAndForum.Infrastructure.Data;
 using AutoParts_ShopAndForum.Infrastructure.Data.Models;
@@ -105,11 +106,12 @@ namespace AutoParts_ShopAndForum.Core.Services
 
                     var receiverEmail = user.UserName;
                     var receiverFirstName = user.FirstName;
-                    
-                    orderNotificationService.SendNotification(receiverEmail, receiverFirstName);
+
                     context.SaveChanges();
 
                     transaction.Commit();
+
+                    SendNotificationEmail(receiverEmail, receiverFirstName, order.Id);
                 }
                 catch (System.Exception e)
                 {
@@ -283,6 +285,33 @@ namespace AutoParts_ShopAndForum.Core.Services
             context.SaveChanges();
 
             return OrderModelProjection(order);
+        }
+
+        private void SendNotificationEmail(string receiverEmail, string receiverFirstName, int id)
+        {
+            var order = context.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+                throw new ArgumentException("Order with such id was not found.");
+
+            var orderModel = new OrderEmailModel
+            {
+                OrderId = order.Id,
+                CustomerName = order.InvoicePersonFirstName,
+                OrderDate = order.DateCreated,      
+                Items = order.OrderProducts.Select(op => new OrderItemEmailModel
+                {
+                    Name = op.Product.Name,
+                    Quantity = op.Quantity,
+                    Price = op.SinglePrice
+                }).ToList(),
+                TotalPrice = order.OverallSum,
+            };
+
+            orderNotificationService.SendNotificationAsync(receiverEmail, receiverFirstName, orderModel);
         }
 
         private OrderModel OrderModelProjection(Order order)
