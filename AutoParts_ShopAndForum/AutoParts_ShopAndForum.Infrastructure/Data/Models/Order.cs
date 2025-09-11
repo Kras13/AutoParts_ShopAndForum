@@ -43,6 +43,8 @@ namespace AutoParts_ShopAndForum.Infrastructure.Data.Models
         public int? CourierStationId { get; set; }
 
         public CourierStation CourierStation { get; set; }
+        
+        public string PhoneNumber { get; set; }
 
         [Required]
         [MaxLength(OrderConstants.InvoicePersonFirstNameMaxLength)]

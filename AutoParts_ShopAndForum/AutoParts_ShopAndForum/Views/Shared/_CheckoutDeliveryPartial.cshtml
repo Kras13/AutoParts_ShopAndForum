@@ -75,6 +75,15 @@
 					</select>
 				</div>
 			</div>
+
+			<div class="my-2">
+				<div class="form-group">
+					<label asp-for="PhoneNumber"></label>
+					<input asp-for="PhoneNumber" class="form-control"
+					       placeholder="08**********" readonly="@Model.ReadOnlyMode">
+					<span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

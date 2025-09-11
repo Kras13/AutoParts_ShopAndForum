@@ -65,6 +65,7 @@ public class CheckoutController(
                 DeliveryStreet = formModel.DeliveryStreet,
                 TownId = formModel.SelectedTownId,
                 CourierStationId = formModel.SelectedCourierStationId,
+                PhoneNumber = formModel.PhoneNumber,
                 InvoicePersonFirstName = formModel.InvoiceFirstName,
                 InvoicePersonLastName = formModel.InvoiceLastName,
                 InvoiceAddress = formModel.InvoiceAddress,

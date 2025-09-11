@@ -7,6 +7,7 @@ public class OrderInputModel
     public string DeliveryStreet { get; set; }
     public int TownId { get; set; }
     public int? CourierStationId { get; set; }
+    public string PhoneNumber { get; set; }
     public string InvoicePersonFirstName { get; set; }
     public string InvoicePersonLastName { get; set; }
     public string InvoiceAddress { get; set; }
