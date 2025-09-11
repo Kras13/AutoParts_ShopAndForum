@@ -31,6 +31,7 @@ namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account.Manage
             _townService = townService;
         }
 
+        [Display(Name = "Потребителско име")]
         public string Username { get; set; }
 
         [TempData]
@@ -42,16 +43,16 @@ namespace AutoParts_ShopAndForum.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Телефонен номер")]
             public string PhoneNumber { get; set; }
 
-            [Display(Name = "Firstname")]
+            [Display(Name = "Име")]
             public string FirstName { get; set; }
 
-            [Display(Name = "Lastname")]
+            [Display(Name = "Фамилия")]
             public string LastName { get; set; }
             
-            [Display(Name = "Town")]
+            [Display(Name = "Град")]
             public int TownId { get; set; }
 
             public TownModel[] Towns { get; set; }
