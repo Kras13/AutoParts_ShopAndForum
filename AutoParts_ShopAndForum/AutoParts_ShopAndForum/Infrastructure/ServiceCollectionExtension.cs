@@ -7,6 +7,8 @@ using AutoParts_ShopAndForum.Infrastructure.Data.Models;
 using AutoParts_ShopAndForum.Infrastructure.Options;
 using AutoParts_ShopAndForum.Service;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoParts_ShopAndForum.Infrastructure
@@ -70,7 +72,9 @@ namespace AutoParts_ShopAndForum.Infrastructure
                 .AddTransient<ICourierStationService, CourierStationService>()
                 .AddTransient<IOrderNotificationService, OrderNotificationService>()
                 .AddTransient<IChatService, ChatService>()
-                .AddTransient<RazorViewToStringRenderer>();
+                .AddTransient<RazorViewToStringRenderer>()
+                .AddTransient<IEmailSender, EmailSender>()
+                .AddTransient<IActionContextAccessor, ActionContextAccessor>();
 
             return services;
         }

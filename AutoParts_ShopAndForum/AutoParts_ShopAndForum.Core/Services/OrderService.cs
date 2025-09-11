@@ -113,11 +113,11 @@ namespace AutoParts_ShopAndForum.Core.Services
 
                     SendNotificationEmail(receiverEmail, receiverFirstName, order.Id);
                 }
-                catch (System.Exception e)
+                catch (Exception)
                 {
                     transaction.Rollback();
 
-                    throw e;
+                    throw;
                 }
             }
 
